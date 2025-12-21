@@ -4,7 +4,7 @@ publish: true
 tags: [personal, portfolio]
 aliases: [Developer Portfolio(仮), introduction]
 created: 2025-12-21T13:18:07+09:00
-modified: 2025-12-21T15:52:30+09:00
+modified: 2025-12-21T23:11:03+09:00
 ---
 
 # Developer Portfolio(仮)
@@ -24,7 +24,7 @@ modified: 2025-12-21T15:52:30+09:00
 - 外国語学習を通じて、日本語圏では出会えない知識や人々と繋がることに価値を感じています
 - 技術の本質的な理解を追求し、基礎から応用まで幅広く学ぶことを大切にしています
 
-## Technical Skills
+## 技術紹介
 
 ### プログラミング言語
 
@@ -48,7 +48,7 @@ modified: 2025-12-21T15:52:30+09:00
 
 ## 取り組んでいるプロジェクト
 
-#### **[tapl-rescript](https://github.com/dowdiness/tapl-rescript)**
+### **[tapl-rescript](https://github.com/dowdiness/tapl-rescript)**
 
 *JavaScript/ReScript*
 - [「Types and Programming Languages（型システム入門）」](https://www.ohmsha.co.jp/book/9784274069116/)の実装を[ReScript](https://rescript-lang.org/)で行うプロジェクトです
@@ -57,20 +57,20 @@ modified: 2025-12-21T15:52:30+09:00
 - まだまだ未完成なところも多いですが [NPM Package](https://www.npmjs.com/package/@antisatori/tapl) として公開しています
 - 最終更新: 2025年12月
 
-#### **[twitter-clone](https://github.com/dowdiness/twitter-clone)**
+### **[twitter-clone](https://github.com/dowdiness/twitter-clone)**
 *Nuxt.js*, *Firebase*
 - FirebaseとNuxt.jsを使用した簡易的なＳＮＳアプリです
 - フルスタックWeb開発のスキルを実証
 - 少し内容が古いかもしれません
 
-### 📝学びの蓄積
+## 📝学びの蓄積
 
 **[MainVault](https://github.com/dowdiness/MainVault)**
 - Obsidianを使用して学んだことを後から見直せるように管理しています
 - [Quartz](https://github.com/jackyzha0/quartz)によって公開する仕組みを作っています
 - 継続的な学習と知識の共有
 
-### Web Design
+## Web Design
 
 [pycon.jp 2020 公式サイト](https://pycon.jp/2020/)
 *Vue*, *Nuxt.js*, *tailwindcss*
