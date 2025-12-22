@@ -5,7 +5,7 @@ author: anonymous
 description: A-normal_form wiki clipping
 tags: [clippings, compiler, ir]
 created: 2025-04-19T16:45:12+09:00
-modified: 2025-05-22T22:35:25+09:00
+modified: 2025-12-22T20:37:56+09:00
 ---
 
 # A-normal form - Wikipedia

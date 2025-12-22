@@ -2,7 +2,7 @@
 tags: [Compiler]
 aliases: [Compiler, 参考資料集]
 created: 2025-04-26T22:04:33+09:00
-modified: 2025-12-22T20:23:37+09:00
+modified: 2025-12-22T20:45:01+09:00
 ---
 
 # 参考資料集
@@ -22,10 +22,15 @@ modified: 2025-12-22T20:23:37+09:00
 
 [So you want to write a programming language](https://docs.google.com/document/d/e/2PACX-1vSPUfmDiniZy0yn9wjqag8lWOg4Kei_3EXy03EB_pQ-5elwacy0IBZjFyOsjrehIldvhUq0_odDY0Ft/pub)
 最初に読むべき記事かもしれない
+
+[Resources for Amateur Compiler Writers](https://c9x.me/compile/bib/)
+
 [Lessons from Writing a Compiler](https://borretti.me/article/lessons-writing-compiler)
 [Programming languages resources](https://bernsteinbear.com/pl-resources/)
 網羅的にいろんな資料が載っていてとても良さそう
 [PLSE](https://uwplse.org/)
+[JavaScriptで100行で作る！数式言語のインタプリタ](https://zenn.dev/nextbeat/articles/4006498a7f36bc)
+
 ## 講義
 
 [6.S050 Programming Language Design](https://people.csail.mit.edu/feser/pld-s23/)

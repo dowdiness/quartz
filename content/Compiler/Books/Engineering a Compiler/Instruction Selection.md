@@ -1,9 +1,9 @@
 ---
 title: Instruction Selection
-publish: false
+publish: true
 tags: [compiler]
 created: 2025-12-22T17:18:00+09:00
-modified: 2025-12-22T19:24:23+09:00
+modified: 2025-12-22T20:47:59+09:00
 ---
 
 # Instruction Selection
