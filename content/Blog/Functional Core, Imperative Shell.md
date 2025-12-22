@@ -4,7 +4,7 @@ publish: false
 tags: []
 aliases: ["Functional Core, Imperative Shell ", Functional Core, Imperative Shell]
 created: 2025-05-21T18:04:28+09:00
-modified: 2025-05-21T23:06:51+09:00
+modified: 2025-12-22T20:06:59+09:00
 ---
 
 #  [Functional Core, Imperative Shell](https://www.destroyallsoftware.com/screencasts/catalog/functional-core-imperative-shell) 

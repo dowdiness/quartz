@@ -1,7 +1,8 @@
 ---
+title: JavaScriptにおけるプリミティブとオブジェクトの違い
 tags: [JavaScript]
 created: 2025-04-27T16:09:02+09:00
-modified: 2025-04-29T20:09:23+09:00
+modified: 2025-12-22T20:07:55+09:00
 ---
 
 # JavaScriptにおけるプリミティブとオブジェクトの違い

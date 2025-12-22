@@ -3,7 +3,7 @@ title: Integers and variables
 publish: false
 tags: [compiler]
 created: 2025-12-09T04:58:11+09:00
-modified: 2025-12-09T16:00:18+09:00
+modified: 2025-12-22T18:45:40+09:00
 aliases: [Assembly]
 ---
 
