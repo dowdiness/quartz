@@ -3,7 +3,7 @@ title: Base
 publish: false
 tags: []
 created: 2025-05-13T23:40:21+09:00
-modified: 2025-05-13T23:41:50+09:00
+modified: 2025-12-22T20:10:58+09:00
 ---
 
 # Reading list

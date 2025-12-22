@@ -3,7 +3,7 @@ title: Base
 publish: false
 tags: []
 created: 2025-06-03T14:40:54+09:00
-modified: 2025-06-11T23:54:02+09:00
+modified: 2025-12-22T20:11:42+09:00
 ---
 
 # Vocabulary

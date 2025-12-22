@@ -3,7 +3,7 @@ title: Domain Modeling Made Functional
 publish: false
 tags: [ddd]
 created: 2025-06-11T00:19:26+09:00
-modified: 2025-06-11T10:18:54+09:00
+modified: 2025-12-22T20:10:50+09:00
 ---
 
 # Domain Modeling Made Functional
