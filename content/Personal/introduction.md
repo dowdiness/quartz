@@ -4,7 +4,7 @@ publish: true
 tags: [personal, portfolio]
 aliases: [Developer Portfolio(仮), introduction]
 created: 2025-12-21T13:18:07+09:00
-modified: 2025-12-21T23:31:12+09:00
+modified: 2025-12-22T11:25:19+09:00
 ---
 
 # Developer Portfolio(仮)
@@ -24,19 +24,23 @@ modified: 2025-12-21T23:31:12+09:00
 - 外国語学習を通じて、日本語圏では出会えない知識や人々と繋がることに価値を感じています
 - 技術の本質的な理解を追求し、基礎から応用まで幅広く学ぶことを大切にしています
 
-## 技術紹介
+## スキルセット
 
 ### プログラミング言語
 
-- **主に使用している言語:** JavaScript, TypeScript
-- **興味のある言語:** ReScript, MoonBit, Haskell
-- 関数型言語が好きです。
-- Haskellなどから学んだテクニックをTypeScriptにも生かせないかを日々考えています。
+- TypeScript, Ruby
+- 一番書いたことのある言語はTypeScriptです。現在は参加していませんが、[ECMAScript 仕様輪読会](https://esspec.connpass.com/)にてECMAScriptの仕様を読んでいました。JavaScriptの仕様には詳しい方だと思います。
+- **興味のある言語:** ReScript、MoonBit、Haskell、Rust
+- 関数型言語が好きです。コンパイラやプログラミング言語の理論に興味があり、
 
-### Technologies & Frameworks
+### フロントエンド
 
 - **Frontend:** React, Vue.js
 - **Tools:** Git, GitHub Actions, Slack Webhooks
+
+### バックエンド
+
+
 
 ### 興味関心
 
@@ -98,13 +102,6 @@ modified: 2025-12-21T23:31:12+09:00
 - 外国語学習を通じた異文化理解
 - 知識の体系化と公開（Obsidian + Quartz）
 - クリエイティブコーディングとアート表現
-
-## GitHub Achievements
-
-- 🏆 **Pair Extraordinaire** - コラボレーションの実績
-- ⚡ **Quickdraw** - 迅速な対応力
-- 🧊 **Arctic Code Vault Contributor** - GitHub Archive Programへの貢献
-- 🦈 **Pull Shark ×2** - 継続的なPull Request活動
 
 ## Development Philosophy
 
