@@ -4,7 +4,7 @@ publish: true
 tags: [personal, portfolio]
 aliases: [Developer Portfolio(仮), introduction]
 created: 2025-12-21T13:18:07+09:00
-modified: 2025-12-22T12:14:41+09:00
+modified: 2025-12-22T12:38:14+09:00
 ---
 
 # Developer Portfolio(仮)
@@ -67,6 +67,7 @@ Reactを使ったフロントエンドの開発が得意です。Reactのコン�
 - 2023年から2024年まで[TAPL.ts](https://taplts.connpass.com)にて、型システム入門の輪読会に参加していました
 - LLVM IRへとコンパイルするλ計算のコンパイラを自分で実装することにより、理論として学んだことの実践をしています
 - まだまだ未完成なところも多いですが [NPM Package](https://www.npmjs.com/package/@antisatori/tapl) として公開しています
+- Moonbitを試してみたいと思い[書き換えた](https://github.com/dowdiness/tapl-rescript/tree/moon-migration/moonbit)バージョンを現在作っています
 
 ### **[twitter-clone](https://github.com/dowdiness/twitter-clone)**
 
@@ -78,8 +79,8 @@ Reactを使ったフロントエンドの開発が得意です。Reactのコン�
 ## デザイン
 
 ### [pycon.jp 2020 公式サイト](https://pycon.jp/2020/)
-
 *Vue*, *Nuxt.js*, *tailwindcss*
+
 - [GitHub](https://github.com/pyconjp/pycon.jp.2020.ui)
 - Pycon.jp 2020 の公式サイト制作に関わりました。
 - 主に私と[papi-tokei](https://github.com/papi-tokei)で作成しました。
@@ -87,6 +88,7 @@ Reactを使ったフロントエンドの開発が得意です。Reactのコン�
 
 ### **[yowai-zine](https://yowai.band)**
 *TypeScript*, *Gatsby*
+
 - [GitHub](https://github.com/dowdiness/yowai-zine)
 - 「こころおきなく居られるweb zine」
 - 友人と一緒に趣味として作った同人的なWeb雑誌です
