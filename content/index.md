@@ -5,14 +5,18 @@ tags: [personal]
 aliases: [index, このサイトは何？, リンク一覧]
 date: 2025-04-29
 created: 2025-04-29T17:19:18+09:00
-modified: 2025-05-22T14:58:14+09:00
+modified: 2025-12-22T20:25:09+09:00
 ---
 
 # このサイトは何？
 
-[Obsidian](https://obsidian.md/)で書いている記事の公開サイトです。
+[Obsidian](https://obsidian.md/)で書いている日々のメモです
+[Quartz](https://quartz.jzhao.xyz/) によって作られています。
 
-# リンク一覧
+## サイト内リンク
 
+[[Personal/introduction|プログラマーとしての紹介]]
+
+- [[quartz/content/Compiler/Compiler|Compiler]]
 - [[講義]]
-- [[病院]]
+

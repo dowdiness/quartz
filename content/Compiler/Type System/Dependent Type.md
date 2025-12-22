@@ -1,7 +1,7 @@
 ---
 aliases: [Type theory elaboration]
 created: 2024-06-25T01:44:03+09:00
-modified: 2025-06-13T01:59:47+09:00
+modified: 2025-12-22T20:28:43+09:00
 ---
 
 # Dependent Type

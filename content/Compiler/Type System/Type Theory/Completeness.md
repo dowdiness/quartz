@@ -4,7 +4,7 @@ publish: false
 tags: [" "]
 aliases: [Untitled]
 created: 2025-07-16T20:51:14+09:00
-modified: 2025-07-16T20:51:59+09:00
+modified: 2025-12-22T20:28:44+09:00
 ---
 
 # Completeness

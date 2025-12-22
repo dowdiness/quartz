@@ -4,7 +4,7 @@ publish: false
 tags: [" "]
 aliases: [Untitled]
 created: 2025-05-07T12:04:09+09:00
-modified: 2025-05-07T12:05:02+09:00
+modified: 2025-12-22T20:35:12+09:00
 ---
 
 # Calculus of Constructions
