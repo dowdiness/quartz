@@ -4,7 +4,7 @@ publish: true
 tags: [personal, portfolio]
 aliases: [Developer Portfolio(仮), introduction]
 created: 2025-12-21T13:18:07+09:00
-modified: 2025-12-22T12:38:14+09:00
+modified: 2025-12-22T15:50:40+09:00
 ---
 
 # Developer Portfolio(仮)
@@ -31,6 +31,7 @@ modified: 2025-12-22T12:38:14+09:00
 - フルスタックなウェブ開発
 - コンパイラ、型システム、Structure editor
 - 自作言語に興味があります
+- 形式手法（formal methods）、特に[Lean](https://lean-lang.org/)や[TLA+](https://lamport.azurewebsites.net/tla/tla.html)のような証明の出来るシステム
 
 ### プログラミング言語
 
