@@ -4,7 +4,7 @@ publish: true
 tags: [personal, portfolio]
 aliases: [Developer Portfolio(仮), introduction]
 created: 2025-12-21T13:18:07+09:00
-modified: 2025-12-22T12:11:06+09:00
+modified: 2025-12-22T12:14:41+09:00
 ---
 
 # Developer Portfolio(仮)
@@ -38,7 +38,7 @@ modified: 2025-12-22T12:11:06+09:00
 - 一番書いたことのある言語はTypeScriptです。現在は参加していませんが、[ECMAScript 仕様輪読会](https://esspec.connpass.com/)にてECMAScriptの仕様を読んでいました。JavaScriptの仕様には詳しい方だと思います。
 - RubyはRailsでのバックエンドのコードと、簡単なスクリプトや競技プログラミングに参加する際に使っていました。
 - **興味のある言語:** ReScript、MoonBit、Haskell、Rust
-- 関数型言語が好きかつ、静的型付言語の方が得意です。コンパイラやプログラミング言語の理論に興味があります。趣味のコンパイラ開発やPoCとしてアイディアを試す際には関数型言語を使っています。
+- 関数型言語が好みかつ、静的型付言語の方が得意です。コンパイラやプログラミング言語の理論に興味があります。趣味のコンパイラ開発やPoCとしてアイディアを試す際には[Haskell](https://github.com/dowdiness/scheme-in-haskell)など関数型言語を使っています。
 
 ### フロントエンド
 
