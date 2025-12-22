@@ -4,7 +4,7 @@ publish: true
 tags: [personal, portfolio]
 aliases: [Developer Portfolio(仮), introduction]
 created: 2025-12-21T13:18:07+09:00
-modified: 2025-12-22T11:25:19+09:00
+modified: 2025-12-22T11:54:28+09:00
 ---
 
 # Developer Portfolio(仮)
@@ -28,27 +28,34 @@ modified: 2025-12-22T11:25:19+09:00
 
 ### プログラミング言語
 
-- TypeScript, Ruby
+- **主に使っている言語:** TypeScript, Ruby
 - 一番書いたことのある言語はTypeScriptです。現在は参加していませんが、[ECMAScript 仕様輪読会](https://esspec.connpass.com/)にてECMAScriptの仕様を読んでいました。JavaScriptの仕様には詳しい方だと思います。
+- RubyはRailsでのバックエンドのコードと、簡単なスクリプトや競技プログラミングに参加する際に使っていました。
 - **興味のある言語:** ReScript、MoonBit、Haskell、Rust
-- 関数型言語が好きです。コンパイラやプログラミング言語の理論に興味があり、
+- 関数型言語が好きかつ、静的型付言語の方が得意です。コンパイラやプログラミング言語の理論に興味があります。趣味のコンパイラ開発やPoCとしてアイディアを試す際には関数型言語を使っています。
 
 ### フロントエンド
 
-- **Frontend:** React, Vue.js
-- **Tools:** Git, GitHub Actions, Slack Webhooks
+- **UI Library:** React、 Vue.js、 Alpine.js
+- **FrameWork**: Next.js、 Nuxt.js、 Astro.js
+- **Tools:** Vite、typia、tailwindcss、
+
+Reactを使ったフロントエンドの開発が得意です。Reactのコンポーメントのレンダーや、エフェクトや状態管理のライフサイクルの仕組みに関する理解には自信があります使い勝手やシンプルさなどを考慮するとフロントエンドの開発にはReactが一番適していると思っています。
+
+静的サイトやJS側のロジックの少ないサイトの場合は、Astro.jsとAlpine.jsを使います。
+
+デザインや使いやすさを考えるのが好きです。
 
 ### バックエンド
 
-
+Node.js、Ruby on Rails
+PostgreSQL
 
 ### 興味関心
 
 - フルスタックなウェブ開発
 - コンパイラ、型システム、Structure editor
 - 自作言語に興味があります
-- Interactive & Creative Coding
-
 
 ## 取り組んでいるプロジェクト
 
@@ -59,35 +66,35 @@ modified: 2025-12-22T11:25:19+09:00
 - 2023年から2024年まで[TAPL.ts](https://taplts.connpass.com)にて、型システム入門の輪読会に参加していました
 - LLVM IRへとコンパイルするλ計算のコンパイラを自分で実装することにより、理論として学んだことの実践をしています
 - まだまだ未完成なところも多いですが [NPM Package](https://www.npmjs.com/package/@antisatori/tapl) として公開しています
-- 最終更新: 2025年12月
 
 ### **[twitter-clone](https://github.com/dowdiness/twitter-clone)**
+
 *Nuxt.js*, *Firebase*
 - FirebaseとNuxt.jsを使用した簡易的なＳＮＳアプリです
 - フルスタックWeb開発のスキルを実証
 - 少し内容が古いかもしれません
 
-## 📝学びの蓄積
+## デザイン
 
-**[MainVault](https://github.com/dowdiness/MainVault)**
-- Obsidianを使用して学んだことを後から見直せるように管理しています
-- [Quartz](https://github.com/jackyzha0/quartz)によって公開する仕組みを作っています
-- 継続的な学習と知識の共有
+### [pycon.jp 2020 公式サイト](https://pycon.jp/2020/)
 
-## Web Design
-
-[pycon.jp 2020 公式サイト](https://pycon.jp/2020/)
 *Vue*, *Nuxt.js*, *tailwindcss*
 - [GitHub](https://github.com/pyconjp/pycon.jp.2020.ui)
 - Pycon.jp 2020 の公式サイト制作に関わりました。
 - 主に私と[papi-tokei](https://github.com/papi-tokei)で作成しました。
 - 私はNuxt.jsのセットアップやサイト全体のラフなデザインをしています。イベントのイメージカラーやサイトのデザインのイメージなどが決まるよりも先に制作を始めており、後に詳細が決まった際に対応できるような枠組み作りをしました。
 
-**[yowai-zine](https://yowai.band)**
-*TypeScript*
+### **[yowai-zine](https://yowai.band)**
+*TypeScript*, *Gatsby*
 - [GitHub](https://github.com/dowdiness/yowai-zine)
 - 「こころおきなく居られるweb zine」
-- 快適なWeb雑誌空間の構築
+- 友人と一緒に趣味として作った同人的なWeb雑誌です
+
+## 📝学びの蓄積
+
+**[MainVault](https://github.com/dowdiness/MainVault)**
+- Obsidianを使用して学んだことをメモとして後から見直せるように管理しています
+- 必要な場合には、[Quartz](https://github.com/jackyzha0/quartz)により記事として公開する仕組みも作っています
 
 ## Interests & Learning Focus
 
