@@ -3,7 +3,7 @@ title: Instruction Selection
 publish: true
 tags: [compiler]
 created: 2025-12-22T17:18:00+09:00
-modified: 2025-12-22T20:47:59+09:00
+modified: 2025-12-23T10:46:27+09:00
 ---
 
 # Instruction Selection
@@ -29,3 +29,9 @@ Syntaxを与えると自動でスキャナやパーサーを作れるスキャ�
 
 ## 2.Background
 
+[Addressing mode](https://en.wikipedia.org/wiki/Addressing_mode)
+
+一般的にISAはIR命令を実装する手段を複数用意している
+
+RISCはAddress Modeの数が少なくIR命令の実装手段が限られている。そのためInstruction Selectionの複雑性が減るがRegister Allocationの重要になる。
+CISCはISAの命令に沢山の機能を詰め込んでおりIR命令の実装手段が多い。そのためInstruction Selectionの方がRegister Allocationよりも重要になる。

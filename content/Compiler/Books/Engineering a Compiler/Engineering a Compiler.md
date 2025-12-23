@@ -3,7 +3,7 @@ title: Engineering a Compiler
 publish: true
 tags: [compiler]
 created: 2025-12-22T18:49:33+09:00
-modified: 2025-12-22T21:53:44+09:00
+modified: 2025-12-23T11:16:46+09:00
 ---
 
 # Engineering a Compiler
@@ -27,6 +27,7 @@ modified: 2025-12-22T21:53:44+09:00
 12. Instruction Scheduling
 13. Register Allocation
 14. Runtime Optimization
+15. IR implementation
 
 ## Youtube
 

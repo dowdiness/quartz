@@ -1,11 +1,12 @@
 ---
 tags: [compiler, ir]
-aliases: [Intro]
+aliases: [ANF]
 created: 2025-04-18T13:52:21+09:00
-modified: 2025-05-31T17:35:30+09:00
+modified: 2025-12-23T11:24:54+09:00
 ---
 
 # A-normal form
+
 ## Intro
 
 [[A-normal form - Wikipedia]]
@@ -21,7 +22,7 @@ coverImg:http://matt.might.net/articles/a-normalization/images/anormal-complexit
 logo:
 ```
 
-# [ANF Conversion](https://compiler.club/anf-conversion/)
+## [ANF Conversion](https://compiler.club/anf-conversion/)
 
 プログラム中の式を中間値の変数へと変換すること。複雑な式から線形的な（実行順序の明確な）式に変換することで以降のパスでの処理が簡単になる。例:[[Three-address code]]やSchemeなど
 

@@ -1,10 +1,10 @@
 ---
-title: Base
+title: Deforestation(fusion)
 publish: false
 tags: [compiler]
-aliases: [deforestation, Deforestation(fusion)]
+aliases: [deforestation, Deforestation(fusion), fusion, 融合変換]
 created: 2025-05-07T12:19:44+09:00
-modified: 2025-05-07T13:06:16+09:00
+modified: 2025-12-23T11:22:15+09:00
 ---
 
 # Deforestation(fusion)
@@ -16,7 +16,13 @@ modified: 2025-05-07T13:06:16+09:00
 [A Short Cut to Deforestation](https://users.cs.northwestern.edu/~robby/courses/395-495-2017-winter/deforestation-short-cut.pdf)
 これがGHCで使われているアルゴリズムらしい
 
-## [The Long Way to Deforestation: A Type Inference and Elaboration Technique for Removing Intermediate Data Structures](https://dl.acm.org/doi/10.1145/3674634)
+## 実例
+
+[HaskellerとRustaceanが知恵をあわせてプロダクトを3日で1000倍高速化した話](https://zenn.dev/jij_inc/articles/2025-12-03-haskeller-and-rustacean-1000x-faster#%E6%9C%AC%E4%B8%B8%EF%BC%9A%E9%81%85%E5%BB%B6%E9%85%8D%E5%88%97%E3%82%92%E3%81%A4%E3%81%8B%E3%81%A3%E3%81%A6%E9%85%8D%E5%88%97%E3%81%AE%E5%A4%89%E5%BD%A2%E3%81%AB%E4%BC%B4%E3%81%86%E3%82%A2%E3%83%AD%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E7%AF%80%E7%B4%84)
+
+Rustでの実例
+
+### [The Long Way to Deforestation: A Type Inference and Elaboration Technique for Removing Intermediate Data Structures](https://dl.acm.org/doi/10.1145/3674634)
 
 [Video](https://youtu.be/UGcZKycGeGU?si=sORb3A7OPE4V4z17)
 

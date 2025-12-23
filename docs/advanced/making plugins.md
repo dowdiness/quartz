@@ -1,5 +1,8 @@
 ---
 title: Making your own plugins
+aliases: [Transformers]
+created: 2025-12-21T23:10:31+09:00
+modified: 2025-12-23T11:23:23+09:00
 ---
 
 > [!warning]
@@ -31,7 +34,7 @@ The following sections will go into detail for what methods can be implemented f
   - `js`: a list of scripts that should be loaded. A script is described with the `JSResource` type which is also defined in `quartz/resources.tsx`. It allows you to define a load time (either before or after the DOM has been loaded), whether it should be a module, and either the source URL or the inline content of the script.
   - `additionalHead`: a list of JSX elements or functions that return JSX elements to be added to the `<head>` tag of the page. Functions receive the page's data as an argument and can conditionally render elements.
 
-## Transformers
+# Transformers
 
 Transformers **map** over content, taking a Markdown file and outputting modified content or adding metadata to the file itself.
 
@@ -178,7 +181,7 @@ All transformer plugins can be found under `quartz/plugins/transformers`. If you
 
 A parting word: transformer plugins are quite complex so don't worry if you don't get them right away. Take a look at the built in transformers and see how they operate over content to get a better sense for how to accomplish what you are trying to do.
 
-## Filters
+# Filters
 
 Filters **filter** content, taking the output of all the transformers and determining what files to actually keep and what to discard.
 
@@ -210,7 +213,7 @@ export const RemoveDrafts: QuartzFilterPlugin<{}> = () => ({
 })
 ```
 
-## Emitters
+# Emitters
 
 Emitters **reduce** over content, taking in a list of all the transformed and filtered content and creating output files.
 
