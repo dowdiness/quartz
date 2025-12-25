@@ -2,7 +2,7 @@
 tags: [Compiler]
 aliases: [Compiler, 参考資料集]
 created: 2025-04-26T22:04:33+09:00
-modified: 2025-12-22T20:45:01+09:00
+modified: 2025-12-24T12:10:56+09:00
 ---
 
 # 参考資料集
@@ -42,6 +42,7 @@ MITの授業
 ## 論文
 
 [An Incremental Approach to Compiler Construction](http://scheme2006.cs.uchicago.edu/11-ghuloum.pdf)
+
 ## 実装
 
 [flub-example-compiler](https://github.com/natefaubion/example-functional-compiler)

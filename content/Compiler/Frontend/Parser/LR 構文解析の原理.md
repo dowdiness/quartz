@@ -1,6 +1,6 @@
 ---
 created: 2025-03-07T10:40:26+09:00
-modified: 2025-05-23T23:26:09+09:00
+modified: 2025-12-24T12:07:07+09:00
 ---
 
 [Paper](https://www.jstage.jst.go.jp/article/jssst/31/1/31_1_30/_pdf)
