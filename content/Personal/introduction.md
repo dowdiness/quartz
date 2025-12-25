@@ -4,7 +4,7 @@ publish: true
 tags: [personal, portfolio]
 aliases: [Developer Portfolio(仮), introduction]
 created: 2025-12-21T13:18:07+09:00
-modified: 2025-12-22T15:50:40+09:00
+modified: 2025-12-26T00:25:10+09:00
 ---
 
 # Developer Portfolio(仮)
@@ -76,6 +76,10 @@ Reactを使ったフロントエンドの開発が得意です。Reactのコン�
 - FirebaseとNuxt.jsを使用した簡易的なＳＮＳアプリです
 - フルスタックWeb開発のスキルを実証
 - 少し内容が古いかもしれません
+
+https://github.com/dowdiness/flow-sound/tree/main
+
+https://github.com/dowdiness/til/tree/main/audiocontext-vite
 
 ## デザイン
 
