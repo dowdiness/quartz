@@ -4,7 +4,7 @@ publish: false
 tags: []
 aliases: [Kleene Algebra]
 created: 2025-07-11T23:13:14+09:00
-modified: 2025-07-11T23:28:08+09:00
+modified: 2025-12-26T15:28:20+09:00
 ---
 
 # Kleene Algebra With Tests

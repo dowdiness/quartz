@@ -1,7 +1,7 @@
 ---
 tags: [logic]
 created: 2025-04-25T17:59:58+09:00
-modified: 2025-06-10T16:47:31+09:00
+modified: 2025-12-26T15:28:49+09:00
 ---
 
 # Sequent calculus
