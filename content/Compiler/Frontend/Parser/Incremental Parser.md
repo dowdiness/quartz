@@ -19,3 +19,8 @@ aliases: [インクリメンタルパーサー]
 ## 関連リンク
 
 - [[Tree-sitter]]
+
+
+[Reddit](https://www.reddit.com/r/ProgrammingLanguages/comments/sls9qz/trying_to_understand_the_paper_efficient_and/?show=original)
+[Efficient and Flexible Incremental Parsing](https://dl.acm.org/doi/10.1145/293677.293678)
+[Editing composed languages](https://diekmann.co.uk/diekmann_phd.pdf)
