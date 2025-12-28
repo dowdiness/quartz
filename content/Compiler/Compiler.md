@@ -1,11 +1,14 @@
 ---
 tags: [Compiler]
-aliases: [Compiler, 参考資料集]
+aliases: [参考資料集]
 created: 2025-04-26T22:04:33+09:00
-modified: 2025-12-24T12:10:56+09:00
+modified: 2025-12-28T17:16:59+09:00
+title: Compiler
 ---
 
-# 参考資料集
+# Compiler
+
+## 参考資料集
 
 ## 本
 

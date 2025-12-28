@@ -1,6 +1,6 @@
 ---
 created: 2025-04-19T21:03:01+09:00
-modified: 2025-05-07T20:15:53+09:00
+modified: 2025-12-28T17:16:06+09:00
 ---
 
 [Oleg Kiselyov's website](https://okmij.org/ftp/)

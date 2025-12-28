@@ -1,14 +1,10 @@
 ---
 created: 2025-12-26T15:28:52+09:00
-modified: 2025-12-27T13:48:32+09:00
----
-
----
+modified: 2025-12-28T17:16:07+09:00
 title: Harmony
 publish: false
-tags:
-  - logic
-aliases: 無題のファイル
+tags: [logic]
+aliases: [無題のファイル]
 ---
 
 # Harmony

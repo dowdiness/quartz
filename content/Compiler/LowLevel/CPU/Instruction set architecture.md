@@ -1,10 +1,10 @@
 ---
-title: Base
+title: Instruction set architecture
 publish: false
-tags: [" "]
-aliases: [Untitled]
+tags: [compiler, cpu]
+aliases: [ISA]
 created: 2025-05-07T15:09:08+09:00
-modified: 2025-05-07T15:10:31+09:00
+modified: 2025-12-28T17:11:08+09:00
 ---
 
 # Instruction set architecture
