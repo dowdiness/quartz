@@ -1,7 +1,11 @@
 ---
+title: Realizability
 created: 2025-04-11T19:33:29+09:00
-modified: 2025-04-29T19:35:18+09:00
+modified: 2025-12-28T19:51:56+09:00
+tags: [logic, math, proof]
 ---
+
+# Realizability
 
 https://www.williamjbowman.com/blog/2022/10/05/what-is-realizability/
 

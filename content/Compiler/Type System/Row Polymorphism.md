@@ -1,9 +1,7 @@
 ---
 created: 2024-06-25T20:22:42+09:00
-modified: 2025-12-28T17:39:47+09:00
-tags:
-  - compiler
-  - type-system
+modified: 2025-12-28T18:31:26+09:00
+tags: [compiler, type-system]
 title: Row Polymorphism
 ---
 

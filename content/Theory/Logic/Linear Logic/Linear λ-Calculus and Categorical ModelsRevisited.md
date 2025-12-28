@@ -1,13 +1,13 @@
 ---
-title: Base
+title: Linear λ-Calculus
 publish: false
-tags: []
-aliases: ["Linear \x15λ-Calculus and Categorical Models Revisited", λ-Calculus]
+tags: [compiler, logic]
+aliases: [Linear λ-Calculus, Linear λ-Calculus and Categorical Models Revisited]
 created: 2025-05-21T00:38:53+09:00
-modified: 2025-05-21T01:58:07+09:00
+modified: 2025-12-28T20:10:51+09:00
 ---
 
-# Linear λ-Calculus and Categorical Models Revisited
+# Linear λ-Calculus and Categorical Models Revisited
 
 https://www.dpmms.cam.ac.uk/~jmeh1/Research/Pub91-00/bbdphcsl93.pdf
 

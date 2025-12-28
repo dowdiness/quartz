@@ -4,7 +4,7 @@ publish: true
 tags: [compiler]
 aliases: [Term Rewriting and All That]
 created: 2025-07-31T15:08:29+09:00
-modified: 2025-08-06T15:48:10+09:00
+modified: 2025-12-28T20:02:33+09:00
 ---
 
 # Term Rewriting and All That

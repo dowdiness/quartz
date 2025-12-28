@@ -1,11 +1,9 @@
 ---
-date: 2025-04-25
-tags: [" "]
+title: λµµ˜-calculus
+tags: [compiler]
 aliases: [Untitled]
-date created: Friday,2025 April 25th, 5:57:45 pm
-date modified: Saturday,2025 April 26th, 4:25:35 pm
 created: 2025-04-25T17:57:45+09:00
-modified: 2025-05-28T23:18:42+09:00
+modified: 2025-12-28T20:03:13+09:00
 ---
 
 # λµµ˜-calculus

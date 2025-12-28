@@ -1,14 +1,12 @@
 ---
-date: 2025-04-27
-tags: [" "]
-aliases: [Untitled, λ-calculus]
-date created: Sunday,2025 April 27th, 2:32:06 am
-date modified: Sunday,2025 April 27th, 10:59:39 pm
+title: Lambda calculus
+tags: [compiler, logic, type-system]
+aliases: [ラムダ計算, λ-calculus]
 created: 2025-04-27T02:32:06+09:00
-modified: 2025-05-31T17:37:23+09:00
+modified: 2025-12-28T20:13:09+09:00
 ---
 
-# λ-calculus
+# Lambda calculus
 
 [About the efficient reduction of lambda terms](https://arxiv.org/pdf/1701.04240)
 
@@ -22,8 +20,23 @@ modified: 2025-05-31T17:37:23+09:00
 
 https://crypto.stanford.edu/~blynn/lambda/
 
+Bunchless λ-calculus for Bunched Implications
+https://www.cs.ru.nl/masters-theses/2024/T_Somers___Bunchless_%CE%BB-calculus_for_Bunched_Implications.pdf
+
+## Lambda cube
+
+![lambda cube](https://upload.wikimedia.org/wikipedia/commons/c/cd/Lambda_Cube_img.svg)
+
+[[quartz/content/Theory/Logic/Rewriting/SystemF|SystemF]]: λ2
+[[Dependent Type]]: Lambda-P
+[[Calculus of Constructions]]:
+
+### 派生形
+
+[[quartz/content/Theory/Logic/Linear Logic/Linear λ-Calculus and Categorical ModelsRevisited|Linear λ-Calculus and Categorical ModelsRevisited]]
+
 ## Compile
 
-λ-calculusをコンパイルするには　Bracket abstraction algorithms　が使える
+λ-calculusをコンパイルするには Bracket abstraction algorithms が使える
 
 https://www.cantab.net/users/antoni.diller/brackets/intro.html

@@ -1,14 +1,18 @@
 ---
-aliases: [Proof Technics]
+title: Proof Theory
+aliases: [Proof Technics, 証明論]
 created: 2025-04-11T19:34:18+09:00
-modified: 2025-04-29T19:35:17+09:00
+modified: 2025-12-28T19:51:50+09:00
+tags: [logic, proof]
 ---
 
-# Proof Technics
+# Proof Theory
 
-[[Reducibility]]
-[[Theory/Logic/Proof/Realizability|Realizability]]
-[[Theory/Logic/Proof/Logical Relations]]
+[Lectures in Proof Theory and Complexity](https://books.fupress.com/catalogue/lectures-in-proof-theory-and-complexity/16191)
+
+Reducibility
+[[Realizability]]
+[[Logical Relations]]
 
 
 Robert Harper

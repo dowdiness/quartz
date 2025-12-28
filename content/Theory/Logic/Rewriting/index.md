@@ -1,7 +1,7 @@
 ---
 aliases: [項書き換えシステム入門]
 created: 2025-04-11T19:56:20+09:00
-modified: 2025-04-29T19:35:22+09:00
+modified: 2025-12-28T20:05:00+09:00
 ---
 
 # [項書き換えシステム入門](https://www.nue.ie.niigata-u.ac.jp/toyama/lab-intro/TRS-intro/index.html)

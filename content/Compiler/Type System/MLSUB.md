@@ -1,7 +1,7 @@
 ---
 aliases: ["**Lionel Parreaux**"]
 created: 2024-06-25T01:09:16+09:00
-modified: 2025-04-29T20:19:59+09:00
+modified: 2025-12-28T20:04:02+09:00
 ---
 
 [Stephen Dolan, "Algebraic Subtyping"](https://www.bcs.org/media/2128/algebraic-subtyping.pdf)

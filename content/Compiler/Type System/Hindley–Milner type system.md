@@ -4,7 +4,7 @@ publish: false
 tags: [" "]
 aliases: [Untitled]
 created: 2025-05-05T15:32:35+09:00
-modified: 2025-05-05T18:40:57+09:00
+modified: 2025-12-28T20:03:58+09:00
 ---
 
 # Hindley–Milner type system

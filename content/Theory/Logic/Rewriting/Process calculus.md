@@ -1,10 +1,10 @@
 ---
-title: Base
+title: Process calculus
 publish: false
-tags: [" "]
+tags: [compiler, logic]
 aliases: [Untitled]
 created: 2025-05-09T18:05:45+09:00
-modified: 2025-05-09T18:07:01+09:00
+modified: 2025-12-28T20:02:27+09:00
 ---
 
 # Process calculus

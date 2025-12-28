@@ -1,7 +1,7 @@
 ---
 aliases: ["**継続渡しスタイル**\_(**CPS**:\_Continuation-passing style)", CPS]
 created: 2025-04-18T13:53:01+09:00
-modified: 2025-05-30T14:16:22+09:00
+modified: 2025-12-28T18:34:02+09:00
 ---
 
 # **継続渡しスタイル** (**CPS**: Continuation-passing style)
@@ -34,4 +34,4 @@ https://members.loria.fr/PdeGroote/papers/caap94.pdf
 
 [Algebraic Effects in JavaScript](https://gist.github.com/yelouafi/57825fdd223e5337ba0cd2b6ed757f53)
 
-[# A Mostly CPS, Partly ANF Translation of Dependent Types](https://prg.is.titech.ac.jp/papers/pdf/ifl2024cong.pdf)
+[A Mostly CPS, Partly ANF Translation of Dependent Types](https://prg.is.titech.ac.jp/papers/pdf/ifl2024cong.pdf)
