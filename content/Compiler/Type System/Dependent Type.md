@@ -1,9 +1,10 @@
 ---
 title: Dependent Type
 created: 2024-06-25T01:44:03+09:00
-modified: 2025-12-28T20:12:33+09:00
+modified: 2025-12-28T20:22:54+09:00
 aliases: [Lambda-P, 依存型]
 tags: [compiler, type-system]
+publish: true
 ---
 
 # Dependent Type

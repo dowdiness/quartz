@@ -1,10 +1,10 @@
 ---
 title: Calculus of Constructions
-publish: false
+publish: true
 tags: [compiler, type-system]
 aliases: [coc]
 created: 2025-05-07T12:04:09+09:00
-modified: 2025-12-28T19:07:35+09:00
+modified: 2025-12-28T20:23:29+09:00
 ---
 
 # Calculus of Constructions

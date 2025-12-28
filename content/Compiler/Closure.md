@@ -1,6 +1,6 @@
 ---
 created: 2025-04-13T19:42:50+09:00
-modified: 2025-05-30T20:18:42+09:00
+modified: 2025-12-28T20:20:13+09:00
 tags: [closure, compiler]
 ---
 
