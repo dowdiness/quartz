@@ -2,7 +2,7 @@
 title: Understanding Machine Learning Principles
 tags: [ai]
 created: 2025-04-27T19:52:01+09:00
-modified: 2025-05-09T22:04:47+09:00
+modified: 2025-12-28T20:42:56+09:00
 ---
 
 # [Understanding Machine Learning Principles](https://github.com/Blocks-Editor/blocks?tab=readme-ov-file)

@@ -4,7 +4,7 @@ publish: false
 tags: [" "]
 aliases: [Untitled]
 created: 2025-06-09T22:07:00+09:00
-modified: 2025-06-09T22:14:18+09:00
+modified: 2025-12-28T20:42:55+09:00
 ---
 
 # No Free Lunch Theorems
