@@ -1,7 +1,7 @@
 ---
 aliases: [MapReduce]
 created: 2025-03-15T22:48:21+09:00
-modified: 2025-04-29T20:28:28+09:00
+modified: 2025-12-28T23:04:11+09:00
 ---
 
 [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem)
