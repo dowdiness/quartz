@@ -1,7 +1,11 @@
 ---
+title: Unification
 created: 2025-04-19T16:32:41+09:00
-modified: 2025-04-30T22:50:37+09:00
+modified: 2026-01-01T16:06:20+09:00
+tags: [algorithm]
 ---
+
+# Unification
 
 https://en.wikipedia.org/wiki/Unification_(computer_science)
 

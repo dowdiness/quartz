@@ -1,9 +1,9 @@
 ---
 title: Algorithmic Game Theory
 publish: false
-tags: [game_theory]
+tags: [algorithm, game_theory]
 created: 2025-05-09T21:46:57+09:00
-modified: 2025-05-13T15:30:04+09:00
+modified: 2026-01-01T16:04:57+09:00
 ---
 
 # Algorithmic Game Theory

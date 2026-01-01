@@ -1,9 +1,10 @@
 ---
-title: Base
+title: Automata
 publish: false
 tags: [automata, automaton]
 created: 2025-05-21T23:09:07+09:00
-modified: 2025-05-27T19:35:14+09:00
+modified: 2026-01-01T16:10:58+09:00
+aliases: [オートマトン]
 ---
 
 # Automata
