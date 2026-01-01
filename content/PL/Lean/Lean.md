@@ -3,12 +3,14 @@ title: Lean
 publish: false
 tags: [lean, prover]
 created: 2025-05-29T21:17:02+09:00
-modified: 2025-07-16T17:21:40+09:00
+modified: 2026-01-02T00:26:51+09:00
 ---
 
 # Lean
 
 ## [Lean by Example](https://lean-ja.github.io/lean-by-example/#lean-by-example)
+
+[The Lean Language Reference](https://lean-lang.org/doc/reference/latest/)
 
 ## Paper
 
