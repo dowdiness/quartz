@@ -3,7 +3,7 @@ title: Structure editor
 tags: [compiler]
 aliases: [Projectional editor, 構造エディタ]
 created: 2025-04-26T19:22:26+09:00
-modified: 2026-01-01T17:38:47+09:00
+modified: 2026-01-02T04:07:51+09:00
 ---
 
 # Structure editor
@@ -27,10 +27,15 @@ modified: 2026-01-01T17:38:47+09:00
 
 [Incremental Bidirectional Typing via Order Maintenance](https://www.youtube.com/watch?v=mr2YIGs-KXE)
 
+What is [[Incremental computation]]?
+
+
 ## ブログ記事
 
+[The evolution of a structural code editor](https://crowdhailer.me/2025-01-02/the-evolution-of-a-structural-code-editor/)
 [Projectional Editing](https://www.martinfowler.com/bliki/ProjectionalEditing.html)
 [clojure](https://clojure.org/guides/structural_editing)
+[Type inference that sticks](https://jaredforsyth.com/posts/type-inference-that-sticks/)
 
 ## Examples
 
