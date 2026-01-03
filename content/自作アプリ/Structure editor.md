@@ -3,7 +3,7 @@ title: Structure editor
 tags: [compiler]
 aliases: [Projectional editor, 構造エディタ]
 created: 2025-04-26T19:22:26+09:00
-modified: 2026-01-03T01:56:54+09:00
+modified: 2026-01-03T13:56:15+09:00
 ---
 
 # Structure editor
