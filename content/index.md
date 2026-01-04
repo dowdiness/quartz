@@ -13,10 +13,10 @@ modified: 2025-12-22T20:25:09+09:00
 [Obsidian](https://obsidian.md/)で書いている日々のメモです
 [Quartz](https://quartz.jzhao.xyz/) によって作られています。
 
+
 ## サイト内リンク
 
 [[Personal/introduction|プログラマーとしての紹介]]
 
-- [[quartz/content/Compiler/Compiler|Compiler]]
+- [[Compiler]]
 - [[講義]]
-
