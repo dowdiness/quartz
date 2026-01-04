@@ -1,12 +1,16 @@
 ---
 title: Structure editor
+publish: true
 tags: [compiler]
 aliases: [Projectional editor, 構造エディタ]
 created: 2025-04-26T19:22:26+09:00
-modified: 2026-01-03T14:13:48+09:00
+modified: 2026-01-04T19:42:07+09:00
 ---
 
 # Structure editor
+
+[[Structural Editingとは何か？]]
+自分の書いた解説記事
 
 [Wiki](https://en.wikipedia.org/wiki/Structure_editor)
 
@@ -28,16 +32,6 @@ modified: 2026-01-03T14:13:48+09:00
 [Incremental Bidirectional Typing via Order Maintenance](https://www.youtube.com/watch?v=mr2YIGs-KXE)
 
 What is [[Incremental computation]]?
-
-Problem 1: Syntactically Malformed Edit States
-
-Problem 2: Statically Meaningless Edit States
-
-Problem 3: Dynamically Meaningless Edit States
-
-Problem 4: A Calculus of Edit Actions
-
-Problem 5: Meaningful Suggestion Generation and Ranking
 
 ## ブログ記事
 

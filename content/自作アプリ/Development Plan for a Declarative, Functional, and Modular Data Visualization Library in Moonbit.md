@@ -4,7 +4,7 @@ publish: false
 tags: [" "]
 aliases: [Untitled]
 created: 2025-05-13T19:19:37+09:00
-modified: 2025-05-13T19:25:55+09:00
+modified: 2026-01-04T19:10:55+09:00
 ---
 
 # Development Plan for a Declarative, Functional, and Modular Data Visualization Library in Moonbit
