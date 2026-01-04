@@ -4,7 +4,7 @@ publish: true
 tags: [compiler]
 aliases: [What is Structural Editing？]
 created: 2026-01-03T14:08:04+09:00
-modified: 2026-01-04T19:41:22+09:00
+modified: 2026-01-04T19:48:19+09:00
 ---
 
 # Structural Editingとは何か？
@@ -24,11 +24,11 @@ Martin Fowlerが提唱した**Projectional Editing（投影型編集）**[^1]は
 
 普通のプログラムでもプログラムはそのままの形では実行できません。コンパイラによって意味論的に同じ実行可能な形へと変換するステップが存在します。プログラムには少なくとも編集のためのインターフェースとしての表現形態と、実行のための表現形態が存在するのです。
 
-![普通のプログラミング言語のコンパイル](https://www.martinfowler.com/articles/compile.gif)
+![普通のプログラミング言語でのコンパイル](https://www.martinfowler.com/articles/compile.gif "普通のプログラミング言語でのコンパイル")
 
 Projectional Editingにおいては、モデルを表現するためのインターフェースは複数存在します。ユーザーは好みのUIを必要によって選んで編集できますが、捜査は常に背後にある共通のモデルに対して行われます。
 
-![Projectional Editingでのコンパイル](https://www.martinfowler.com/articles/workbench.gif)
+![Projectional Editingでのコンパイル](https://www.martinfowler.com/articles/workbench.gif "Projectional Editingでのコンパイル")
 
 ## なぜ「双模倣性（Bisimulation）」が必要なのか？
 
