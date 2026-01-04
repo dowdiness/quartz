@@ -13,7 +13,8 @@ const config: QuartzConfig = {
     enableSPA: true,
     enablePopovers: true,
     analytics: {
-      provider: "plausible",
+      provider: "google",
+      tagId: "G-PW15PD002B",
     },
     locale: "ja-JP",
     baseUrl: "antisatori.pages.dev",
@@ -23,8 +24,8 @@ const config: QuartzConfig = {
       fontOrigin: "googleFonts",
       cdnCaching: true,
       typography: {
-        header: "Schibsted Grotesk",
-        body: "Source Sans Pro",
+        header: "Zen Kaku Gothic New",
+        body: "Shippori Mincho",
         code: "IBM Plex Mono",
       },
       colors: {
