@@ -1,7 +1,9 @@
 ---
 title: ContentIndex
-tags:
-  - plugin/emitter
+tags: [plugin/emitter]
+aliases: [API]
+created: 2025-12-21T23:10:31+09:00
+modified: 2026-01-06T00:58:08+09:00
 ---
 
 This plugin emits both RSS and an XML sitemap for your site. The [[RSS Feed]] allows users to subscribe to content on your site and the sitemap allows search engines to better index your site. The plugin also emits a `contentIndex.json` file which is used by dynamic frontend components like search and graph.
@@ -20,7 +22,7 @@ This plugin accepts the following configuration options:
 - `rssSlug`: Slug to the generated RSS feed XML file. Defaults to `"index"`.
 - `includeEmptyFiles`: If `true` (default), content files with no body text are included in the generated index and resources.
 
-## API
+# API
 
 - Category: Emitter
 - Function name: `Plugin.ContentIndex()`.

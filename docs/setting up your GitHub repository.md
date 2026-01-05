@@ -1,5 +1,7 @@
 ---
 title: Setting up your GitHub repository
+created: 2025-12-21T23:10:31+09:00
+modified: 2026-01-06T00:58:18+09:00
 ---
 
 First, make sure you have Quartz [[index#🪴 Get Started|cloned and setup locally]].
@@ -36,7 +38,7 @@ npx quartz sync --no-pull
 
 > [!warning]- `fatal: The remote end hung up unexpectedly`
 > It might be due to Git's default buffer size. You can fix it by increasing the buffer with this command:
->
+> 
 > ```bash
 > git config http.postBuffer 524288000
 > ```
@@ -45,9 +47,9 @@ In future updates, you can simply run `npx quartz sync` every time you want to p
 
 > [!hint] Flags and options
 > For full help options, you can run `npx quartz sync --help`.
->
+> 
 > Most of these have sensible defaults but you can override them if you have a custom setup:
->
+> 
 > - `-d` or `--directory`: the content folder. This is normally just `content`
 > - `-v` or `--verbose`: print out extra logging information
 > - `--commit` or `--no-commit`: whether to make a `git` commit for your changes
