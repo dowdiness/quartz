@@ -12,10 +12,7 @@ const config: QuartzConfig = {
     pageTitleSuffix: "",
     enableSPA: true,
     enablePopovers: true,
-    analytics: {
-      provider: "google",
-      tagId: "G-PW15PD002B",
-    },
+    analytics: null,
     locale: "ja-JP",
     baseUrl: "antisatori.pages.dev",
     ignorePatterns: ["private", "templates", ".obsidian", ".space"],
