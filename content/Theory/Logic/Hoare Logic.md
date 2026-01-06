@@ -2,7 +2,7 @@
 title: Hoare Logic
 publish: false
 tags: []
-aliases: [Untitled]
+aliases: []
 created: 2025-05-03T19:37:17+09:00
 modified: 2025-07-11T23:12:25+09:00
 ---

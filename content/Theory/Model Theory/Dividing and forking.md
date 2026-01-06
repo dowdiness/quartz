@@ -2,7 +2,7 @@
 title: Dividing and forking
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-05-07T13:36:07+09:00
 modified: 2025-05-07T14:17:47+09:00
 ---

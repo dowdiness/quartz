@@ -2,7 +2,7 @@
 title: Youtube
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-06-03T00:05:19+09:00
 modified: 2025-06-04T04:04:23+09:00
 ---

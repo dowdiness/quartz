@@ -2,7 +2,7 @@
 title: Continuations and Delimited Control
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-05-28T14:52:42+09:00
 modified: 2025-05-30T19:07:15+09:00
 ---

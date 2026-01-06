@@ -2,7 +2,7 @@
 title: A Formal Analysis of the Interrelationships Among Syntax, Semantics, and Pragmatics
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-04-30T17:31:05+09:00
 modified: 2025-04-30T17:59:48+09:00
 ---

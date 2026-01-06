@@ -2,7 +2,7 @@
 title: IR implementation
 publish: false
 tags: [compiler, ir]
-aliases: [無題のファイル]
+aliases: [IR実装]
 created: 2025-12-23T11:16:34+09:00
 modified: 2025-12-23T11:58:54+09:00
 ---
@@ -15,7 +15,7 @@ IRの設計にはIR programのサイズと走査(traverse)のしやすさに気�
 
 ### IRのサイズを決める要因
 
-- データの圧縮: 
+- データの圧縮:
 - 共有で使われるデータのみIRで持つ:node typeとして表現する
 - 使われなくなった補助的なデータへの参照を消す: ポインタによって補助的なデータはallocateした後には実際のデータに書き換える。GCによってポインタが生き続けるのを防ぐ効果がある。
 

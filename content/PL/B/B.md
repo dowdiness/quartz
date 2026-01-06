@@ -2,7 +2,7 @@
 title: B
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-06-02T18:20:09+09:00
 modified: 2025-06-02T18:21:32+09:00
 ---

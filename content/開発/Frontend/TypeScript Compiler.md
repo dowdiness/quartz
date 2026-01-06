@@ -2,7 +2,7 @@
 title: TypeScript Compiler
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-05-23T15:04:55+09:00
 modified: 2025-05-23T20:29:13+09:00
 ---

@@ -2,7 +2,7 @@
 title: Terminal
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-06-02T20:56:17+09:00
 modified: 2025-06-02T21:01:02+09:00
 ---

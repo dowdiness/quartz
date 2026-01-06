@@ -2,7 +2,7 @@
 title: One
 publish: false
 tags: [react]
-aliases: [Untitled]
+aliases: []
 created: 2025-05-07T20:03:14+09:00
 modified: 2025-05-07T20:12:36+09:00
 ---

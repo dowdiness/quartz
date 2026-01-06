@@ -2,7 +2,7 @@
 title: Parallel Moves
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-05-07T10:23:43+09:00
 modified: 2025-05-07T11:53:12+09:00
 ---

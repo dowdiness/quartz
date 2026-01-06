@@ -4,7 +4,7 @@ modified: 2025-12-28T17:16:07+09:00
 title: Harmony
 publish: false
 tags: [logic]
-aliases: [無題のファイル]
+aliases: [調和]
 ---
 
 # Harmony

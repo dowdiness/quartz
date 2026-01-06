@@ -2,7 +2,7 @@
 title: JVM
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-05-13T22:49:45+09:00
 modified: 2025-06-02T17:33:40+09:00
 ---

@@ -2,7 +2,7 @@
 title: Temporal Logic
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-06-02T19:59:27+09:00
 modified: 2025-06-02T19:59:54+09:00
 ---

@@ -2,7 +2,7 @@
 title: Incorrectness Logic
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-05-03T19:18:51+09:00
 modified: 2025-07-16T20:53:47+09:00
 ---

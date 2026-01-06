@@ -2,7 +2,7 @@
 title: Iris
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-05-03T20:48:02+09:00
 modified: 2025-05-03T20:49:06+09:00
 ---

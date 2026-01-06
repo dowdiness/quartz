@@ -2,7 +2,7 @@
 title: Incremental computation
 publish: false
 tags: [compiler]
-aliases: [無題のファイル]
+aliases: [インクリメンタル計算]
 created: 2026-01-02T02:35:09+09:00
 modified: 2026-01-02T03:05:00+09:00
 ---

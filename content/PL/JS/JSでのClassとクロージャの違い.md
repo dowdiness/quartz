@@ -2,7 +2,7 @@
 title: JSでのClassとクロージャの違い
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: [Difference between Class and Closure in JS]
 created: 2025-06-11T16:29:03+09:00
 modified: 2025-06-11T16:35:56+09:00
 ---

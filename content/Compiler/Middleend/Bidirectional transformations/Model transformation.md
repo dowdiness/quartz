@@ -2,7 +2,7 @@
 title: Model transformation
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-05-02T15:18:39+09:00
 modified: 2025-05-04T16:25:22+09:00
 ---

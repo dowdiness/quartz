@@ -2,7 +2,7 @@
 title: Modal logic
 publish: false
 tags: [logic]
-aliases: [Untitled]
+aliases: []
 created: 2025-05-07T13:44:09+09:00
 modified: 2025-05-07T22:33:01+09:00
 ---

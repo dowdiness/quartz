@@ -2,7 +2,7 @@
 title: Property testing
 publish: false
 tags: [test]
-aliases: [Untitled]
+aliases: [プロパティテスト]
 created: 2025-05-09T17:55:39+09:00
 modified: 2025-05-22T22:40:23+09:00
 ---
@@ -16,4 +16,3 @@ https://en.wikipedia.org/wiki/Property_testing
 [A Characterization of the (natural) Graph Properties Testable with One-Sided Error](https://www.tau.ac.il/~nogaa/PDFS/heredit2.pdf)
 
 https://propertesting.com/toc.html
-

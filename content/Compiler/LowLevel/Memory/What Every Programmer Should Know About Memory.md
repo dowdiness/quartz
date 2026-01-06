@@ -2,7 +2,7 @@
 title: What Every Programmer Should Know About Memory
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-05-07T14:41:07+09:00
 modified: 2025-05-07T19:53:47+09:00
 ---

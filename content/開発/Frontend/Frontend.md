@@ -2,7 +2,7 @@
 title: Frontend
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-06-02T23:39:09+09:00
 modified: 2025-06-02T23:39:33+09:00
 ---

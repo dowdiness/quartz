@@ -2,7 +2,7 @@
 title: Visual Programming
 publish: false
 tags: [compiler]
-aliases: [Untitled]
+aliases: []
 created: 2025-05-07T23:12:33+09:00
 modified: 2026-01-04T19:11:34+09:00
 ---

@@ -2,7 +2,7 @@
 title: Register allocation
 publish: false
 tags: [compiler]
-aliases: [無題のファイル]
+aliases: [レジスタ割り当て]
 created: 2025-12-11T19:52:24+09:00
 modified: 2025-12-22T18:45:53+09:00
 ---

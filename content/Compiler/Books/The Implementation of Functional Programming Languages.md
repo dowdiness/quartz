@@ -2,7 +2,7 @@
 title: The Implementation of Functional Programming Languages
 publish: false
 tags: [compiler]
-aliases: [Untitled]
+aliases: []
 created: 2025-05-04T16:36:20+09:00
 modified: 2025-12-28T20:03:44+09:00
 ---

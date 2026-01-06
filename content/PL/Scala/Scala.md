@@ -2,7 +2,7 @@
 title: Scala
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-06-02T20:43:38+09:00
 modified: 2025-06-02T20:44:00+09:00
 ---

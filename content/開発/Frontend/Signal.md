@@ -2,7 +2,7 @@
 title: Signal
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-06-02T20:00:47+09:00
 modified: 2025-06-02T20:01:07+09:00
 ---

@@ -2,7 +2,7 @@
 title: Virtual machine
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-07-24T21:56:46+09:00
 modified: 2025-07-24T22:03:28+09:00
 ---

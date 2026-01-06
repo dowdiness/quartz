@@ -1,6 +1,6 @@
 ---
 tags: [semantics]
-aliases: [Untitled]
+aliases: [ゲーム意味論]
 created: 2025-04-26T18:59:33+09:00
 modified: 2025-04-29T19:34:58+09:00
 ---

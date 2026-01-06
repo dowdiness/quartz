@@ -1,7 +1,7 @@
 ---
 title: λµµ˜-calculus
 tags: [compiler]
-aliases: [Untitled]
+aliases: []
 created: 2025-04-25T17:57:45+09:00
 modified: 2025-12-28T20:03:13+09:00
 ---

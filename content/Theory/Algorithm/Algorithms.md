@@ -2,7 +2,7 @@
 title: Algorithms
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-05-10T02:17:23+09:00
 modified: 2025-12-28T20:42:47+09:00
 ---

@@ -2,7 +2,7 @@
 title: VCS
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-05-28T12:12:03+09:00
 modified: 2025-05-28T12:22:24+09:00
 ---

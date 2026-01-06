@@ -2,7 +2,7 @@
 title: React
 publish: false
 tags: [" "]
-aliases: [Untitled]
+aliases: []
 created: 2025-05-10T01:34:37+09:00
 modified: 2025-05-10T01:48:25+09:00
 ---
