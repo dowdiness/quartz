@@ -1,5 +1,5 @@
 ---
-tags: [" "]
+tags: [semantics, operational-semantics, programming-languages]
 aliases: [while文のbreak、continue、gotoを含む意味論]
 created: 2025-04-27T01:14:28+09:00
 modified: 2025-04-29T19:34:55+09:00

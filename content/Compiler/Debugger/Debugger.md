@@ -1,7 +1,7 @@
 ---
 title: Debugger
 publish: false
-tags: [" "]
+tags: [compiler]
 aliases: []
 created: 2025-04-30T20:00:42+09:00
 modified: 2025-04-30T20:01:05+09:00

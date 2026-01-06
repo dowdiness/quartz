@@ -1,7 +1,7 @@
 ---
 title: Terminal
 publish: false
-tags: [" "]
+tags: [programming-language]
 aliases: []
 created: 2025-06-02T20:56:17+09:00
 modified: 2025-06-02T21:01:02+09:00

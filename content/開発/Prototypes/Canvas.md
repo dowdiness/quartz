@@ -1,7 +1,7 @@
 ---
 title: Canvas
 publish: false
-tags: [" "]
+tags: [project, canvas, whiteboard]
 aliases: [キャンバス]
 created: 2025-05-23T21:53:14+09:00
 modified: 2025-05-23T23:48:27+09:00

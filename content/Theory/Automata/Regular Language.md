@@ -1,7 +1,7 @@
 ---
 title: Regular Language
 publish: false
-tags: [" "]
+tags: [theory]
 aliases: []
 created: 2025-06-11T16:44:37+09:00
 modified: 2025-06-11T16:45:21+09:00

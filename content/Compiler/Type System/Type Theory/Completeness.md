@@ -1,7 +1,7 @@
 ---
 title: Completeness
 publish: false
-tags: [" "]
+tags: [type theory]
 aliases: []
 created: 2025-07-16T20:51:14+09:00
 modified: 2025-12-22T20:28:44+09:00

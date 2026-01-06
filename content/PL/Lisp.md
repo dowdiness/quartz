@@ -1,7 +1,7 @@
 ---
 title: Lisp
 publish: false
-tags: [" "]
+tags: [pl]
 aliases: []
 created: 2025-05-30T20:31:57+09:00
 modified: 2025-05-30T20:32:38+09:00

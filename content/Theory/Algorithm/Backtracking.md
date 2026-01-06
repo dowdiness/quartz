@@ -1,7 +1,7 @@
 ---
 title: Backtracking
 publish: false
-tags: [" "]
+tags: [algorithm, backtracking, search]
 aliases: []
 created: 2025-07-09T17:46:53+09:00
 modified: 2026-01-01T16:07:04+09:00

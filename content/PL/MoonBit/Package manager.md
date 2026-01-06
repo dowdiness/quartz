@@ -1,7 +1,7 @@
 ---
 title: Package manager
 publish: false
-tags: [" "]
+tags: [programming-language]
 aliases: [Managing Projects with Packages, Untitled]
 created: 2025-05-14T13:23:09+09:00
 modified: 2025-05-14T13:54:30+09:00

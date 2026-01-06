@@ -1,7 +1,7 @@
 ---
 title: Locality of reference
 publish: false
-tags: [" "]
+tags: [memory]
 created: 2025-06-22T15:38:43+09:00
 modified: 2025-06-22T15:39:16+09:00
 ---

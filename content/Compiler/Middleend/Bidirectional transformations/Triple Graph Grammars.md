@@ -1,7 +1,7 @@
 ---
 title: Triple Graph Grammars
 publish: false
-tags: [" "]
+tags: [bidirectional transformations]
 aliases: []
 created: 2025-05-02T14:49:01+09:00
 modified: 2025-05-02T15:32:42+09:00

@@ -1,7 +1,7 @@
 ---
 title: PEARLS OF FUNCTIONAL ALGORITHM DESIGN
 publish: false
-tags: [" "]
+tags: [algorithm]
 created: 2025-04-30T01:43:02+09:00
 modified: 2025-04-30T14:12:26+09:00
 ---

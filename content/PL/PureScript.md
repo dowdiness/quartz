@@ -1,7 +1,7 @@
 ---
 title: PureScript
 publish: false
-tags: [" "]
+tags: [pl]
 aliases: []
 created: 2025-05-05T15:16:48+09:00
 modified: 2025-05-05T19:37:15+09:00

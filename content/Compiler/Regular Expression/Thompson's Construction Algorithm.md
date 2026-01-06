@@ -1,7 +1,7 @@
 ---
 title: Thompson's Construction Algorithm
 publish: false
-tags: [" "]
+tags: [algorithm]
 aliases: [Thompson's Construction Algorithm]
 created: 2025-05-22T16:13:52+09:00
 modified: 2025-05-22T19:53:37+09:00

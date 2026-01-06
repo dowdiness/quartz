@@ -1,7 +1,7 @@
 ---
 title: Graph Reduction
 publish: false
-tags: [" "]
+tags: [rewriting]
 aliases: []
 created: 2025-05-05T15:44:46+09:00
 modified: 2025-05-05T21:51:36+09:00

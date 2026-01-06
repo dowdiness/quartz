@@ -1,7 +1,7 @@
 ---
 title: Programming with MoonBit A Modern Approach
 publish: false
-tags: [" "]
+tags: [programming-language]
 aliases: ["Programming with MoonBit: A Modern Approach"]
 created: 2025-05-05T10:16:41+09:00
 modified: 2025-05-05T10:47:02+09:00

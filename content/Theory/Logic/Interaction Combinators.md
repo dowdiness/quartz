@@ -1,5 +1,5 @@
 ---
-tags: [" "]
+tags: [logic, combinators, interaction-calculus]
 aliases: [相互作用コンビネータ]
 created: 2025-04-27T02:35:52+09:00
 modified: 2025-04-29T19:35:05+09:00

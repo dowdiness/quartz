@@ -1,6 +1,6 @@
 ---
 created: 2025-04-18T14:34:41+09:00
-modified: 2025-05-29T14:48:54+09:00
+modified: 2026-01-07T00:13:31+09:00
 ---
 
 # Compiler optimization

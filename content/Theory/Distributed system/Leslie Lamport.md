@@ -1,7 +1,7 @@
 ---
 title: Leslie Lamport
 publish: false
-tags: [" "]
+tags: [theory]
 aliases: []
 created: 2025-06-28T01:51:58+09:00
 modified: 2025-06-30T18:36:34+09:00

@@ -1,7 +1,7 @@
 ---
 title: Styling
 publish: false
-tags: [" "]
+tags: [react, frontend, css, styling]
 aliases: []
 created: 2025-05-21T22:22:16+09:00
 modified: 2025-05-21T22:26:46+09:00

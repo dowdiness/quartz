@@ -1,7 +1,7 @@
 ---
 title: Can Programming Be Liberated from the vonNeumann Style
 publish: false
-tags: [" "]
+tags: [misc]
 aliases: [Can Programming Be Liberated from the von Neumann Style?]
 created: 2025-05-13T20:40:41+09:00
 modified: 2025-05-13T20:42:10+09:00

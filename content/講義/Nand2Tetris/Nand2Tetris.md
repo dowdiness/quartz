@@ -1,7 +1,7 @@
 ---
 title: Nand2Tetris
 publish: false
-tags: [" "]
+tags: [nand2tetris]
 created: 2025-04-30T20:34:44+09:00
 modified: 2025-04-30T22:49:48+09:00
 ---

@@ -1,7 +1,7 @@
 ---
 title: Haskell
 publish: false
-tags: [" "]
+tags: [haskell, functional-programming]
 aliases: []
 created: 2025-06-01T03:07:13+09:00
 modified: 2025-06-03T03:10:30+09:00

@@ -1,7 +1,7 @@
 ---
 title: Equality
 publish: false
-tags: [" "]
+tags: [equality]
 aliases: []
 created: 2025-05-26T23:57:01+09:00
 modified: 2025-05-27T00:04:16+09:00

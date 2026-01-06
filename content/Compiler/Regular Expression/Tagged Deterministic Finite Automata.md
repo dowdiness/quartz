@@ -1,7 +1,7 @@
 ---
 title: Tagged Deterministic Finite Automata
 publish: false
-tags: [" "]
+tags: [compiler]
 aliases: []
 created: 2025-06-02T20:11:02+09:00
 modified: 2025-06-02T20:11:41+09:00

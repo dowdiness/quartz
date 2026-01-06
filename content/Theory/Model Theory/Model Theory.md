@@ -1,7 +1,7 @@
 ---
 title: Model Theory
 publish: false
-tags: [" "]
+tags: [theory]
 created: 2025-06-02T19:57:50+09:00
 modified: 2025-06-02T19:58:22+09:00
 ---

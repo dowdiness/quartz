@@ -1,7 +1,7 @@
 ---
 title: Systems theory
 publish: false
-tags: [" "]
+tags: [theory]
 aliases: []
 created: 2025-05-30T19:26:27+09:00
 modified: 2025-05-30T19:30:45+09:00

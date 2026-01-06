@@ -1,7 +1,7 @@
 ---
 title: Pattern Matching
 publish: false
-tags: [" "]
+tags: [pattern matching]
 aliases: []
 created: 2025-05-23T15:35:25+09:00
 modified: 2025-05-28T12:21:45+09:00

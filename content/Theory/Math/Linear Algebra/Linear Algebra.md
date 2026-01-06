@@ -1,7 +1,7 @@
 ---
 title: Linear Algebra
 publish: false
-tags: [" "]
+tags: [linear algebra]
 aliases: []
 created: 2025-06-02T21:56:24+09:00
 modified: 2025-06-02T21:58:18+09:00

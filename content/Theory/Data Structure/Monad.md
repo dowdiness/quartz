@@ -1,7 +1,7 @@
 ---
 title: Monad
 publish: false
-tags: [" "]
+tags: [monad, functional-programming, category-theory]
 aliases: []
 created: 2025-05-13T15:34:03+09:00
 modified: 2025-05-13T15:34:54+09:00

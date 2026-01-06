@@ -1,7 +1,7 @@
 ---
 title: Raft
 publish: false
-tags: [" "]
+tags: [theory]
 aliases: []
 created: 2025-05-10T21:51:04+09:00
 modified: 2025-06-16T20:14:53+09:00

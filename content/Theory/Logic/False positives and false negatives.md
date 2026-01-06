@@ -1,7 +1,7 @@
 ---
 title: False positives and false negatives
 publish: false
-tags: [" "]
+tags: [statistics, machine-learning, evaluation]
 aliases: []
 created: 2025-05-04T16:27:01+09:00
 modified: 2025-05-04T16:27:59+09:00

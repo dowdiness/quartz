@@ -1,7 +1,7 @@
 ---
 title: Interpreter
 publish: false
-tags: [" "]
+tags: [compiler]
 aliases: [インタープリタ]
 created: 2025-12-28T17:16:43+09:00
 modified: 2025-12-28T17:28:55+09:00

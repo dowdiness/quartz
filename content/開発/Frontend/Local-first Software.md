@@ -1,7 +1,7 @@
 ---
 title: Local-first Software
 publish: false
-tags: [" "]
+tags: [frontend]
 aliases: ["# Local-first Software", Untitled]
 created: 2025-05-27T19:28:32+09:00
 modified: 2025-05-27T19:28:54+09:00

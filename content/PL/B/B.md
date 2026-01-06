@@ -1,7 +1,7 @@
 ---
 title: B
 publish: false
-tags: [" "]
+tags: [programming-language]
 aliases: []
 created: 2025-06-02T18:20:09+09:00
 modified: 2025-06-02T18:21:32+09:00

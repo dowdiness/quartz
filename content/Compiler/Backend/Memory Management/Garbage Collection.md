@@ -1,7 +1,7 @@
 ---
 title: Garbage Collection
 publish: false
-tags: [" "]
+tags: [memory management]
 aliases: [Theory of Garbage Collection, Untitled]
 created: 2025-04-30T16:49:54+09:00
 modified: 2025-04-30T20:31:47+09:00
