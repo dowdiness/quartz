@@ -1,5 +1,5 @@
 ---
-title: Base
+title: TypeScript Compiler
 publish: false
 tags: [" "]
 aliases: [Untitled]

@@ -1,5 +1,5 @@
 ---
-title: Base
+title: F-algebra
 publish: false
 tags: [math]
 aliases: [F-algebra, F-algebra(F-代数), F-代数]

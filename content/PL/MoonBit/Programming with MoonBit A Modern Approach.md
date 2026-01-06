@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Programming with MoonBit A Modern Approach
 publish: false
 tags: [" "]
 aliases: ["Programming with MoonBit: A Modern Approach"]

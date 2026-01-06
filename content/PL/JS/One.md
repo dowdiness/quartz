@@ -1,5 +1,5 @@
 ---
-title: Base
+title: One
 publish: false
 tags: [react]
 aliases: [Untitled]

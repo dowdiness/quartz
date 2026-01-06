@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Effect System
 publish: false
 tags: [haskell]
 created: 2025-06-01T03:05:35+09:00

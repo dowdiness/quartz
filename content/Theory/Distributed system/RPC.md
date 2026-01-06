@@ -1,5 +1,5 @@
 ---
-title: Base
+title: RPC
 publish: false
 tags: []
 created: 2025-06-16T17:07:50+09:00

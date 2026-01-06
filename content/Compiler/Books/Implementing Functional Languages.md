@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Implementing Functional Languages
 publish: false
 tags: [compiler]
 aliases: ["_Implementing Functional Languages_: a tutorial", Implementing Functional Languages]

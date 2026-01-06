@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Abstract machines for programming language implementation
 publish: false
 tags: [" "]
 aliases: [Abstract machines for programming language implementation読書メモ, Untitled]

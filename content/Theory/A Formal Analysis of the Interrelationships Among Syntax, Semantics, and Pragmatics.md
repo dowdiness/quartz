@@ -1,5 +1,5 @@
 ---
-title: Base
+title: A Formal Analysis of the Interrelationships Among Syntax, Semantics, and Pragmatics
 publish: false
 tags: [" "]
 aliases: [Untitled]

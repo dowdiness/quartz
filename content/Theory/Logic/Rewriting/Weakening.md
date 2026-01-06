@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Weakening
 publish: false
 tags: [logic]
 aliases: [弱化規則]

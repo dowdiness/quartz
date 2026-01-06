@@ -1,5 +1,5 @@
 ---
-title: Base
+title: WebAssembly
 publish: false
 tags: [compiler, WebAssembly]
 aliases: [wasm]

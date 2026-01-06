@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Graph Reduction
 publish: false
 tags: [" "]
 aliases: [Untitled]

@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Local-first Software
 publish: false
 tags: [" "]
 aliases: ["# Local-first Software", Untitled]

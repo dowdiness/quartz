@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Monad
 publish: false
 tags: [" "]
 aliases: [Untitled]

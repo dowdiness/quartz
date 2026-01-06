@@ -1,5 +1,5 @@
 ---
-title: Base
+title: AIを使った開発の流れ
 publish: false
 tags: [ai]
 created: 2025-05-23T20:27:09+09:00

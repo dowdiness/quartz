@@ -1,5 +1,5 @@
 ---
-title: Base
+title: HaskellでのBenchmark
 publish: false
 tags: [benchmark]
 created: 2025-05-31T22:18:41+09:00

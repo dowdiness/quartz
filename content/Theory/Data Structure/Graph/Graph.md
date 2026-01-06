@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Graph
 publish: false
 tags: []
 aliases: [graph]

@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Lambda lifting
 publish: false
 tags: [closure, compiler]
 aliases: [ラムダリフティング]

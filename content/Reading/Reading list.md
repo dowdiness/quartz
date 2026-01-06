@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Reading list
 publish: false
 tags: []
 created: 2025-05-13T23:40:21+09:00

@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Virtual machine
 publish: false
 tags: [" "]
 aliases: [Untitled]

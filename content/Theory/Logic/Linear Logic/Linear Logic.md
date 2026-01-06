@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Linear Logic
 publish: false
 tags: [logic]
 created: 2025-05-21T00:41:35+09:00

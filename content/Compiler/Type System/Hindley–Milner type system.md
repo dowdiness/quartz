@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Hindley–Milner type system
 publish: false
 tags: [" "]
 aliases: [Untitled]

@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Heuristic search
 publish: false
 tags: [" "]
 created: 2025-06-01T16:27:22+09:00

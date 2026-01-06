@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Redis
 publish: false
 tags: [database, redis]
 created: 2025-06-10T21:58:08+09:00

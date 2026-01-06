@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Signal
 publish: false
 tags: [" "]
 aliases: [Untitled]

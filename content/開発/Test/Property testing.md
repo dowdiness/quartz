@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Property testing
 publish: false
 tags: [test]
 aliases: [Untitled]

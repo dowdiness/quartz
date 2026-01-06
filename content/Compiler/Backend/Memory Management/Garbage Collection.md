@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Garbage Collection
 publish: false
 tags: [" "]
 aliases: [Theory of Garbage Collection, Untitled]

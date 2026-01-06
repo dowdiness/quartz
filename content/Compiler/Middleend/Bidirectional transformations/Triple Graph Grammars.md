@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Triple Graph Grammars
 publish: false
 tags: [" "]
 aliases: [Untitled]

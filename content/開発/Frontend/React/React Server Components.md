@@ -1,5 +1,5 @@
 ---
-title: Base
+title: React Server Components
 publish: false
 tags: [" "]
 aliases: [Untitled]

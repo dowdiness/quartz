@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Critical Architecture-Software Theory
 publish: false
 tags: []
 aliases: [Critical _Architecture/Software_ Theory]

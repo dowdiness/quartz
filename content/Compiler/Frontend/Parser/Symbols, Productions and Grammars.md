@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Symbols, Productions and Grammars
 publish: false
 tags: [" "]
 aliases: [Untitled]

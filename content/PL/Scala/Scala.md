@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Scala
 publish: false
 tags: [" "]
 aliases: [Untitled]

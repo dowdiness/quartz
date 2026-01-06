@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Debugger
 publish: false
 tags: [" "]
 aliases: [Untitled]

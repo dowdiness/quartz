@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Contraction
 publish: false
 tags: [logic]
 aliases: [縮約規則]

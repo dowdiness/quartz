@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Model Checking
 publish: false
 tags: [" "]
 aliases: [Untitled]

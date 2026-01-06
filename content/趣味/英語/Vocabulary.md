@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Vocabulary
 publish: false
 tags: []
 created: 2025-06-03T14:40:54+09:00

@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Search
 publish: false
 tags: [search]
 created: 2025-06-09T22:34:43+09:00

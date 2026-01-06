@@ -1,5 +1,5 @@
 ---
-title: Base
+title: JSでのClassとクロージャの違い
 publish: false
 tags: [" "]
 aliases: [Untitled]

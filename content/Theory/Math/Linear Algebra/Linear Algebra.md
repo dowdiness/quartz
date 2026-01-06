@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Linear Algebra
 publish: false
 tags: [" "]
 aliases: [Untitled]

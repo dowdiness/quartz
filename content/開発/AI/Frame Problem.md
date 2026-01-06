@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Frame Problem
 publish: false
 tags: [ai]
 aliases: [フレーム問題]

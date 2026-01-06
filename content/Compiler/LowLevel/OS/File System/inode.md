@@ -1,5 +1,5 @@
 ---
-title: Base
+title: inode
 publish: false
 tags: [" "]
 created: 2025-04-30T22:57:28+09:00

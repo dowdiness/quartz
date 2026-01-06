@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Tagged Deterministic Finite Automata
 publish: false
 tags: [" "]
 aliases: [Untitled]

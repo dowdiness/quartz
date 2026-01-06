@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Raycast SnippetでのKeywordの作り方
 publish: false
 tags: [raycast]
 aliases: [SnippetでのKeywordの作り方]

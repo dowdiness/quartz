@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Writing
 publish: false
 tags: [" "]
 aliases: [Untitled]

@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Closure conversion
 publish: false
 tags: [closure, compiler]
 aliases: [Closure conversion, Closure conversion(クロージャ変換), クロージャ変換]

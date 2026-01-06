@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Constructive mathematics
 publish: false
 tags: [logic, math]
 created: 2025-06-02T20:02:19+09:00

@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Algorithms
 publish: false
 tags: [" "]
 aliases: [Untitled]

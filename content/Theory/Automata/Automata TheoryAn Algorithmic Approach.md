@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Automata TheoryAn Algorithmic Approach
 publish: false
 tags: [automata]
 aliases: [Automata Theory An Algorithmic Approach]

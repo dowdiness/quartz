@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Terminal
 publish: false
 tags: [" "]
 aliases: [Untitled]

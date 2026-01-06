@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Bidirectional transformations
 publish: false
 tags: [" "]
 aliases: [Bidirectional Transformations International Summer School, Untitled]

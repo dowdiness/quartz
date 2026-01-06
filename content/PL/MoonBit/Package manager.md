@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Package manager
 publish: false
 tags: [" "]
 aliases: [Managing Projects with Packages, Untitled]

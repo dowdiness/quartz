@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Segment Tree in Moonbit
 publish: false
 tags: [algorithm, moonbit, segment_tree]
 created: 2025-05-09T15:06:52+09:00

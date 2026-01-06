@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Toy Language
 publish: false
 tags: [compiler]
 aliases: [Toy language]

@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Equality
 publish: false
 tags: [" "]
 aliases: [Untitled]

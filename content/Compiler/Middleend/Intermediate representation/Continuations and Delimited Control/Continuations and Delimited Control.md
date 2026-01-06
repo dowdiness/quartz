@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Continuations and Delimited Control
 publish: false
 tags: [" "]
 aliases: [Untitled]

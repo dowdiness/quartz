@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Formal Methods
 publish: false
 tags: [formal_methods, 形式手法]
 aliases: [形式手法]

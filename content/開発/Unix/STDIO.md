@@ -1,5 +1,5 @@
 ---
-title: Base
+title: STDIO
 publish: false
 tags: [unix]
 created: 2025-05-23T15:20:31+09:00

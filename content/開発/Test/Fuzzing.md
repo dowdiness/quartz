@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Fuzzing
 publish: false
 tags: [test]
 aliases: [Untitled]

@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Modal logic
 publish: false
 tags: [logic]
 aliases: [Untitled]

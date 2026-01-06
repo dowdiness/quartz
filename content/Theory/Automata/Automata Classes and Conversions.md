@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Automata Classes and Conversions
 publish: false
 tags: [" "]
 aliases: [Untitled]

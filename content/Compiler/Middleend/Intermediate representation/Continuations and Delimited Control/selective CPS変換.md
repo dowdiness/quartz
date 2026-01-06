@@ -1,5 +1,5 @@
 ---
-title: Base
+title: selective CPS変換
 publish: false
 tags: [continuation, cps]
 created: 2025-05-28T14:44:04+09:00

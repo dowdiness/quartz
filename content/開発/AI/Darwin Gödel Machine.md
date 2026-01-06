@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Darwin Gödel Machine
 publish: false
 tags: []
 aliases: [The Darwin Gödel Machine]

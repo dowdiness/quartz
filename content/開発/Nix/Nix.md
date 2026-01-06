@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Nix
 publish: false
 tags: []
 created: 2025-06-02T21:01:01+09:00

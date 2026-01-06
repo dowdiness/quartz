@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Temporal Logic
 publish: false
 tags: [" "]
 aliases: [Untitled]

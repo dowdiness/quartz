@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Incorrectness Logic
 publish: false
 tags: [" "]
 aliases: [Untitled]

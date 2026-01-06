@@ -1,5 +1,5 @@
 ---
-title: Base
+title: ls-lint
 publish: false
 tags: [utility]
 created: 2025-05-21T22:42:10+09:00

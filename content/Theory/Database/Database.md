@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Database
 publish: false
 tags: [database]
 created: 2025-06-02T17:43:36+09:00

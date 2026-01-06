@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Can Programming Be Liberated from the vonNeumann Style
 publish: false
 tags: [" "]
 aliases: [Can Programming Be Liberated from the von Neumann Style?]

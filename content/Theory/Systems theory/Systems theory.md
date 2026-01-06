@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Systems theory
 publish: false
 tags: [" "]
 aliases: [Untitled]

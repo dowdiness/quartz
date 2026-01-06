@@ -1,5 +1,5 @@
 ---
-title: Base
+title: No Free Lunch Theorems
 publish: false
 tags: [" "]
 aliases: [Untitled]

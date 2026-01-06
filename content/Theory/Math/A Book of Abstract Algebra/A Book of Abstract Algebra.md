@@ -1,5 +1,5 @@
 ---
-title: Base
+title: A Book of Abstract Algebra
 publish: false
 tags: [math]
 created: 2025-05-10T02:28:21+09:00

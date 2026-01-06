@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Thompson's Construction Algorithm
 publish: false
 tags: [" "]
 aliases: [Thompson's Construction Algorithm]

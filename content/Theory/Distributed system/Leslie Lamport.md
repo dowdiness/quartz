@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Leslie Lamport
 publish: false
 tags: [" "]
 aliases: [Untitled]

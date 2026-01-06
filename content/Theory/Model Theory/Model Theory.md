@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Model Theory
 publish: false
 tags: [" "]
 created: 2025-06-02T19:57:50+09:00

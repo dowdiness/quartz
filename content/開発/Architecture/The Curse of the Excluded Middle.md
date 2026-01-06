@@ -1,5 +1,5 @@
 ---
-title: Base
+title: The Curse of the Excluded Middle
 publish: false
 tags: [" "]
 created: 2025-05-10T22:39:17+09:00

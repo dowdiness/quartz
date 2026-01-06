@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Modern Compiler Implementation in ML
 publish: false
 tags: [compiler]
 aliases: [最新コンパイラ構成技法]

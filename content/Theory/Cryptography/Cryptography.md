@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Cryptography
 publish: false
 tags: [Cryptography]
 created: 2025-05-29T21:18:25+09:00

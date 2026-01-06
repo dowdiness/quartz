@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Styling
 publish: false
 tags: [" "]
 aliases: [Untitled]

@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Merkle Search Trees
 publish: false
 tags: [algorithm]
 created: 2025-06-02T17:20:01+09:00

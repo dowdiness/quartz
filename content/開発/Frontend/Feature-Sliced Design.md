@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Feature-Sliced Design
 publish: false
 tags: [" "]
 aliases: [Untitled]

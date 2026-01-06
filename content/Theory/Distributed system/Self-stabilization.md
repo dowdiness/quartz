@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Self-stabilization
 publish: false
 tags: [distributed-system]
 created: 2025-05-07T23:07:10+09:00

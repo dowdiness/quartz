@@ -1,5 +1,5 @@
 ---
-title: Base
+title: HaskellでのTest
 publish: false
 tags: [" "]
 aliases: [Untitled]

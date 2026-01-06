@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Diffing Algorithm
 publish: false
 tags: [" "]
 aliases: [Untitled]

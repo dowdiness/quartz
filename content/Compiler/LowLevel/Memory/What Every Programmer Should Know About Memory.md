@@ -1,5 +1,5 @@
 ---
-title: Base
+title: What Every Programmer Should Know About Memory
 publish: false
 tags: [" "]
 aliases: [Untitled]

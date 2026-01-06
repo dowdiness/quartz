@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Development Plan for a Declarative, Functional, and Modular Data Visualization Library in Moonbit
 publish: false
 tags: [" "]
 aliases: [Untitled]

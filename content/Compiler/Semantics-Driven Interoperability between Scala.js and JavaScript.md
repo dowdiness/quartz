@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Semantics-Driven Interoperability between Scala.js and JavaScript
 publish: false
 tags: [compiler]
 aliases: [Untitled]

@@ -1,5 +1,5 @@
 ---
-title: Base
+title: MinCaml
 publish: false
 tags: []
 created: 2025-05-07T18:19:54+09:00

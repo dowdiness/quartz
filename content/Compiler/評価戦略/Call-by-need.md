@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Call-by-need
 publish: false
 tags: []
 aliases: [Call-By-Need]
