@@ -4,10 +4,12 @@ publish: true
 tags: [compiler]
 aliases: [What is Structural Editing？]
 created: 2026-01-03T14:08:04+09:00
-modified: 2026-01-04T19:48:19+09:00
+modified: 2026-01-08T00:35:10+09:00
 ---
 
 # Structural Editingとは何か？
+
+WIP: まだまだ編集中の記事です
 
 ## 「テキスト」という制約からの解放
 
