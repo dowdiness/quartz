@@ -1,11 +1,9 @@
 ---
 title: α-conversion
-aliases:
-  - アルファ変換
+aliases: [アルファ変換]
 created: 2025-04-24T01:01:12+09:00
-modified: 2026-01-07T00:13:59+09:00
-tags:
-  - compiler
+modified: 2026-01-07T23:15:47+09:00
+tags: [compiler]
 ---
 
 # α-conversion
