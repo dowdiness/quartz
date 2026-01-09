@@ -4,7 +4,7 @@ publish: false
 tags: [compiler]
 aliases: [インクリメンタル計算]
 created: 2026-01-02T02:35:09+09:00
-modified: 2026-01-02T03:05:00+09:00
+modified: 2026-01-09T18:40:18+09:00
 ---
 
 # Incremental computation

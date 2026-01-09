@@ -1,6 +1,6 @@
 ---
 created: 2025-04-19T21:44:47+09:00
-modified: 2025-04-29T20:13:13+09:00
+modified: 2026-01-09T18:40:12+09:00
 ---
 
 [Keyboard Event Viewer](https://w3c.github.io/uievents/tools/key-event-viewer.html)

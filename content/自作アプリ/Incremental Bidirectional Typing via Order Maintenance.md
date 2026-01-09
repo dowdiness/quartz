@@ -4,7 +4,7 @@ publish: false
 tags: [自作アプリ]
 aliases: ["Analysis Plan: Incremental Bidirectional Typing via Order Maintenance", 無題のファイル]
 created: 2026-01-02T02:14:15+09:00
-modified: 2026-01-02T02:24:55+09:00
+modified: 2026-01-09T18:40:19+09:00
 ---
 
 # Analysis Plan: Incremental Bidirectional Typing via Order Maintenance
