@@ -1,6 +1,6 @@
 ---
 created: 2025-04-18T14:54:19+09:00
-modified: 2025-05-22T22:39:59+09:00
+modified: 2026-01-09T00:31:59+09:00
 ---
 
 Making compiler tests based on compiler source code coverage
