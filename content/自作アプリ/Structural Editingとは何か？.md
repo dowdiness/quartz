@@ -4,7 +4,7 @@ publish: true
 tags: [compiler]
 aliases: [What is Structural Editing？]
 created: 2026-01-03T14:08:04+09:00
-modified: 2026-01-08T00:35:10+09:00
+modified: 2026-01-10T17:29:41+09:00
 ---
 
 # Structural Editingとは何か？
@@ -40,6 +40,12 @@ Projectional Editingにおいては、モデルを表現するためのインタ
 - **双模倣性：** システムAとBが互いにお互いをシミュレートでき、どのステップにおいても「意味論的に等価な状態」を維持し続けていること。
 
 Structural Editingにおいては、編集中の「未完成のコード」であっても、モデルとUIの間でこの整合性が保たれる（あるいは回復可能である）ことが理想とされます。
+
+双模倣性には強模倣([Strong bisimulation](https://moves.rwth-aachen.de/wp-content/uploads/WS1516/ct/lec13_handout.pdf)) と弱模倣([Weak bisimulation](https://moves.rwth-aachen.de/wp-content/uploads/WS1718/ct/l15.pdf)) が存在する。
+
+https://m-hiyama-memo.hatenablog.jp/entry/20151019/1445231763
+https://tonoi.co.jp/legacy/FY19Q1/2019ARC227/IPSJ-ARC19235009.pdf
+https://speakerdeck.com/ytaka23/burikaigi-2026
 
 ## プログラムの編集過程における課題
 
