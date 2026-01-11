@@ -4,7 +4,7 @@ publish: false
 tags: [algorithm, visualization]
 aliases: [Tree Drawing Algorithms, Visualization of Graphs]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-01-09T19:12:56+09:00
+modified: 2026-01-11T23:12:53+09:00
 ---
 
 # Layout Algorithm
@@ -13,6 +13,7 @@ modified: 2026-01-09T19:12:56+09:00
 
 [Handbook of Graph Drawing and Visualization](https://cs.brown.edu/people/rtamassi/gdhandbook/)
 
+[High-performance tidy trees visualization](https://www.zxch3n.com/tidy/tidy/)
 
 [Tree Drawing Algorithms](https://cs.brown.edu/people/rtamassi/gdhandbook/chapters/trees.pdf)
 
