@@ -1,7 +1,11 @@
 ---
+title: Compiler Test
 created: 2025-04-18T14:54:19+09:00
-modified: 2026-01-09T00:31:59+09:00
+modified: 2026-01-12T23:39:02+09:00
+tags: [test]
 ---
+
+# Compiler Test
 
 Making compiler tests based on compiler source code coverage
 https://solidsands.com/wp-content/uploads/thesis_jelle_witsen_elias.pdf

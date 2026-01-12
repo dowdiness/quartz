@@ -1,7 +1,7 @@
 ---
 aliases: [1 Introduction]
 created: 2025-04-11T23:40:05+09:00
-modified: 2025-04-29T19:36:45+09:00
+modified: 2026-01-12T23:44:40+09:00
 ---
 
 https://link.springer.com/chapter/10.1007/978-3-030-99524-9_12

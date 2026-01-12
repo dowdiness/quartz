@@ -2,8 +2,9 @@
 title: The Simple Essence of Algebraic Subtyping
 aliases: [代数的部分型]
 created: 2024-06-27T22:49:26+09:00
-modified: 2026-01-11T19:40:49+09:00
+modified: 2026-01-12T23:34:12+09:00
 tags: [compiler, type-system]
+publish: true
 ---
 
 # The Simple Essence of Algebraic Subtyping
@@ -12,7 +13,7 @@ tags: [compiler, type-system]
 
 [The Simple Essence of Algebraic Subtyping](https://lptk.github.io/programming/2020/03/26/demystifying-mlsub.html)を読んだ簡単なまとめです。読んだ時に書いたメモなので内容の正確性や読みやすさへの保証は持てません。詳しくは元論文と[Githubの実装](https://github.com/LPTK/simple-sub)に当たってください。
 
-Algebraic SubtypingのMLsubでは、biunificationというbisubstitutionとpolar typesという新しい概念に依存していて抽象代数に関する深い知識がないと難しいアルゴリズムが使われている。この論文ではMLsub相当の機能を持った代替であるSimple-subというアルゴリズムを提唱している。MLsubに比べSimple-subは500以内のScalaコードで書かれていて抽象代数の知識が無くとも理解がしやすく簡単である。
+Algebraic SubtypingのMLsubでは、biunificationというbisubstitutionとpolar typesという新しい概念に依存していて抽象代数に関する深い知識がないと難しいアルゴリズムが使われている。この論文ではMLsub相当の機能を持った代替であるSimple-subというアルゴリズムを提唱する。MLsubに比べSimple-subは500以内のScalaコードで書かれていて抽象代数の知識が無くとも理解がしやすく簡単である。
 
 ### この論文の構成
 
@@ -33,7 +34,8 @@ Algebraic Effectsのある言語にMLsubの型推論アルゴリズムを組み�
 
 ### 2.1 Background on Algebraic Subtyping
 
-部分型付けの形式化の手法には少なくとも三種類の派閥があるらしい。
+部分型付けの形式化の手法には少なくとも三種類の派閥が存在する。
+
 - Syntactic approaches
 	- この論文で使われている手法。
 	- 直接的な仕様(普通は推論規則)を元に部分型関係を定義する。
@@ -52,9 +54,11 @@ Algebraic Effectsのある言語にMLsubの型推論アルゴリズムを組み�
 
 型システムの設計者に全ての推論規則の結果とインタラクションを考慮させることに強制させることによって、シンプルさを保てる手法。
 部分型関係が望まれた代数的要素になっているか手動で確認する必要がある。
+
 #### Semantic approaches
 
 おそらく一番直感的で強力な手法。ただし多相性に関する難しさのせいで、ground types?が含まれているとパラドックスが簡単に生まれてしまい、拡張性が無くなってしまう。詳しくは[Algebraic Subtyping](https://www.cs.tufts.edu/~nr/cs257/archive/stephen-dolan/thesis.pdf)を参照。
+
 #### Algebraic approaches
 
 代数が型システムが
@@ -148,11 +152,13 @@ MLsubの主要型と部分型を含む型推論にはbisubstitutionとpolar type
 ## 4 SIMPLIFYING TYPES
 
 推論される型は冗長な部分があったり、単一化や除去の出来る型変数を含んでいることがある。コンパクトで理解しやすい型にするためにも、部分型の含む型推論では推論された型の単純化が重要になる。もし単純化をしなければ推論される型の量は線形に増加してしまう。
+
 ### 4.1 Type Simplification Tradeoffs
 ### 4.2 Type Simplification in MLsub
 
 型の集合をfinite-state automataとして表現できる。
 automata theoryのtype automataという手法を使ってType Simplificationが実現できるらしい。難しいので今回は使わない。
+
 ### 4.3 Type Simplification in Simple-sub
 
 co-occurrence analysis

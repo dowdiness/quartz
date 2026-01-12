@@ -4,7 +4,7 @@ publish: false
 tags: [algorithm, compiler]
 aliases: [パターンマッチング]
 created: 2025-05-23T15:35:25+09:00
-modified: 2026-01-12T21:46:33+09:00
+modified: 2026-01-12T23:05:59+09:00
 ---
 
 # Pattern Matching
@@ -13,6 +13,10 @@ modified: 2026-01-12T21:46:33+09:00
 [GADTs and Exhaustiveness: Looking for the Impossible](https://arxiv.org/abs/1702.02281)
 
 ## 実装方法について
+
+[Compiling Pattern Matching](https://compiler.club/compiling-pattern-matching/)
+
+[juvix](https://github.com/anoma/juvix/issues/1798) より
 
 - Philip Wadler, Efficient compilation of pattern matching, in: Simon Peyton Jones, [The implementation of functional programming languages](https://www.microsoft.com/en-us/research/uploads/prod/1987/01/slpj-book-1987.pdf), Chapter 5.
 - Luc Maranget, [Compiling pattern matching to good decision trees](http://moscova.inria.fr/~maranget/papers/ml05e-maranget.pdf)

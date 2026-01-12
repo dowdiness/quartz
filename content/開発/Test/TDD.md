@@ -1,10 +1,10 @@
 ---
 title: TDD
 publish: false
-tags: [test, tdd, testing]
+tags: [tdd, test]
 aliases: [TDD(Test Driven Development) | テスト駆動開発]
 created: 2025-05-05T10:47:01+09:00
-modified: 2025-05-05T15:16:48+09:00
+modified: 2026-01-12T23:39:07+09:00
 ---
 
 # TDD(Test Driven Development) | テスト駆動開発

@@ -3,7 +3,7 @@ title: ls-lint
 publish: false
 tags: [utility]
 created: 2025-05-21T22:42:10+09:00
-modified: 2025-05-21T22:49:29+09:00
+modified: 2026-01-12T23:41:09+09:00
 ---
 
 # ls-lint

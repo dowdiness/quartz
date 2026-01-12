@@ -4,7 +4,7 @@ publish: false
 tags: [automata]
 aliases: [Automata Theory An Algorithmic Approach]
 created: 2025-05-27T13:53:02+09:00
-modified: 2025-05-27T15:27:51+09:00
+modified: 2026-01-12T23:36:54+09:00
 ---
 
 # Automata Theory An Algorithmic Approach

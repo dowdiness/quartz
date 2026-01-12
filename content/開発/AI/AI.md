@@ -1,6 +1,8 @@
 ---
+title: AI
 created: 2025-03-30T20:25:47+09:00
-modified: 2026-01-11T01:28:29+09:00
+modified: 2026-01-12T23:38:03+09:00
+tags: [ai]
 ---
 
 # AI
@@ -23,6 +25,7 @@ modified: 2026-01-11T01:28:29+09:00
 [Flow Matching Guide and Code](https://arxiv.org/abs/2412.06264)
 
 [The Little Book of Deep Learning](https://fleuret.org/francois/lbdl.html)
+
 ## Papers
 
 Machine Learningを理解するために読むべき論文のリストです
