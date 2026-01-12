@@ -1,7 +1,7 @@
 ---
 tags: ["Compiler"]
 created: 2025-04-27T23:06:17+09:00
-modified: 2025-05-07T19:34:03+09:00
+modified: 2026-01-12T21:40:18+09:00
 ---
 
 # Abstract Machine
