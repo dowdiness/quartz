@@ -3,7 +3,7 @@ title: The Curse of the Excluded Middle
 publish: false
 tags: [architecture]
 created: 2025-05-10T22:39:17+09:00
-modified: 2025-05-10T22:39:53+09:00
+modified: 2026-01-13T18:29:01+09:00
 ---
 
 # The Curse of the Excluded Middle

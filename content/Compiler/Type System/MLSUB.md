@@ -1,7 +1,7 @@
 ---
 title: MLsub
 created: 2024-06-25T01:09:16+09:00
-modified: 2026-01-12T23:18:10+09:00
+modified: 2026-01-13T18:26:49+09:00
 tags: [compiler, subtyping, type-system]
 aliases: [MLsub]
 ---
@@ -14,6 +14,9 @@ aliases: [MLsub]
 
 香港科技大学で[TACO Lab](https://cse.hkust.edu.hk/~parreaux/)を指導しているAssistant Professor
 MLsubの延長線のようなアイデイアの論文と実装を沢山出していてとても興味深い
+
+[Notes on Implementing Algebraic Subtyping](https://semantic.org/post/notes-on-implementing-algebraic-subtyping/)
+実装についてのブログ記事
 
 ## Paper
 
@@ -36,6 +39,12 @@ implicit let-generalisationは殆ど使われないわりに複雑さを招く�
 
 [super-Charging Object-Oriented Programming Through Precise Typing of Open Recursion](https://drops.dagstuhl.de/storage/00lipics/lipics-vol263-ecoop2023/LIPIcs.ECOOP.2023.11/LIPIcs.ECOOP.2023.11.pdf)
 
-
 [Distributing intersection and union types with splits and duality (functional pearl)](https://dl.acm.org/doi/10.1145/3473594)
 
+[Polarized Subtyping](https://www.cs.cmu.edu/afs/cs/Web/People/fp/papers/esop22.pdf)
+
+## 関連リンク
+
+- [[The Simple Essence of Algebraic Subtyping]]
+- [[Subtyping|部分型]]
+- [[Polarity]]

@@ -4,7 +4,7 @@ publish: false
 tags: []
 aliases: [Critical _Architecture/Software_ Theory]
 created: 2025-05-10T22:37:20+09:00
-modified: 2025-05-10T22:38:37+09:00
+modified: 2026-01-13T18:29:12+09:00
 ---
 
 # Critical _Architecture/Software_ Theory

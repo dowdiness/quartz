@@ -2,9 +2,8 @@
 title: VCS
 publish: false
 tags: [architecture]
-aliases: []
 created: 2025-05-28T12:12:03+09:00
-modified: 2025-05-28T12:22:24+09:00
+modified: 2026-01-13T18:29:04+09:00
 ---
 
 # VCS

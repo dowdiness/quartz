@@ -1,10 +1,9 @@
 ---
 title: TypeScript Compiler
 publish: false
-tags: [typescript, compiler, frontend]
-aliases: []
+tags: [compiler, frontend, typescript]
 created: 2025-05-23T15:04:55+09:00
-modified: 2025-05-23T20:29:13+09:00
+modified: 2026-01-13T18:28:47+09:00
 ---
 
 # TypeScript Compiler

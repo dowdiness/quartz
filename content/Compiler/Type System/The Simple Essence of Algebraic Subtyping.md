@@ -2,8 +2,8 @@
 title: The Simple Essence of Algebraic Subtyping
 aliases: [代数的部分型]
 created: 2024-06-27T22:49:26+09:00
-modified: 2026-01-12T23:34:12+09:00
-tags: [compiler, type-system]
+modified: 2026-01-13T18:20:55+09:00
+tags: [compiler, subtyping, type-system]
 publish: true
 ---
 
@@ -114,7 +114,7 @@ Positive Positionは項のoutputに対応し、Negative Positionは項のinput�
 
 ### 2.5 Essence of MLsub Type Inference
 
-[Algebraic Subtyping](https://www.cs.tufts.edu/~nr/cs257/archive/stephen-dolan/thesis.pdf) と [Polymorphism, subtyping, and type inference in MLsub](https://dl.acm.org/doi/10.1145/3093333.3009882) を読んだ読者はMLsubの本質はな
+[Algebraic Subtyping](https://www.cs.tufts.edu/~nr/cs257/archive/stephen-dolan/thesis.pdf) と [Polymorphism, subtyping, and type inference in MLsub](https://dl.acm.org/doi/10.1145/3093333.3009882) を読んだ読者はMLsubの本質は
 
 - union と intersection を サポートした型での分配束(distributive lattice)
 - 従来のアルゴリズムとは違う biunification による型推論
@@ -179,5 +179,10 @@ Generated expressions
 Bugs found in MLsub
 MLsubのシャドーイングのバグが見つかった。
 ## 7 CONCLUSIONS AND FUTURE WORK
+
+## 関連リンク
+
+[[MLSUB|MLsub]]
+[[Subtyping|部分型]]
 
 [^1]: Polarityについては[The Hidden Data Flow in Types](https://www.youtube.com/watch?v=Uw8ayBv1j7Y)の説明が分かりやすい。
