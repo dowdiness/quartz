@@ -4,7 +4,7 @@ publish: false
 tags: [distributed-system, 分散システム]
 alias: [分散システム]
 created: 2025-05-07T22:49:13+09:00
-modified: 2025-06-30T18:37:21+09:00
+modified: 2026-01-13T20:55:16+09:00
 ---
 
 # Distributed system

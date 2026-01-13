@@ -4,7 +4,7 @@ publish: false
 tags: [distributed-system]
 aliases: [Clocks and the Ordering of Events in a Distributed System, Time]
 created: 2025-06-30T18:26:10+09:00
-modified: 2025-07-01T17:31:32+09:00
+modified: 2026-01-13T20:56:36+09:00
 ---
 
 # Time, Clocks and the Ordering of Events in a Distributed System
