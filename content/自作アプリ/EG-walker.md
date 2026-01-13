@@ -11,7 +11,10 @@ publish: true
 
 # EG-walker
 
+[Moonbitによる自作のライブラリ](https://github.com/dowdiness/til/tree/main/crdt/event-graph-walker)
+
 [Eg-walker (reference implementation)](https://github.com/josephg/eg-walker-reference)
+
 [Paper repo](https://github.com/josephg/egwalker-paper)
 
 ## Papers
