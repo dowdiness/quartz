@@ -3,7 +3,7 @@ title: EG-walker
 aliases:
   - event graph walker
 created: 2025-03-15T17:56:20+09:00
-modified: 2026-01-13T15:43:09+09:00
+modified: 2026-01-13T15:55:58+09:00
 tags:
   - distributed-system
 publish: true
