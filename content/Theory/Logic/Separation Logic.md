@@ -1,18 +1,20 @@
 ---
+title: Separation Logic
 tags: [logic]
 created: 2025-04-25T16:35:44+09:00
-modified: 2025-12-26T15:28:52+09:00
+modified: 2026-01-14T23:06:04+09:00
+aliases: [分離論理]
 ---
 
 # Separation Logic
 
 [Wiki](https://en.wikipedia.org/wiki/Separation_logic)
 
-
 [Separation logic]( https://dl.acm.org/doi/10.1145/3211968)
 初心者が最初に読むべき資料。
 
 [Separation Logic: A Logic for Shared Mutable Data Structures](https://www.cs.cmu.edu/~jcr/seplogic.pdf)
+初めて提案された論文
 [Separation logic for sequential programs (functional pearl)](https://dl.acm.org/doi/10.1145/3408998)
 
 ## Concurrent Separation Logic

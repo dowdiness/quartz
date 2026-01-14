@@ -1,10 +1,9 @@
 ---
 title: React
 publish: false
-tags: [react, frontend, javascript]
-aliases: []
+tags: [frontend, javascript, react]
 created: 2025-05-10T01:34:37+09:00
-modified: 2025-05-10T01:48:25+09:00
+modified: 2026-01-15T00:41:44+09:00
 ---
 
 # React
@@ -19,3 +18,5 @@ modified: 2025-05-10T01:48:25+09:00
 [# Paul O Shannessy - Building React From Scratch](https://youtu.be/_MAD4Oly9yg?si=hftkERr-6wsqxy-M)
 
 [# Getting Closure on React Hooks](https://www.swyx.io/hooks)
+
+[writing-react-effects](https://www.reddit.com/r/reactjs/comments/1pxv4lf/i_made_a_decision_tree_to_stop_myself_from/)
