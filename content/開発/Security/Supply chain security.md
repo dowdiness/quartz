@@ -2,9 +2,8 @@
 title: Supply chain security
 publish: false
 tags: [security]
-aliases: []
 created: 2025-05-30T21:46:09+09:00
-modified: 2025-05-30T21:51:05+09:00
+modified: 2026-01-16T19:23:10+09:00
 ---
 
 # Supply chain security

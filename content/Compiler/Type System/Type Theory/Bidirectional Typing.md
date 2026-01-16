@@ -1,7 +1,7 @@
 ---
 title: Bidirectional Typing
 created: 2025-04-11T14:19:09+09:00
-modified: 2026-01-15T15:38:39+09:00
+modified: 2026-01-16T18:06:28+09:00
 tags: [compiler, type-system]
 aliases: [Bidirectional Type, 双方向型検査]
 ---
@@ -55,3 +55,5 @@ Bidirectional Typing と関係の深い型推論。UnificationではなくMatchi
 [Simple Type Inference for System F](https://semantic-domain.blogspot.com/2022/03/simple-type-inference-for-system-f.html)
  
 [Local Contextual Type Inference](https://dl.acm.org/doi/10.1145/3776653)
+
+[Spine-local Type Inference](https://cshub.bc.edu/stumpaa/papers/spine-local-type-inference.pdf)

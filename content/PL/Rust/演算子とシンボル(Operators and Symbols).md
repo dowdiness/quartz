@@ -1,7 +1,7 @@
 ---
 aliases: [演算子]
 created: 2024-11-01T20:10:11+09:00
-modified: 2025-04-29T20:18:05+09:00
+modified: 2026-01-16T19:22:45+09:00
 ---
 
 https://doc.rust-lang.org/book/appendix-02-operators.html
