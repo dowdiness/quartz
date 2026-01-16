@@ -2,7 +2,7 @@
 title: EG-walker
 aliases: [event graph walker]
 created: 2025-03-15T17:56:20+09:00
-modified: 2026-01-13T17:57:48+09:00
+modified: 2026-01-16T13:09:31+09:00
 tags: [distributed-system]
 publish: true
 ---
@@ -85,5 +85,12 @@ Our algorithm ensures convergence: any two replicas that have seen the same oper
 #### Document versions
 
 
-### Algorithm
+### The Event Graph Walker Algorithm
 
+`replica`
+
+- Event Graph
+- Document State
+- Internal State
+
+#### Characteristic
