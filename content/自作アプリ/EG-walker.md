@@ -2,7 +2,7 @@
 title: EG-walker
 aliases: [event graph walker]
 created: 2025-03-15T17:56:20+09:00
-modified: 2026-01-16T13:09:31+09:00
+modified: 2026-01-16T17:13:06+09:00
 tags: [distributed-system]
 publish: true
 ---
@@ -94,3 +94,31 @@ Our algorithm ensures convergence: any two replicas that have seen the same oper
 - Internal State
 
 #### Characteristic
+
+#### Walking the event graph
+
+- apply
+- retreat
+- advance
+
+#### Representing prepare and effect versions
+
+#### Mapping indexes to character IDs
+
+#### Clearing the internal state
+
+#### Partial event graph replay
+
+#### 3.7 Algorithm complexity
+
+#### Storing the event graph
+
+EG-walker では Automerge が column-oriented database からインスピレーションを受けたstorage format と、Yjsの bit-packing トリックを使います。
+
+まず最初にグラフのイベントにトポロジカルソートします。replica によりソートの仕方は違うかもしれません。それでもローカルにはソートされた順番によりイベントをインデックスで指定出来るようになります。次にcolumn毎に
+
+- event type
+- Inserted content
+- Parents
+- Event IDs
+### Evaluation
