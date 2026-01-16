@@ -4,10 +4,12 @@ publish: false
 tags: [algorithm, compiler]
 aliases: [パターンマッチング]
 created: 2025-05-23T15:35:25+09:00
-modified: 2026-01-12T23:05:59+09:00
+modified: 2026-01-15T15:25:40+09:00
 ---
 
 # Pattern Matching
+
+実はPattern Matching は [Sum type](https://ncatlab.org/nlab/show/sum+type) の除去規則である。
 
 [A generic algorithm for checking exhaustivity of pattern matching](https://infoscience.epfl.ch/entities/publication/bba4145b-7864-4dd7-87d1-dc3e802ee36f)
 [GADTs and Exhaustiveness: Looking for the Impossible](https://arxiv.org/abs/1702.02281)
