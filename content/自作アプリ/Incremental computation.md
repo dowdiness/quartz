@@ -1,10 +1,13 @@
 ---
 title: Incremental computation
 publish: false
-tags: [compiler]
-aliases: [インクリメンタル計算]
+tags:
+  - compiler
+aliases:
+  - インクリメンタル計算
+  - self-adjusting computation
 created: 2026-01-02T02:35:09+09:00
-modified: 2026-01-16T19:43:50+09:00
+modified: 2026-01-17T23:52:25+09:00
 ---
 
 # Incremental computation
@@ -40,6 +43,10 @@ Methods for deriving algorithms and programs that handle input changes from give
 ## Blog
 
 [Rado's Incremental cmputaion](https://rkirov.github.io/posts/incremental-computation/)
+
+## Video
+
+[A journey through incremental computation - Raph Levien](https://youtu.be/DSuX-LIAU-I?si=ujPo1l5KibwxFJBo)
 
 ## Implementation
 
