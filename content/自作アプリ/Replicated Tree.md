@@ -1,12 +1,10 @@
 ---
 title: Replicated Tree
 publish: false
-tags:
-  - distributed-system
-aliases:
-  - 無題のファイル
+tags: [distributed-system]
+aliases: [無題のファイル]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-01-18T02:33:47+09:00
+modified: 2026-01-18T06:15:52+09:00
 ---
 
 # Replicated Tree
