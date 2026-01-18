@@ -4,7 +4,7 @@ publish: false
 tags: [distributed-system, 分散システム]
 alias: [分散システム]
 created: 2025-05-07T22:49:13+09:00
-modified: 2026-01-13T20:55:16+09:00
+modified: 2026-01-18T23:12:57+09:00
 ---
 
 # Distributed system
@@ -18,6 +18,8 @@ https://groups.csail.mit.edu/tds/papers/Lynch/Lifetime_Contributions_Book-2.pdf
 
 ## Blog
 
+[Predicting the Future of Distributed Systems](https://blog.colinbreck.com/predicting-the-future-of-distributed-systems)
+
 [Clockの取り扱い方に関する簡単な説明](https://techblog.hacomono.jp/entry/2024/12/18/000000)
 
 [Jepsen](https://jepsen.io/)
@@ -25,7 +27,7 @@ https://groups.csail.mit.edu/tds/papers/Lynch/Lifetime_Contributions_Book-2.pdf
 Distributed systemで有名な人
 [# How To Understand That Jepsen Report](https://buttondown.com/jaffray/archive/how-to-understand-that-jepsen-report/)
 
-# Mohit Karekar
+Mohit Karekar
 https://mohitkarekar.com/
 ## 脚注
 
