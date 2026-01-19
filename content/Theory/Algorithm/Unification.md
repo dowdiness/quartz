@@ -1,8 +1,9 @@
 ---
 title: Unification
 created: 2025-04-19T16:32:41+09:00
-modified: 2026-01-15T00:05:51+09:00
+modified: 2026-01-19T21:42:09+09:00
 tags: [algorithm]
+publish: true
 ---
 
 # Unification

@@ -1,10 +1,10 @@
 ---
 title: Layout Algorithm
-publish: false
+publish: true
 tags: [algorithm, visualization]
 aliases: [Tree Drawing Algorithms, Visualization of Graphs]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-01-11T23:12:53+09:00
+modified: 2026-01-19T21:41:14+09:00
 ---
 
 # Layout Algorithm

@@ -4,7 +4,7 @@ publish: true
 tags: [personal, portfolio]
 aliases: [Developer Portfolio(仮), introduction]
 created: 2025-12-21T13:18:07+09:00
-modified: 2026-01-19T21:37:48+09:00
+modified: 2026-01-19T23:07:41+09:00
 ---
 
 # Developer Portfolio(仮)
@@ -20,12 +20,16 @@ modified: 2026-01-19T21:37:48+09:00
 
 Ink&SwitchやFuture of Programming Labがやっているようなことが出来るようになりたくて勉強している感じです。そのためにEG-walkerというCRDTのライブラリを自作してラムダ計算の同時編集できるエディター作ったりしています。
 
-Ink&Switch https://www.inkandswitch.com/
-Future of Programming Lab https://neurocy.notion.site/Future-of-Programming-Lab-241d162461a04064ae1fd9ae32bf4cb1
+目指しているもの
 
-実装 https://github.com/dowdiness/til/tree/main/crdt/event-graph-walker
-eg-walkerの論文 https://arxiv.org/abs/2409.14252
-アプリ https://lambda-editor.koji-ishimoto.workers.dev/
+- [Ink&Switch](https://www.inkandswitch.com/) 
+- [Future of Programming Lab](https://neurocy.notion.site/Future-of-Programming-Lab-241d162461a04064ae1fd9ae32bf4cb1) 
+
+EG-walker
+
+- 実装 https://github.com/dowdiness/til/tree/main/crdt/event-graph-walker
+- eg-walkerの論文 https://arxiv.org/abs/2409.14252
+- アプリ https://lambda-editor.koji-ishimoto.workers.dev/
 
 ## やるべきこと
 
@@ -97,6 +101,10 @@ Reactを使ったフロントエンドの開発が得意です。Reactのコン�
 - フロントエンドに比べるとバックエンドの知見が少ないので、Jamstack寄りの構成を選びがちです。
 
 ## 取り組んでいるプロジェクト
+
+### [Lambda Calculus CRDT Editor](https://lambda-editor.koji-ishimoto.workers.dev/)
+
+https://github.com/dowdiness/til/tree/main/crdt
 
 ### **[tapl-rescript](https://github.com/dowdiness/tapl-rescript)**
 

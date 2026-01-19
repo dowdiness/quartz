@@ -1,10 +1,10 @@
 ---
 title: Incremental computation
-publish: false
+publish: true
 tags: [compiler]
 aliases: [self-adjusting computation, インクリメンタル計算]
 created: 2026-01-02T02:35:09+09:00
-modified: 2026-01-18T02:29:39+09:00
+modified: 2026-01-19T21:41:28+09:00
 ---
 
 # Incremental computation
