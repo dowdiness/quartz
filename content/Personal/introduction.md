@@ -4,7 +4,7 @@ publish: true
 tags: [personal, portfolio]
 aliases: [Developer Portfolio(仮), introduction]
 created: 2025-12-21T13:18:07+09:00
-modified: 2025-12-26T00:25:10+09:00
+modified: 2026-01-19T20:23:19+09:00
 ---
 
 # Developer Portfolio(仮)
@@ -17,6 +17,8 @@ modified: 2025-12-26T00:25:10+09:00
 ## About Me
 
 コンパイラーとComputer Scienceに深い興味を持つソフトウェア開発者です。好奇心旺盛で、言語学習や異文化理解を通じて新しい視点や出会いを大切にしています。技術的な探求と実用的な開発の両面で、継続的に学び続けることを心がけています。
+
+インタラクティブなものが好きだからプログラミング
 
 ### 価値観
 
