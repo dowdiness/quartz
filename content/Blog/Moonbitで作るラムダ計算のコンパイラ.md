@@ -4,7 +4,7 @@ publish: false
 tags: [compiler, moonbit]
 aliases: [はじめに, 無題のファイル]
 created: 2025-12-08T23:49:49+09:00
-modified: 2025-12-22T20:05:02+09:00
+modified: 2026-01-20T14:20:15+09:00
 ---
 
 # はじめに

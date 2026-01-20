@@ -4,7 +4,7 @@ publish: false
 tags: [blog]
 aliases: [MoonBitのtry?が使いやすくて最高]
 created: 2025-12-24T00:42:08+09:00
-modified: 2025-12-24T11:37:23+09:00
+modified: 2026-01-20T14:20:20+09:00
 ---
 
 # MoonBitのtry?が使いやすくて最高
