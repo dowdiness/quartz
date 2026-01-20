@@ -4,28 +4,29 @@ publish: true
 tags: [personal, portfolio]
 aliases: [Developer Portfolio(仮), introduction]
 created: 2025-12-21T13:18:07+09:00
-modified: 2026-01-19T23:07:41+09:00
+modified: 2026-01-20T13:11:15+09:00
 ---
 
 # Developer Portfolio(仮)
 
-## 石本 幸士 (Ishimoto Koji)
+## 石本 幸士
 
 **Location:** Kyoto, Japan
 **GitHub:** [@dowdiness](https://github.com/dowdiness)
 
-## About Me
-
 ## 自分がやりたいこと
 
-Ink&SwitchやFuture of Programming Labがやっているようなことが出来るようになりたくて勉強している感じです。そのためにEG-walkerというCRDTのライブラリを自作してラムダ計算の同時編集できるエディター作ったりしています。
+Ink&Switch や Future of Programming Lab が取り組んでいるような、**開発者体験そのものを進化させるプログラミング環境やツールの研究・実装**に関心があります。
+「プログラムをどのように表現し、どのように編集・共有できるか」という課題に向き合い、コンパイラや分散システムなどを通して「人とコンピュータのインタラクション」の改善というテーマに取り組んでいます。
 
-目指しているもの
+### 目指しているもの
 
 - [Ink&Switch](https://www.inkandswitch.com/) 
 - [Future of Programming Lab](https://neurocy.notion.site/Future-of-Programming-Lab-241d162461a04064ae1fd9ae32bf4cb1) 
 
-EG-walker
+### EG-walker
+
+複数人で同時に編集してもデータが壊れない仕組み（CRDT）を用いたライブラリを自作し、その上でラムダ計算をリアルタイムで共同編集できるエディタを開発しています。論文を読み、アルゴリズムを理解した上で、実際に動くソフトウェアとして実装し、UIまで含めて１人で作成しています。
 
 - 実装 https://github.com/dowdiness/til/tree/main/crdt/event-graph-walker
 - eg-walkerの論文 https://arxiv.org/abs/2409.14252
@@ -33,7 +34,8 @@ EG-walker
 
 ## やるべきこと
 
-- アプリのスクリーンショットを取ってまとめる
+- アプリのスクリーンショットを取ってまとめたポートフォリオづくり
+- 職務経歴書と技術経歴書の作成
 
 ## 友達と一緒に話しながらメモを取ってもらい、それを元にChatGptに紹介としてまとめてもらったもの
 
@@ -56,8 +58,7 @@ EG-walker
 
 ユーザー操作に対して即時に反応し、触って理解できる“リッチなツール”をWeb上で実現することに関心があります。Max/MSP/Jitterでのインタラクティブ作品制作を原点に、Haskellで宣言的・関数型の考え方を吸収し、現在はReactを中心に開発しています。PyCon公式サイトや「弱いzine」などのボランティア活動に加え、ラムダ計算エディター、React Flowを用いたブラウザシンセ「フローサウンド」などの個人開発を継続。体験設計から状態管理・コンポーネント設計まで一貫して組み立て、目的の完成形へ育てていく推進力を武器に、フロントエンドエンジニアとして業務でも貢献していきたいと考えています。
 
-## Githubを元にAIに要約させたものを改修したもの
-↓
+## Githubのデータを元にAIに作らせたプロフィールを改修したもの
 
 ### 価値観
 
@@ -157,17 +158,6 @@ https://github.com/dowdiness/til/tree/main/audiocontext-vite
 - **Computer Science Fundamentals:** CS基礎の深い理解
 - **Operating Systems:** OSの内部構造の学習
 
-### Beyond Code
-
-- 外国語学習を通じた異文化理解
-- 知識の体系化と公開（Obsidian + Quartz）
-- クリエイティブコーディングとアート表現
-
-## Development Philosophy
-
-技術の表面的な使い方だけでなく、その背後にある原理や仕組みを理解することを重視しています。基礎理論（型システム、コンパイラ、OS）から実践的なアプリケーション開発まで、幅広い領域で学び続けることで、より深い洞察と柔軟な問題解決能力を育んでいます。
-
-また、学んだことを整理し公開することで、知識を社会に還元し、他の学習者との対話を通じてさらに理解を深めることを大切にしています。
 
 ---
 
