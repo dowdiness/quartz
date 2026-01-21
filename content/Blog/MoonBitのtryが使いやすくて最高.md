@@ -4,23 +4,23 @@ publish: false
 tags: [blog]
 aliases: [MoonBitのtry?が使いやすくて最高]
 created: 2025-12-24T00:42:08+09:00
-modified: 2026-01-21T17:46:03+09:00
+modified: 2026-01-21T19:29:57+09:00
 ---
 
-# MoonBitのtry?が使いやすくて最高
+# MoonBitのtry?が使いやすくて最高なので知ってほしい
 
 こんにちは。MoonBit書いてますか？
 私は今、MoonBitでラムダ計算のコンパイラを書いています。[^1]
 
-実装はこちらです：
+実装はこちらです。まだ全然未完成ですが、言語処理系の練習として作っています。
 https://github.com/dowdiness/tapl-rescript/tree/moon-migration/moonbit
 
-まだ全然未完成なので今回はこの実装自体の解説はしませんが、MoonBit は書いていてエラー処理が便利で洗練されていると感じたので、今回はその中でも特に気に入っている `try?` について書きます。
+今回はこの実装自体ではなく、書いていて特に良いと感心した**MoonBit のエラー処理の設計**、とくに `try?` がとても使いやすいという話をしたいと思います。
 
 ## MoonBit の Option と Result
 
-TypeScript ではなく MoonBit を使う理由の一つに、`Result` 型の存在があるでしょう。[^2]
-MooniBitには `Struct` と `Enum` による代数的データ型があり、ビルトインのデータ型として [Option](https://mooncakes.io/docs/moonbitlang/core/option) と [Result](https://mooncakes.io/docs/moonbitlang/core/result) が提供されています。
+TypeScript ではなく MoonBit を使う理由の一つに、`Result` 型の存在があると思います。[^2]
+MooniBitには `Struct` と `Enum` による代数的データ型があり、ビルトインのライブラリとして [Option](https://mooncakes.io/docs/moonbitlang/core/option) と [Result](https://mooncakes.io/docs/moonbitlang/core/result) が提供されています。
 
 一方で、エラーが起こりうる処理をすべて `Result` で表現していくと、どうしても記述量が増えがちです。Resultを返す関数では成功時は `Ok(...)` に、失敗時は `Err(...)` に値を包んで返す必要があり、この値を使う場合には毎回パターンマッチでResult型から中身を取り出さなければなりません。
 
@@ -122,7 +122,7 @@ test {
 
 ## 例外と Result の「いいとこ取り」
 
-Result 型は安全だけど冗長になりがち、  
+Result 型は安全だけど冗長になりがちで、  
 例外は楽だけど型に出てこない、というのはよくある話ですが、
 
 MoonBit の `raise` + `try?` の組み合わせは、
@@ -138,25 +138,8 @@ MoonBit の `raise` + `try?` の組み合わせは、
 
 という気持ちにちょうど刺さる設計で、とても気に入っています。
 
-
-## try? によるResult型への変換
-
-エラーを起こす可能性のある式の前に `try?` と書くことによりResult型の値へと変換する機能です。
-
-公式サイトの例
-
-```Moonbit
-test {
-  let res = try? (div(6, 0) * div(6, 3))
-  inspect(
-    res,
-    content=(
-      #|Err("division by zero")
-    ),
-  )
-}
-```
-
 [^1]: [型システム入門](https://www.ohmsha.co.jp/book/9784274069116/)と[Essentials of Compilation](https://mitpress.mit.edu/9780262047760/essentials-of-compilation/)を参考にして書いています
 
 [^2]: こういった型を知らない方は [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/) が参考になるでしょう
+
+ちなみに見た目はRustの[?演算子](https://doc.rust-lang.org/std/result/#the-question-mark-operator-)に似ていますが、やっていることはかなり違います。Rustの `?` はResultを返す関数内で式の最後に `?` を付けた場合、評価結果がErrならば外側の関数の返り値としてそのErrを早期リターンとして返し、Okの場合はOkの中身を取り出した値を返すものです。MoonBitの `!try` はエラーが出る可能性のある式をResult型の値へ変換する機能です。

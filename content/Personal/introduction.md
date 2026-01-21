@@ -4,7 +4,7 @@ publish: true
 tags: [personal, portfolio]
 aliases: [Developer Portfolio(仮), introduction]
 created: 2025-12-21T13:18:07+09:00
-modified: 2026-01-20T15:03:33+09:00
+modified: 2026-01-21T18:35:26+09:00
 ---
 
 # Developer Portfolio(仮)
@@ -74,6 +74,7 @@ Ink&Switch や Future of Programming Lab が取り組んでいるような、**�
 - コンパイラ、型システム、Structure editor
 - 自作言語に興味があります
 - 形式手法（formal methods）、特に[Lean](https://lean-lang.org/)や[TLA+](https://lamport.azurewebsites.net/tla/tla.html)のような証明の出来るシステム
+- 日常的に英語の本を読んだりポッドキャストを聞いています [TOEIC 840点](https://iibc.cloudcerts.jp/viewer/cert/5aJemlWBgNAqgu68NgOA5VmIbVAVQ8JR0MzOrkQOYdWeF9qPgV9BbkuOeKl8N9JP) 中国語も趣味でやっています
 
 ### プログラミング言語
 
