@@ -4,7 +4,7 @@ publish: true
 tags: [distributed-system]
 aliases: [リアルタイム共同編集ツール]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-01-22T13:42:42+09:00
+modified: 2026-01-22T15:43:16+09:00
 ---
 
 # Collaborative real-time editor
@@ -15,3 +15,4 @@ modified: 2026-01-22T13:42:42+09:00
 
 [[Distributed system]]
 [[EG-walker]]
+[[CRDTs]]

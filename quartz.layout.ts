@@ -7,13 +7,13 @@ const recentNotes = [
     title: "ブログ",
     limit: 4,
     filter: (f) =>
-      f.slug!.startsWith("blog/") && f.slug! !== "blog/index" && !f.frontmatter?.noindex,
-    linkToMore: "blog/" as SimpleSlug,
+      f.slug!.startsWith("Blog/") && f.slug! !== "Blog/index" && !f.frontmatter?.noindex,
+    linkToMore: "Blog/" as SimpleSlug,
   }),
   Component.RecentNotes({
     title: "最近のメモ",
     limit: 10,
-    filter: (f) => !f.slug!.startsWith("blog/")
+    filter: (f) => !f.slug!.startsWith("Blog/")
   }),
 ]
 
