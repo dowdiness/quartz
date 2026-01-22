@@ -191,6 +191,7 @@ a {
     column-gap: #{map.get($desktopGrid, columnGap)};
     row-gap: #{map.get($desktopGrid, rowGap)};
     grid-template-areas: #{map.get($desktopGrid, templateAreas)};
+    letter-spacing: 0.1em;
 
     @media all and ($tablet) {
       grid-template-columns: #{map.get($tabletGrid, templateColumns)};
@@ -510,7 +511,7 @@ code {
 tbody,
 li,
 p {
-  line-height: 1.6rem;
+  line-height: 2rem;
 }
 
 .table-container {
