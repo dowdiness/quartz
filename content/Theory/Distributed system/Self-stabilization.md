@@ -3,7 +3,7 @@ title: Self-stabilization
 publish: false
 tags: [distributed-system]
 created: 2025-05-07T23:07:10+09:00
-modified: 2025-12-08T22:19:56+09:00
+modified: 2026-01-22T17:17:41+09:00
 ---
 
 # Self-stabilization
