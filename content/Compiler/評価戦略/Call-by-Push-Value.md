@@ -1,15 +1,19 @@
 ---
+title: Call-by-push-value
 created: 2024-10-17T03:51:05+09:00
-modified: 2025-05-27T01:23:53+09:00
+modified: 2026-01-22T14:07:06+09:00
+aliases: [Call-by-push-value, CBPV]
+tags: [compiler]
+publish: true
 ---
 
-# Call-by-Push-Value
-
-Call-by-push-value (CBPV) is a new programming language paradigm, based on the slogan “a value is, a computation does”. We claim that CBPV provides the semantic primitives from which the call-by-value and call-by-name paradigms are built.
+# Call-by-push-value
 
 Call-by-Push-Valueは値呼び戦略と名前呼び戦略を両立させる評価戦略。
 
-従来の理論では項(Term)しかなかったのを、CbPVでは項を値と計算に区別する。
+従来の理論での項をCBPVでは値と計算に区別する。call-by-value と call-by-name のsemantic primitivesを使うので、それらで表現出来る項はCBPVでも表現出来るし逆にも出来る。意味的な表現力は同じでもCBPVは従来では出来なかった抽象化が可能になる。
+
+call-by-value や call-by-name の場合
 
 ```hs
 data Type 
@@ -22,6 +26,8 @@ data Term
     | Fun Text Term
     | App Term Term
 ```
+
+Call-by-Push-Value の場合
 
 ```hs
 -- Type of values
@@ -47,4 +53,16 @@ data Comp
     | Return Value
 ```
 
-https://pblevy.github.io/papers/thesisqmwphd.pdf
+[Call-by-push-value](https://dl.acm.org/doi/10.1145/3537668.3537670) by Paul Blain Levy
+
+[長いバージョン](https://pblevy.github.io/papers/thesisqmwphd.pdf)
+
+## ブログ
+
+[I'm betting on Call-by-Push-Value](https://thunderseethe.dev/posts/bet-on-cbpv/)
+
+## 実装
+
+[Zydeco](https://github.com/zydeco-lang/zydeco): a proof-of-concept programming language based on call-by-push-value
+
+Zydecoの理論: [Notions of Stack-Manipulating Computation and Relative Monads](https://dl.acm.org/doi/10.1145/3720434)

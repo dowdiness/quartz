@@ -1,6 +1,6 @@
 ---
 created: 2024-10-17T03:35:11+09:00
-modified: 2025-04-29T20:19:14+09:00
+modified: 2026-01-22T13:51:58+09:00
 ---
 
 # [I'm betting on Call-by-Push-Value](https://thunderseethe.dev/posts/bet-on-cbpv/)

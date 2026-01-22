@@ -4,7 +4,7 @@ publish: true
 tags: [compiler]
 aliases: [What is Structural Editing？]
 created: 2026-01-03T14:08:04+09:00
-modified: 2026-01-10T17:29:41+09:00
+modified: 2026-01-22T12:03:54+09:00
 ---
 
 # Structural Editingとは何か？
@@ -45,7 +45,7 @@ Structural Editingにおいては、編集中の「未完成のコード」で�
 
 https://m-hiyama-memo.hatenablog.jp/entry/20151019/1445231763
 https://tonoi.co.jp/legacy/FY19Q1/2019ARC227/IPSJ-ARC19235009.pdf
-https://speakerdeck.com/ytaka23/burikaigi-2026
+
 
 ## プログラムの編集過程における課題
 
@@ -76,6 +76,7 @@ https://speakerdeck.com/ytaka23/burikaigi-2026
 ## 関連リンク
 
 [[Structure editor]]
+[[Bisimulation]]
 
 [^1]: [Projectional Editing](https://www.martinfowler.com/bliki/ProjectionalEditing.html) の記事
 [^2]: [Toward Semantic Foundations for Program Editors](https://arxiv.org/pdf/1703.08694) より引用

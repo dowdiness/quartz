@@ -3,7 +3,7 @@ title: Formal Methods for the Informal Engineer
 publish: false
 tags: [formal_methods, 形式手法]
 created: 2025-04-30T17:59:47+09:00
-modified: 2025-05-10T22:00:44+09:00
+modified: 2026-01-22T12:06:01+09:00
 ---
 
 # [Formal Methods for the Informal Engineer](https://fmie2021.github.io/)
