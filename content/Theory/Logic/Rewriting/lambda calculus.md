@@ -3,11 +3,13 @@ title: Lambda calculus
 tags: [compiler, logic, type-system]
 aliases: [ラムダ計算, λ-calculus]
 created: 2025-04-27T02:32:06+09:00
-modified: 2025-12-28T20:20:43+09:00
+modified: 2026-01-22T08:21:26+09:00
 publish: true
 ---
 
 # Lambda calculus
+
+[Coding in Lambda Calculus](https://www.cs.tufts.edu/comp/105-2020f/handouts/lambda-coding.pdf)
 
 ## Lambda cube
 

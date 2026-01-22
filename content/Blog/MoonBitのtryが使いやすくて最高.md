@@ -2,9 +2,9 @@
 title: MoonBitのtry?が使いやすくて最高
 publish: false
 tags: [blog]
-aliases: [MoonBitのtry?が使いやすくて最高]
+aliases: [MoonBitのtry?が使いやすくて最高なので知ってほしい, MoonBitのtry?が使いやすくて最高]
 created: 2025-12-24T00:42:08+09:00
-modified: 2026-01-21T19:29:57+09:00
+modified: 2026-01-22T08:19:52+09:00
 ---
 
 # MoonBitのtry?が使いやすくて最高なので知ってほしい
