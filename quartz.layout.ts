@@ -1,15 +1,30 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
 import * as Component from "./quartz/components"
+import type { SimpleSlug } from "./quartz/util/path"
+
+const recentNotes = [
+  Component.RecentNotes({
+    title: "ブログ",
+    limit: 4,
+    filter: (f) =>
+      f.slug!.startsWith("blog/") && f.slug! !== "blog/index" && !f.frontmatter?.noindex,
+    linkToMore: "blog/" as SimpleSlug,
+  }),
+  Component.RecentNotes({
+    title: "最近のメモ",
+    limit: 10,
+    filter: (f) => !f.slug!.startsWith("blog/")
+  }),
+]
 
 // components shared across all pages
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
-  afterBody: [],
+  afterBody: [...recentNotes.map((c) => Component.MobileOnly(c))],
   footer: Component.Footer({
     links: {
-      GitHub: "https://github.com/jackyzha0/quartz",
-      "Discord Community": "https://discord.gg/cRFFHYye7t",
+      GitHub: "https://github.com/dowdiness"
     },
   }),
 }
