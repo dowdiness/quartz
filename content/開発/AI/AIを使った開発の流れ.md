@@ -3,7 +3,7 @@ title: AIを使った開発の流れ
 publish: false
 tags: [ai]
 created: 2025-05-23T20:27:09+09:00
-modified: 2025-06-10T16:46:36+09:00
+modified: 2026-01-24T00:23:55+09:00
 ---
 
 # AIを使った開発の流れ
@@ -34,3 +34,6 @@ https://www.task-master.dev/
 [Peekaboo](https://github.com/steipete/Peekaboo)
 
 MCP server that enables AI agents to capture screenshots of applications
+
+[Clawdbot](https://github.com/clawdbot/clawdbot)
+チャットツール

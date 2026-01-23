@@ -4,7 +4,7 @@ publish: true
 tags: [distributed-system]
 aliases: [リアルタイム共同編集ツール]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-01-22T17:20:39+09:00
+modified: 2026-01-23T23:48:15+09:00
 ---
 
 # Collaborative real-time editor
@@ -14,6 +14,11 @@ modified: 2026-01-22T17:20:39+09:00
 まとめ
 
 Convergence を満たすのが大切。さらにStrong eventual consistencyが必要になる。
+
+
+## ライブラリ実装
+
+[Loro](https://loro.dev/)
 
 ## 関連リンク
 

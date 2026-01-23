@@ -4,7 +4,7 @@ publish: true
 tags: [compiler]
 aliases: [Projectional editor, 構造エディタ]
 created: 2025-04-26T19:22:26+09:00
-modified: 2026-01-09T18:51:46+09:00
+modified: 2026-01-24T00:32:14+09:00
 ---
 
 # Structure editor
@@ -40,11 +40,17 @@ What is [[Incremental computation]]?
 [clojure](https://clojure.org/guides/structural_editing)
 [Type inference that sticks](https://jaredforsyth.com/posts/type-inference-that-sticks/)
 
+[Magic Ink](https://worrydream.com/MagicInk/)
+
 ## 論文
 
 [Gradual Structure Editing with Obligations](https://hazel.org/papers/teen-tylr-vlhcc2023.pdf)
+
 [Block-Based Editing in a Textual World](https://dl.acm.org/doi/10.1145/3759534.3762681)
+
 [Visual design for a tree-oriented projectional editor](https://dl.acm.org/doi/10.1145/3397537.3397560)
+
+[Total Type Error Localization and Recovery with Holes](https://dl.acm.org/doi/epdf/10.1145/3632910)
 
 ## Examples
 
