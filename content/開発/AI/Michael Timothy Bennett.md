@@ -4,7 +4,7 @@ publish: false
 tags: [ai]
 aliases: [無題のファイル]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-01-24T01:08:21+09:00
+modified: 2026-01-24T10:42:29+09:00
 ---
 
 # Michael Timothy Bennett
@@ -39,3 +39,11 @@ modified: 2026-01-24T01:08:21+09:00
 ## 理論
 
 ### Stack Theory
+
+### Pancomputational Enactivism
+
+- reject agent environment paradigm
+- a body of hardware is an **abstraction layer**
+- it expresses an **embodied formal language**
+- goal directed behavior is an **embodied task**, not a disembodied abstract
+	- for intuition, think of a task as the set of possible worlds in which it is completed
