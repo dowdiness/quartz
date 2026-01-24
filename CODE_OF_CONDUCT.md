@@ -1,3 +1,9 @@
+---
+aliases: [Citizen Code of Conduct]
+created: 2025-12-21T23:10:31+09:00
+modified: 2026-01-24T19:57:24+09:00
+---
+
 # Citizen Code of Conduct
 
 ## 1. Purpose
