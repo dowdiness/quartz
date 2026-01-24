@@ -1,12 +1,15 @@
 ---
 title: Architecture
+aliases: [On the server]
+created: 2025-12-21T23:10:31+09:00
+modified: 2026-01-25T02:22:04+09:00
 ---
 
 Quartz is a static site generator. How does it work?
 
 This question is best answered by tracing what happens when a user (you!) runs `npx quartz build` in the command line:
 
-## On the server
+# On the server
 
 1. After running `npx quartz build`, npm will look at `package.json` to find the `bin` entry for `quartz` which points at `./quartz/bootstrap-cli.mjs`.
 2. This file has a [shebang](<https://en.wikipedia.org/wiki/Shebang_(Unix)>) line at the top which tells npm to execute it using Node.
@@ -41,7 +44,7 @@ This question is best answered by tracing what happens when a user (you!) runs `
       3. Finally, each emitter plugin is responsible for emitting and writing it's own emitted files to disk.
    6. If the `--serve` flag was detected, we also set up another file watcher to detect content changes (only `.md` files). We keep a content map that tracks the parsed AST and plugin data for each slug and update this on file changes. Newly added or modified paths are rebuilt and added to the content map. Then, all the filters and emitters are run over the resulting content map. This file watcher is debounced with a threshold of 250ms. On success, we send a client refresh signal using the passed in callback function.
 
-## On the client
+# On the client
 
 1. The browser opens a Quartz page and loads the HTML. The `<head>` also links to page styles (emitted to `public/index.css`) and page-critical JS (emitted to `public/prescript.js`)
 2. Then, once the body is loaded, the browser loads the non-critical JS (emitted to `public/postscript.js`)
