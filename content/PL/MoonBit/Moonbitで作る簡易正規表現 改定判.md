@@ -4,7 +4,7 @@ publish: true
 tags: [moonbit, 正規表現]
 aliases: [Moonbitで作る簡易正規表現 v2, Moonbitで作る簡易正規表現 改訂版]
 created: 2025-06-10T15:45:33+09:00
-modified: 2025-06-12T18:55:34+09:00
+modified: 2026-01-25T18:58:11+09:00
 ---
 
 # Moonbitで作る簡易正規表現 v2
