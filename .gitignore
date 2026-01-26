@@ -3,7 +3,8 @@
 node_modules
 public
 prof
-tsconfig.tsbuildinfo
+tsconfig.
+tsbuildinfo
 .obsidian
 .quartz-cache
 private/
