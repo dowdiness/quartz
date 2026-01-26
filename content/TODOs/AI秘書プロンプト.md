@@ -1,9 +1,10 @@
 ---
 title: AI秘書プロンプト
 created: 2026-01-24T22:24:10+09:00
-modified: 2026-01-26T14:29:00+09:00
+modified: 2026-01-26T20:46:40+09:00
 tags: [ai, prompts]
 aliases: [AIアシスタントプロンプト]
+publish: true
 ---
 
 # AI秘書プロンプト

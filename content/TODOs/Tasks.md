@@ -1,8 +1,9 @@
 ---
 created: 2026-01-24T22:22:59+09:00
-modified: 2026-01-26T15:39:36+09:00
+modified: 2026-01-26T20:46:28+09:00
 tags: [task-management]
 aliases: [タスクリスト]
+publish: true
 ---
 
 # タスクリスト
