@@ -1,7 +1,7 @@
 ---
 title: タスクリスト
 created: 2026-01-24T22:22:59+09:00
-modified: 2026-01-27T00:37:13+09:00
+modified: 2026-01-27T02:47:05+09:00
 tags: [task-management]
 aliases: [Tasks, タスクリスト]
 publish: true
@@ -30,6 +30,7 @@ publish: true
 - [ ] スマホからもObsidianを使えるようにする(https://zenn.dev/ishikawa096/articles/158246fc5a5d62)(https://zenn.dev/a1yama/articles/548f9c45649dee)
 - [ ] [starlight](https://github.com/withastro/starlight)の表示崩れを直す [[2026-01-13-火曜日]]
 - [ ] [Jujutsu](https://github.com/jj-vcs/jj) を使ってみる
+- [ ] [dataviewのデータの静的サイト生成時のMarkdownへの埋め込み](https://github.com/blacksmithgu/obsidian-dataview/issues/42)
 
 ---
 
