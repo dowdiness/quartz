@@ -4,7 +4,7 @@ publish: true
 tags: [distributed-system]
 aliases: [Conflict-free Replicated Data Type, CRDT]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-01-22T15:47:43+09:00
+modified: 2026-01-29T19:08:43+09:00
 ---
 
 # CRDTs
@@ -25,3 +25,9 @@ Google Waveを作ってShare.jsを作った人。[[EG-walker]]という新しい
 [Diamond Types](https://github.com/josephg/diamond-types)
 
 [5000x faster CRDTs: An Adventure in Optimization](https://josephg.com/blog/crdts-go-brrr/)
+
+## MoonBit
+
+[Implementing CRDT Algorithms with MoonBit and Building Real-time Collaborative Applications](https://www.moonbitlang.com/blog/crdt-algorithms-moonbit)
+
+[Github](https://github.com/Lampese/lomo/tree/main)
