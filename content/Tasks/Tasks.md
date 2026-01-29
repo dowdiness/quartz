@@ -1,7 +1,7 @@
 ---
 title: タスクリスト
 created: 2026-01-24T22:22:59+09:00
-modified: 2026-01-29T12:27:06+09:00
+modified: 2026-01-29T15:33:52+09:00
 tags: [task-management]
 aliases: [Tasks, タスクリスト]
 publish: true
@@ -16,6 +16,8 @@ publish: true
 - [ ] [crdt(eg walker)の作成](https://github.com/dowdiness/til/tree/main/crdt/event-graph-walker)
 - [ ] [crdtによるprojectional editingの実現](https://github.com/dowdiness/til/tree/main/crdt)
 - [ ] [ラムダ計算のprojectional editorの作成](https://github.com/dowdiness/til/tree/main/crdt)
+- [ ] 職務経歴書と技術経歴書の作成
+- [ ] CRDTの[レポジトリ](https://github.com/dowdiness/til/tree/main/crdt)をTILから分離して新しく作る。個々のパッケージは別々のサブレポジトリとしてモノレポ構成を作る。
 
 ---
 
@@ -33,6 +35,7 @@ publish: true
 - [ ] [starlight](https://github.com/withastro/starlight)の表示崩れを直す [[2026-01-13-火曜日]]
 - [ ] [Jujutsu](https://github.com/jj-vcs/jj) を使ってみる
 - [ ] [dataviewのデータの静的サイト生成時のMarkdownへの埋め込み](https://github.com/blacksmithgu/obsidian-dataview/issues/42)
+- [ ] ごみ収集のバイトへの応募
 
 ---
 
