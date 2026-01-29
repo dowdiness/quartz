@@ -1,7 +1,7 @@
 ---
 title: タスクリスト
 created: 2026-01-24T22:22:59+09:00
-modified: 2026-01-29T15:33:52+09:00
+modified: 2026-01-29T22:51:56+09:00
 tags: [task-management]
 aliases: [Tasks, タスクリスト]
 publish: true
@@ -18,6 +18,9 @@ publish: true
 - [ ] [ラムダ計算のprojectional editorの作成](https://github.com/dowdiness/til/tree/main/crdt)
 - [ ] 職務経歴書と技術経歴書の作成
 - [ ] CRDTの[レポジトリ](https://github.com/dowdiness/til/tree/main/crdt)をTILから分離して新しく作る。個々のパッケージは別々のサブレポジトリとしてモノレポ構成を作る。
+- [ ] 部屋の掃除
+- [ ] 部屋の整理法や物の定位置を決める
+- [ ] ルーターが動かないのを問い合わせる
 
 ---
 
@@ -36,6 +39,7 @@ publish: true
 - [ ] [Jujutsu](https://github.com/jj-vcs/jj) を使ってみる
 - [ ] [dataviewのデータの静的サイト生成時のMarkdownへの埋め込み](https://github.com/blacksmithgu/obsidian-dataview/issues/42)
 - [ ] ごみ収集のバイトへの応募
+- [ ] [Whisper flow](https://wisprflow.ai/) を試す
 
 ---
 
