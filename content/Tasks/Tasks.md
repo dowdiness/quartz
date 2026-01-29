@@ -1,7 +1,7 @@
 ---
 title: タスクリスト
 created: 2026-01-24T22:22:59+09:00
-modified: 2026-01-27T02:47:05+09:00
+modified: 2026-01-29T12:27:06+09:00
 tags: [task-management]
 aliases: [Tasks, タスクリスト]
 publish: true
@@ -13,7 +13,9 @@ publish: true
 <!-- 最近触ったものを手動で上に移動。16個を超えたら下に移す -->
 
 - [ ] Obsidianタスク管理システムの運用テスト
-- [ ] 
+- [ ] [crdt(eg walker)の作成](https://github.com/dowdiness/til/tree/main/crdt/event-graph-walker)
+- [ ] [crdtによるprojectional editingの実現](https://github.com/dowdiness/til/tree/main/crdt)
+- [ ] [ラムダ計算のprojectional editorの作成](https://github.com/dowdiness/til/tree/main/crdt)
 
 ---
 
