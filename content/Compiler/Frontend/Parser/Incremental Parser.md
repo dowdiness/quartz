@@ -1,7 +1,7 @@
 ---
 title: Incremental Parser
 created: 2025-12-24T11:56:13+09:00
-modified: 2026-02-01T22:03:18+09:00
+modified: 2026-02-01T23:46:15+09:00
 publish: true
 tags: [compiler, parser]
 aliases: [インクリメンタルパーサー]
@@ -22,6 +22,10 @@ CSTでParseしよう！
 
 - [Structured Editing and Incremental Parsing](https://tratt.net/laurie/blog/2024/structured_editing_and_incremental_parsing.html)
 - [Pure AST based linting sucks](https://rdambrosio016.github.io/rust/2020/09/18/pure-ast-based-linting-sucks.html)
+
+## 論文
+
+[Event-Based Parsing](https://grammarware.org/text/2019/event-based.pdf)
 
 ## 関連リンク
 
