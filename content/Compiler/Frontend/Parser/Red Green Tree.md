@@ -1,13 +1,10 @@
 ---
 title: Red Green Tree
 publish: false
-tags:
-  - compiler
-  - parser
-aliases:
-  - 無題のファイル
+tags: [compiler, parser]
+aliases: [無題のファイル]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-02-02T00:04:58+09:00
+modified: 2026-02-03T23:49:56+09:00
 ---
 
 # Red Green Tree
