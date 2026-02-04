@@ -1,14 +1,10 @@
 ---
 title: Red Green Tree
 publish: true
-tags:
-  - compiler
-  - parser
-  - CST
-aliases:
-  - Red/Green Trees
+tags: [compiler, CST, parser]
+aliases: [Red/Green Trees]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-02-03T23:57:44+09:00
+modified: 2026-02-04T14:13:42+09:00
 ---
 
 # Red Green Tree
