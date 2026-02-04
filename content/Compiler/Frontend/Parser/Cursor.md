@@ -1,10 +1,10 @@
 ---
 title: Cursor/Zipper
-publish: false
+publish: true
 tags: [compiler, parser]
-aliases: [Cursor/Zipper, cursor, zipper]
+aliases: [cursor, Cursor/Zipper, zipper]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-02-04T14:55:54+09:00
+modified: 2026-02-04T14:56:08+09:00
 ---
 
 # Cursor/Zipper
