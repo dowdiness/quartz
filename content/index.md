@@ -4,7 +4,8 @@ publish: true
 tags: [personal]
 date: 2025-04-29
 created: 2025-04-29T17:19:18+09:00
-modified: 2026-01-06T02:02:13+09:00
+modified: 2026-03-07T22:32:34+09:00
+aliases: [このサイトは何？]
 ---
 
 # このサイトは何？
