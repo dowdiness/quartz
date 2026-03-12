@@ -1,12 +1,9 @@
 ---
 title: Incremental Hylomorphism Pipeline
 created: 2026-03-07T22:33:12+09:00
-modified: 2026-03-07T22:38:37+09:00
-tags:
-  - compiler
-  - incremental-computation
-aliases:
-  - "AST as Source of Truth: Incremental Hylomorphism Pipeline"
+modified: 2026-03-12T15:37:09+09:00
+tags: [compiler, incremental-computation]
+aliases: ["AST as Source of Truth: Incremental Hylomorphism Pipeline"]
 publish: true
 ---
 
