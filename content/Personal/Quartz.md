@@ -1,10 +1,9 @@
 ---
 title: Quartz
 publish: false
-tags: [quartz, deployment, obsidian]
-aliases: []
+tags: [deployment, obsidian, quartz]
 created: 2025-05-21T22:14:08+09:00
-modified: 2025-12-22T20:47:56+09:00
+modified: 2026-03-13T14:39:35+09:00
 ---
 
 # Quartz
