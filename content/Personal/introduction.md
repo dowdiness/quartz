@@ -4,7 +4,7 @@ publish: true
 tags: [personal, portfolio]
 aliases: [Developer Portfolio(仮), introduction]
 created: 2025-12-21T13:18:07+09:00
-modified: 2026-01-21T18:35:26+09:00
+modified: 2026-03-12T15:52:49+09:00
 ---
 
 # Developer Portfolio(仮)
@@ -144,6 +144,11 @@ https://github.com/dowdiness/til/tree/main/audiocontext-vite
 - [GitHub](https://github.com/dowdiness/yowai-zine)
 - 「こころおきなく居られるweb zine」
 - 友人と一緒に趣味として作った同人的なWeb雑誌です
+
+機能的なコーポレートサイトというよりも見ていて楽しくて触りたくなるサイトを目指しています。
+アニメーションを多めに入れつつも、没入感のある読者の邪魔をしないデザインや体験を目指しています。
+音楽プレイヤーを構築してサイト上で聞けるようにしました。
+レイアウトの計算や組み方を工夫することにより、縦書きの記事の実現をしました。
 
 ## 📝学びの蓄積
 
