@@ -4,7 +4,7 @@ publish: true
 tags: [compiler]
 aliases: [Projectional editor, 構造エディタ]
 created: 2025-04-26T19:22:26+09:00
-modified: 2026-01-24T00:32:14+09:00
+modified: 2026-04-06T19:51:37+09:00
 ---
 
 # Structure editor
@@ -51,6 +51,10 @@ What is [[Incremental computation]]?
 [Visual design for a tree-oriented projectional editor](https://dl.acm.org/doi/10.1145/3397537.3397560)
 
 [Total Type Error Localization and Recovery with Holes](https://dl.acm.org/doi/epdf/10.1145/3632910)
+
+[Hybrid Structured Editing: Structures for Tools, Text for Users](https://arxiv.org/abs/2603.05644)
+
+[Incremental Live Programming via Shortcut Memoization](https://arxiv.org/abs/2603.19560)
 
 ## Examples
 
