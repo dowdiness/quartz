@@ -1,12 +1,9 @@
 ---
 title: Refactoring Prompts
 publish: true
-tags:
-  - ai
-aliases:
-  - Refactoring Prompts
+tags: [ai]
 created: 2026-04-09T22:00:34+09:00
-modified: 2026-04-09T22:00:34+09:00
+modified: 2026-04-09T23:22:13+09:00
 ---
 
 # Refactoring Prompts
