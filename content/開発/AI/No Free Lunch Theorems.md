@@ -2,9 +2,8 @@
 title: No Free Lunch Theorems
 publish: false
 tags: [ai]
-aliases: []
 created: 2025-06-09T22:07:00+09:00
-modified: 2025-12-28T20:42:55+09:00
+modified: 2026-05-09T00:15:47+09:00
 ---
 
 # No Free Lunch Theorems
