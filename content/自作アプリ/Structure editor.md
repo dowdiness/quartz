@@ -58,6 +58,7 @@ What is [[Incremental computation]]?
 
 ## Examples
 
-[Subtext](https://www.subtext-lang.org/)
-[Structured Editing for All: Deriving Usable Structured Editors From Grammars](https://doi.org/10.1145/3544548.3580785) [Video](https://youtu.be/FKNjGOv1HxU?si=fiPKPvJlAx2GA96m)
-
+- [Subtext](https://www.subtext-lang.org/)
+- [Structured Editing for All: Deriving Usable Structured Editors From Grammars](https://doi.org/10.1145/3544548.3580785) 
+	- [Video](https://youtu.be/FKNjGOv1HxU?si=fiPKPvJlAx2GA96m)
+- [Cirru](https://cirru.org/) の [calcit-editor](https://github.com/Cirru/calcit-editor)
