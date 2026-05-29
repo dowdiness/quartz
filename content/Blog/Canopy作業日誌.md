@@ -4,33 +4,35 @@ publish: true
 tags: [projectional-editing]
 aliases: [Canopy]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-05-30T00:48:22+09:00
+modified: 2026-05-30T01:32:54+09:00
 ---
 
 # Canopy作業日誌
 
 2026年5月18日から29日ごろまでの作業ログ。
-中心はCanopyというprojectional editorの実験で、周辺ライブラリのloom、incr、moondsp、js_engineも同時に触っている。
+中心はCanopyというprojectional editor（構造編集エディタ）の実験で、周辺ライブラリのloom、incr、moondsp、js_engineも同時に触っている。
+Canopyでは、テキストとしての編集と、プログラムの構造を直接触る編集を同じワークスペースで扱えるようにしたい。
+さらに、そのワークスペースの状態をAIへ渡せるコンテキストとして整理し、編集作業とAI支援をつなげることを目指している。
 
 かなり生の作業メモに近いので、細かいPRリンクもそのまま残している。
 大まかには、前半はRabbitaとCodeMirrorの接続、途中からInspectorやLoom連携、後半はCognitionというAI用ナレッジベース機能の土台づくりに進んでいる。
 incrについては、[Build Systems à la Carte](https://hackage.haskell.org/package/build)を読みながら、自分のライブラリのAPIや評価モデルを整理していった時期でもある。
 
-この記事に出てくる主なRepository:
+この記事に出てくる主なリポジトリ:
 
-- [Canopy](https://github.com/dowdiness/canopy): projectional editorとAI用ナレッジベース機能まわりの実験をしている中心リポジトリ。
+- [Canopy](https://github.com/dowdiness/canopy): projectional editor（構造編集エディタ）とAI用ナレッジベース機能まわりの実験をしている中心リポジトリ。
 - [loom](https://github.com/dowdiness/loom): incremental parserやCST projectionを扱うライブラリ。
 - [incr](https://github.com/dowdiness/incr): incremental computation用の小さなライブラリ。
 - [moondsp](https://github.com/dowdiness/moondsp): MoonBitでDSPや音楽記述用DSLの実験をしているリポジトリ。
-- [js_engine](https://github.com/dowdiness/js_engine): MoonBitでのJavaScript engineの実装。
+- [js_engine](https://github.com/dowdiness/js_engine): MoonBitでのJavaScriptエンジンの実装。
 
 本文でよく出てくる言葉:
 
 - Rabbita: Canopyで使っているUI / editor側の実験的な仕組み。
 - CodeMirror: テキストエディタ部分に使っている既存のエディタライブラリ。
-- Cognition: Canopy上でAIに渡すcontextやproviderとの境界を扱うための実験。
+- Cognition: Canopy上でAIに渡すコンテキストやプロバイダとの境界を扱うための実験。
 - FFI: MoonBit側のコードとJavaScript / DOM側のコードをつなぐ境界。
-- provider boundary: AI providerへ渡す入力、返ってきた結果、キャンセルやretryを追跡するための境界。
+- provider boundary: AIプロバイダへ渡す入力、返ってきた結果、キャンセルやretryを追跡するための境界。
 
 この期間の大きな流れ:
 
@@ -38,8 +40,8 @@ incrについては、[Build Systems à la Carte](https://hackage.haskell.org/pa
 2. DOMの隠しボタン経由だった操作を、イベント購読や明示的な境界に寄せる。
 3. Inspectorやop logを整えて、内部状態を追いやすくする。
 4. [Build Systems à la Carte](https://hackage.haskell.org/package/build)を参照しながら、incrのAPIと評価モデルを整理する。
-5. Cognitionのworkspace、context packing、provider boundaryの土台を作る。
-6. 最後にephemeral presenceやbyte codecを切り出して、共有部品として扱えるようにする。
+5. Cognitionのワークスペース、コンテキストpacking、provider boundaryの土台を作る。
+6. ephemeral presenceやbyte codecを切り出して、共有部品として扱えるようにする。
 
 ## 2026/5/18
 
@@ -223,9 +225,9 @@ runtimeのMap / Set、boxed primitive、Array、WeakMap / WeakSet、ArrayBuffer 
 
 ### Canopy
 
-Lambda metadataをeditor/workspace/FFIの境界に通す変更を進めた。
-`ffi/lambda` のrouting、workspace coordination、Editor側のmetadata受け渡し、typed workflow port handlerが追加され、Lambda exampleをCognition側の流れに接続する準備が進んだ。
-Lambda exampleを単なるサンプルとしてではなく、workspaceやCognitionの実験台として使えるようにする作業だった。
+Lambda metadataをeditor / ワークスペース / FFIの境界に通す変更を進めた。
+`ffi/lambda` のrouting、ワークスペース coordination、Editor側のmetadata受け渡し、typed workflow port handlerが追加され、Lambda exampleをCognition側の流れに接続する準備が進んだ。
+Lambda exampleを単なるサンプルとしてではなく、ワークスペースやCognitionの実験台として使えるようにする作業だった。
 関連PR: [Canopy PR #345](https://github.com/dowdiness/canopy/pull/345)、[Canopy PR #347](https://github.com/dowdiness/canopy/pull/347)、[Canopy PR #348](https://github.com/dowdiness/canopy/pull/348)、[Canopy PR #349](https://github.com/dowdiness/canopy/pull/349)、[Canopy PR #350](https://github.com/dowdiness/canopy/pull/350)
 
 ### loom
@@ -242,8 +244,8 @@ moondspではLoom mini CSTからprojection method IRを検証する作業を行�
 
 ### js_engine
 
-js_engineではconstruct/call contextの明示化を進めた。
-ArrayBufferを `RealmState` に移した後の流れとして、construction stateを明示的なcall contextへ移し、ambient interpreter context fallbackを削除した。
+js_engineではconstruct / callコンテキストの明示化を進めた。
+ArrayBufferを `RealmState` に移した後の流れとして、construction stateを明示的なcallコンテキストへ移し、ambient interpreter context fallbackを削除した。
 関連PR: [js_engine PR #152](https://github.com/dowdiness/js_engine/pull/152)
 
 ## 2026/5/26
@@ -251,11 +253,11 @@ ArrayBufferを `RealmState` に移した後の流れとして、construction sta
 ### Canopy
 
 CanopyではCognitionまわりの基盤を進めた。
-workspace filesを追跡する [Canopy PR #357](https://github.com/dowdiness/canopy/pull/357)、minimal incremental reactive layer、context packing API、provider boundaryの計画とdocsを追加し、削除ファイルの依存関係を掃除する修正も入った。
+ワークスペースfilesを追跡する [Canopy PR #357](https://github.com/dowdiness/canopy/pull/357)、minimal incremental reactive layer、コンテキストpacking API、provider boundaryの計画とdocsを追加し、削除ファイルの依存関係を掃除する修正も入った。
 関連PR: [Canopy PR #355](https://github.com/dowdiness/canopy/pull/355)、[Canopy PR #358](https://github.com/dowdiness/canopy/pull/358)、[Canopy PR #359](https://github.com/dowdiness/canopy/pull/359)、[Canopy PR #360](https://github.com/dowdiness/canopy/pull/360)、[Canopy PR #363](https://github.com/dowdiness/canopy/pull/363)、[Canopy PR #364](https://github.com/dowdiness/canopy/pull/364)
 
 同じ流れで、Lambda側はLoomの `LambdaAnalysis` attachmentを使う形へ寄せた。
-Cognitionが参照するファイル、依存関係、contextを明示的に扱えるようにすることで、後続のprovider連携へ進む土台を作った。
+Cognitionが参照するファイル、依存関係、コンテキストを明示的に扱えるようにすることで、後続のプロバイダ連携へ進む土台を作った。
 関連PR: [Canopy PR #362](https://github.com/dowdiness/canopy/pull/362)
 
 ### incr
@@ -282,8 +284,8 @@ js_engineではborrowed built-in realm routingを修正した。
 
 Canopyではprovider boundaryの設計を実装側へ進めた。
 provider boundary domainを追加し、provider boundary planをretargetした。
-前日までのrecompute cleanupやcontext packingの作業を受けて、Cognitionが外部providerへ渡す境界を整理している段階になった。
-外部providerの結果をそのまま受け入れるのではなく、どの入力とcontextに対する結果なのかを追える形にする必要があった。
+前日までのrecompute cleanupやコンテキストpackingの作業を受けて、Cognitionが外部プロバイダへ渡す境界を整理している段階になった。
+外部プロバイダの結果をそのまま受け入れるのではなく、どの入力とコンテキストに対する結果なのかを追える形にする必要があった。
 関連PR: [Canopy PR #365](https://github.com/dowdiness/canopy/pull/365)
 
 ### incr
@@ -308,14 +310,14 @@ js_engineではstartup benchmark stagingとbenchmark summary renderingの整理�
 ### Canopy
 
 Canopyではprovider planningとLambda semantic側の作業を続けた。
-provider planningとlambda semantic overlayを追加し、workspace memoのsmoke test、workspace memo lifecycle API、reactive provider boundary driverまで進めた。
+provider planningとlambda semantic overlayを追加し、ワークスペースmemoのsmoke test、ワークスペースmemo lifecycle API、reactive provider boundary driverまで進めた。
 `lib/cognition/provider_boundary_store.mbt` と `lib/cognition/reactive.mbt` にprovider planning graphを接続し、cancellation、completion、retry classification、driver actionを `@incr` の内部状態として扱う方向が固まってきた。
 関連PR: [Canopy PR #367](https://github.com/dowdiness/canopy/pull/367)、[Canopy PR #368](https://github.com/dowdiness/canopy/pull/368)、[Canopy PR #372](https://github.com/dowdiness/canopy/pull/372)、[Canopy PR #379](https://github.com/dowdiness/canopy/pull/379)
 
 provider cancellationのidempotency、driver shutdown時にpending requestを観測できること、file removalやbudgeted context変更後のstale completionを拒否するテストも追加されている。
-providerの応答が遅れて返ってきたときに、古いcontextの結果を現在の状態へ混ぜないための整理になっている。
+プロバイダの応答が遅れて返ってきたときに、古いコンテキストの結果を現在の状態へ混ぜないための整理になっている。
 Lambda、JSON、MarkdownのFFI read accessorもcoordinator経由のprotected readへ寄せた。
-workspaceの更新中に外側から半端な状態を読まないようにするための変更で、Cognitionのprovider連携を進める前に境界を固める作業になった。
+ワークスペースの更新中に外側から半端な状態を読まないようにするための変更で、Cognitionのプロバイダ連携を進める前に境界を固める作業になった。
 関連PR: [Canopy PR #370](https://github.com/dowdiness/canopy/pull/370)、[Canopy PR #374](https://github.com/dowdiness/canopy/pull/374)、[Canopy PR #375](https://github.com/dowdiness/canopy/pull/375)、[Canopy PR #376](https://github.com/dowdiness/canopy/pull/376)、[Canopy PR #377](https://github.com/dowdiness/canopy/pull/377)、[Canopy PR #378](https://github.com/dowdiness/canopy/pull/378)
 
 ### incr
