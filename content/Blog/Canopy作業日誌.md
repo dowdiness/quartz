@@ -4,18 +4,19 @@ publish: true
 tags: [projectional-editing]
 aliases: [Canopy]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-05-30T01:32:54+09:00
+modified: 2026-05-31T23:41:35+09:00
 ---
 
 # Canopy作業日誌
 
-2026年5月18日から29日ごろまでの作業ログ。
+2026年5月18日から31日ごろまでの作業ログ。
 中心はCanopyというprojectional editor（構造編集エディタ）の実験で、周辺ライブラリのloom、incr、moondsp、js_engineも同時に触っている。
 Canopyでは、テキストとしての編集と、プログラムの構造を直接触る編集を同じワークスペースで扱えるようにしたい。
 さらに、そのワークスペースの状態をAIへ渡せるコンテキストとして整理し、編集作業とAI支援をつなげることを目指している。
 
 かなり生の作業メモに近いので、細かいPRリンクもそのまま残している。
 大まかには、前半はRabbitaとCodeMirrorの接続、途中からInspectorやLoom連携、後半はCognitionというAI用ナレッジベース機能の土台づくりに進んでいる。
+その後はlambdaのscope graph、go-to-definition、typed spreadsheet demo、bytecode benchmarkなど、構造編集と周辺基盤を実際のUIや性能測定へつなぐ作業に広がっている。
 incrについては、[Build Systems à la Carte](https://hackage.haskell.org/package/build)を読みながら、自分のライブラリのAPIや評価モデルを整理していった時期でもある。
 
 この記事に出てくる主なリポジトリ:
@@ -42,6 +43,8 @@ incrについては、[Build Systems à la Carte](https://hackage.haskell.org/pa
 4. [Build Systems à la Carte](https://hackage.haskell.org/package/build)を参照しながら、incrのAPIと評価モデルを整理する。
 5. Cognitionのワークスペース、コンテキストpacking、provider boundaryの土台を作る。
 6. ephemeral presenceやbyte codecを切り出して、共有部品として扱えるようにする。
+7. Lambdaのscope graphとgo-to-definitionを整え、Idealのscope annotationを同じ解決結果へ寄せる。
+8. incrのtyped spreadsheet demoとjs_engineのbytecode benchmarkを育て、実験用UIや性能確認の入口を増やす。
 
 ## 2026/5/18
 
@@ -372,3 +375,91 @@ short-circuit operatorとcomma expressionのbytecode対応を追加し、sloppy 
 関連PR: [js_engine PR #158](https://github.com/dowdiness/js_engine/pull/158)、[js_engine PR #159](https://github.com/dowdiness/js_engine/pull/159)、[js_engine PR #160](https://github.com/dowdiness/js_engine/pull/160)、[js_engine PR #161](https://github.com/dowdiness/js_engine/pull/161)、[js_engine PR #162](https://github.com/dowdiness/js_engine/pull/162)、[js_engine PR #163](https://github.com/dowdiness/js_engine/pull/163)
 
 bytecodeはまだopt-inの段階だが、式や関数境界の細かい仕様ケースを通しながら、interpreterとの差分を潰していく流れになっている。
+
+## 2026/5/30
+
+### Canopy
+
+CanopyではLambdaのscope graphを本格的に実装側へ寄せた。
+NodeId keyedなbinding indexを追加し、renameのbinder lookupを古い `resolve_binder` から `@scope.declaration` へ移した。
+その後、残っていたcallerも `@scope.declaration` に移し、module binderの `Decl.node_id` に関するproduction contractやcross-pipeline resolution equivalenceをテストで固定した。
+関連PR: [Canopy PR #396](https://github.com/dowdiness/canopy/pull/396)、[Canopy PR #397](https://github.com/dowdiness/canopy/pull/397)、[Canopy PR #398](https://github.com/dowdiness/canopy/pull/398)、[Canopy PR #399](https://github.com/dowdiness/canopy/pull/399)、[Canopy PR #400](https://github.com/dowdiness/canopy/pull/400)、[Canopy PR #401](https://github.com/dowdiness/canopy/pull/401)、[Canopy PR #402](https://github.com/dowdiness/canopy/pull/402)
+
+cross-pipeline PBTを通す中で、module binderの `node_id` が実際のprojection nodeを指していない問題もはっきりした。
+この問題はgo-to-definitionを作るときに邪魔になるため、既存のSourceMap token spanを使ってbinder locationを引けるようにするOption Dの設計へ整理した。
+関連PR: [Canopy PR #403](https://github.com/dowdiness/canopy/pull/403)
+
+### loom
+
+LoomではCanopy側のscope graphやprojection identityまわりを支える変更が進んだ。
+CST tokenをsource spanとして保持し、parser-owned reuseのrebaseを取り戻し、source-span reuse APIを固めた。
+さらに `ProjectionIdentityTracker` を追加し、projection identityを単発のhelperではなく、編集列をまたいで追跡できる部品として扱えるようにした。
+関連PR: [loom PR #188](https://github.com/dowdiness/loom/pull/188)、[loom PR #189](https://github.com/dowdiness/loom/pull/189)、[loom PR #190](https://github.com/dowdiness/loom/pull/190)、[loom PR #191](https://github.com/dowdiness/loom/pull/191)、[loom PR #192](https://github.com/dowdiness/loom/pull/192)
+
+### incr
+
+incrではtyped spreadsheet demoを実際に触れるUIへ育てた。
+セル編集できるようにした後、50x50のfullscreen sheet、inline edit、trace / evidence overlay、night themeを備えたRabbita demoに広げた。
+式の評価自体はMoonBit側に残し、Rabbitaは表示と操作の層に留める方針を保っている。
+関連PR: [incr PR #117](https://github.com/dowdiness/incr/pull/117)、[incr PR #118](https://github.com/dowdiness/incr/pull/118)
+
+### moondsp
+
+moondspではLoom側で増えたprojection identity helperをspec側へ取り込んだ。
+Loom mini CST projectionをproduction parserへすぐ置き換えるのではなく、まずspecのprojection identityを上流APIに寄せて、移行時の前提を揃えている。
+関連PR: [moondsp PR #111](https://github.com/dowdiness/moondsp/pull/111)
+
+### js_engine
+
+js_engineではopt-in bytecode / VM prototypeのcoverageを大きく広げた。
+演算子、property access、call / construct、destructuring、eval、`super` などの実行経路を既存runtime helperへ寄せながらbytecode側に通し、未対応の構文は明示的なunsupported診断で落とす形にした。
+その後、bytecode performance microbenchmarkを追加し、不要なarguments object setupを避ける最適化も入った。
+関連PR: [js_engine PR #164](https://github.com/dowdiness/js_engine/pull/164)、[js_engine PR #171](https://github.com/dowdiness/js_engine/pull/171)、[js_engine PR #172](https://github.com/dowdiness/js_engine/pull/172)
+
+## 2026/5/31
+
+### Canopy
+
+Canopyでは前日に設計したscope graphのbinder locationを実装した。
+`@scope.binder_span` と `@scope.go_to_definition` を追加し、`references` を `DeclId` keyedに移すことで、module binderのsynthetic `node_id` に依存しない形にした。
+incrementalとfull pipelineの差分テストも追加し、FlatProj reuseや `@incr` memo stackを通しても同じ解決結果になることを確認している。
+関連PR: [Canopy PR #404](https://github.com/dowdiness/canopy/pull/404)、[Canopy PR #405](https://github.com/dowdiness/canopy/pull/405)、[Canopy PR #406](https://github.com/dowdiness/canopy/pull/406)、[Canopy PR #407](https://github.com/dowdiness/canopy/pull/407)、[Canopy PR #408](https://github.com/dowdiness/canopy/pull/408)、[Canopy PR #411](https://github.com/dowdiness/canopy/pull/411)
+
+`incr` のread channelが `ReadError` を返すようになった流れに合わせて、coordinator側でもReadErrorを伝播するようにした。
+scope graph側ではmodule editのreferenceをidentity basedにし、edit capture checkやIdealのscope annotationもcanonicalな `@scope` graphから導く形へ寄せた。
+これでUIのhighlightとscope graph側の解決結果が別々のresolverを持つ状態から一歩抜けた。
+関連PR: [Canopy PR #409](https://github.com/dowdiness/canopy/pull/409)、[Canopy PR #410](https://github.com/dowdiness/canopy/pull/410)、[Canopy PR #412](https://github.com/dowdiness/canopy/pull/412)、[Canopy PR #420](https://github.com/dowdiness/canopy/pull/420)、[Canopy PR #426](https://github.com/dowdiness/canopy/pull/426)、[Canopy PR #427](https://github.com/dowdiness/canopy/pull/427)
+
+docs側ではrepository responsibility map、GUI layer integration report、module一覧と `.gitmodules` / `moon.mod.json` の整合性を整理した。
+Structure modeのfallback documentもschema validに直している。
+関連PR: [Canopy PR #421](https://github.com/dowdiness/canopy/pull/421)、[Canopy PR #431](https://github.com/dowdiness/canopy/pull/431)、[Canopy PR #432](https://github.com/dowdiness/canopy/pull/432)、[Canopy PR #433](https://github.com/dowdiness/canopy/pull/433)
+
+### loom
+
+Loomでは前日の `ProjectionIdentityTracker` を、失敗したeditやmalformed damageをまたいでcomposeできるようにした。
+また、incr側のtyped spreadsheet demo、ReadError、accumulator ReadErrorに合わせてsubmoduleを更新し、Canopyやmoondspが同じ基盤を参照できるようにした。
+関連PR: [loom PR #197](https://github.com/dowdiness/loom/pull/197)、[loom PR #198](https://github.com/dowdiness/loom/pull/198)、[loom PR #199](https://github.com/dowdiness/loom/pull/199)、[loom PR #200](https://github.com/dowdiness/loom/pull/200)、[loom PR #201](https://github.com/dowdiness/loom/pull/201)、[loom PR #204](https://github.com/dowdiness/loom/pull/204)
+
+### incr
+
+incrではhonest read-error ownershipのTier 2として、public read channelを `CycleError` から `ReadError` へ広げた。
+これにより、直接disposeされたcellの読み取りをcatchできないabortではなく `Err(Disposed(_))` として扱えるようになった。
+`Derived::fallible` のrecipeやReachableDerived ADRもdocsに追加し、typed spreadsheet demo側ではGC rootingやper-edit evidence snapshotの上限も直した。
+関連PR: [incr PR #119](https://github.com/dowdiness/incr/pull/119)、[incr PR #120](https://github.com/dowdiness/incr/pull/120)、[incr PR #125](https://github.com/dowdiness/incr/pull/125)、[incr PR #126](https://github.com/dowdiness/incr/pull/126)、[incr PR #127](https://github.com/dowdiness/incr/pull/127)、[incr PR #132](https://github.com/dowdiness/incr/pull/132)、[incr PR #133](https://github.com/dowdiness/incr/pull/133)、[incr PR #134](https://github.com/dowdiness/incr/pull/134)
+
+その後、static `Derived` のprivate pathを通常経路へ昇格し、disposed cell idのdependent guard、Datalog relationのnet change publish、accumulator readの `ReadError` 対応も入った。
+typed spreadsheet demoはCloudflare Pagesへdeployするworkflowを追加し、Node 24 actionsにも合わせた。
+関連PR: [incr PR #135](https://github.com/dowdiness/incr/pull/135)、[incr PR #136](https://github.com/dowdiness/incr/pull/136)、[incr PR #137](https://github.com/dowdiness/incr/pull/137)、[incr PR #141](https://github.com/dowdiness/incr/pull/141)、[incr PR #142](https://github.com/dowdiness/incr/pull/142)、[incr PR #144](https://github.com/dowdiness/incr/pull/144)、[incr PR #145](https://github.com/dowdiness/incr/pull/145)
+
+### moondsp
+
+moondspではLoomのtracker edit compositionをspec側で消費し、Loom promotion notesも現状に合わせて更新した。
+web側ではlive UIからsong playbackを触れるようにし、multiline song helpやglobal BPMの説明も補った。
+関連PR: [moondsp PR #112](https://github.com/dowdiness/moondsp/pull/112)、[moondsp PR #113](https://github.com/dowdiness/moondsp/pull/113)、[moondsp PR #115](https://github.com/dowdiness/moondsp/pull/115)、[moondsp PR #116](https://github.com/dowdiness/moondsp/pull/116)
+
+### js_engine
+
+js_engineではbytecode prototypeの性能を測る入口を整えた。
+PRごとにbase-vs-head benchmarkを出せるようにし、live benchmark dashboardを再設計して、commit dateやscan controlを見やすくした。
+さらにplain object property helperやbytecode environment lookupのhot pathを最適化し、startup Hyperfine workflow、startup decomposition helper、startup phase breakdown benchmarkを追加した。
+関連PR: [js_engine PR #173](https://github.com/dowdiness/js_engine/pull/173)、[js_engine PR #174](https://github.com/dowdiness/js_engine/pull/174)、[js_engine PR #175](https://github.com/dowdiness/js_engine/pull/175)、[js_engine PR #176](https://github.com/dowdiness/js_engine/pull/176)、[js_engine PR #177](https://github.com/dowdiness/js_engine/pull/177)、[js_engine PR #178](https://github.com/dowdiness/js_engine/pull/178)、[js_engine PR #182](https://github.com/dowdiness/js_engine/pull/182)、[js_engine PR #183](https://github.com/dowdiness/js_engine/pull/183)、[js_engine PR #184](https://github.com/dowdiness/js_engine/pull/184)
