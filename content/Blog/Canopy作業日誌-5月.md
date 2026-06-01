@@ -1,10 +1,10 @@
 ---
-title: Canopy作業日誌
+title: Canopy開発日誌-5月
 publish: true
 tags: [projectional-editing]
-aliases: [Canopy]
+aliases: [Canopy, Canopy作業日誌]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-06-02T01:14:07+09:00
+modified: 2026-06-02T01:16:02+09:00
 ---
 
 # Canopy作業日誌
