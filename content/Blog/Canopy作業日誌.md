@@ -4,7 +4,7 @@ publish: true
 tags: [projectional-editing]
 aliases: [Canopy]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-05-31T23:41:35+09:00
+modified: 2026-06-02T01:14:07+09:00
 ---
 
 # Canopy作業日誌
