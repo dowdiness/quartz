@@ -3,7 +3,7 @@ title: Canopy開発日誌-6月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-06-03T14:20:36+09:00
+modified: 2026-06-03T15:39:12+09:00
 ---
 
 # Canopy開発日誌-6月
@@ -17,6 +17,9 @@ modified: 2026-06-03T14:20:36+09:00
 
 6月2日は、午前にLambda projectionの命名とidentity整理を締め、午後からincr graph visualizerとcanvas graph demoを進めた。
 CIのノイズ対策と、Codexによるreview / 実装計画の使い分けも少し固まった。
+
+6月3日は、MoonDsp / Canopy全体方針をmainへ入れ、source-backed canvas demoをブラウザで触れるところまで進めた。
+CIではIdeal web E2EをPR gateに載せ、incr側ではpublic event APIの命名をDerived寄りに整理した。
 
 ## 2026/6/1
 
@@ -185,3 +188,63 @@ Codex reviewでは、最初のretry判定が広すぎる点と設定値validatio
 さらに、残っていたbare `moon update` call siteをwrapper経由へ寄せ、再発防止のguardも追加した。
 MakefileやCloudflare build-deploy scriptまでscan対象を広げたことで、PR CIだけでなくdeploy path側も同じretry policyに乗った。
 関連PR: [#470](https://github.com/dowdiness/canopy/pull/470)、[#473](https://github.com/dowdiness/canopy/pull/473)
+
+## 2026/6/3
+
+### Canopy
+
+まず、Ideal web E2EをCIのPR gateに乗せた。
+これまで `editor-response.perf.spec.ts` はbenchmark workflowで見ていたが、通常のIdeal editor E2E suiteはPR gatingとして独立していなかった。
+
+`scripts/test-ideal-web-e2e.sh` を追加し、非performanceのPlaywright specをまとめて走らせるようにした。
+`moon update` は前日のretry wrapperを使い、Vite側のMoonBit JS buildでは既知のworkspace target問題を避けるため `MOON_WORK=off` を明示している。
+関連PR: [#478](https://github.com/dowdiness/canopy/pull/478)
+
+次に、MoonDsp + Canopy ecosystem visionと、BAND 1-2 execution specをmainへ入れた。
+この日誌冒頭に置いた全体方針リンクがその文書。
+
+内容としては、operations-as-dataを中核に、Canopy、MoonDsp、Loom、incrをどう分担させるかを整理している。
+Canopyは構造編集とprojection、MoonDspはDSP runtime、Loomはsource-backed projection、incrは共有のincremental substrateという見取り図。
+
+この文書はmulti-agent verify passとCodex design-reviewを通して、8件の指摘を取り込んだうえで入った。
+関連PR: [#445](https://github.com/dowdiness/canopy/pull/445)
+
+Canvas exampleでは、6月2日に追加したsource-backed graph adapterをブラウザdemoとして触れるところまで進めた。
+`?source=1` でsource-backed modeに入り、左側のGraph DSL sourceをcanonical backing storeとして使う。
+
+このdemoでは、node dragはlocal layoutだけを変え、source本文は変えない。
+一方でhandle同士をつなぐcanvas gestureや、`Connect osc -> meter` / `Insert reverb` の操作はcanonical sourceへlowerされる。
+
+Playwright E2Eでは、dragがsourceを汚さないこと、canvas gestureが `meter = scope(input: osc)` へ反映されること、source editorから4 node / 2 edgeの状態へreparseできることを確認している。
+作業ブランチ: `feat/source-backed-canvas-demo`
+
+### MoonDsp
+
+MoonDsp側では、Canopyのような外部editorがaudio previewを渡すときのhandoff contractを文書化した。
+parser、projection、lowering、template analysis、compile、hot-swap準備はeditor / control thread側で行い、audio callbackには持ち込まない、という境界を明確にした。
+
+Preview stateも、単なる再生可否ではなく `Idle` / `Analyzing` / `Ready` / `UsingLastGoodTemplate` / `Failed` として扱う。
+失敗した最新editがあっても、前のready runtimeがあるならlast-good previewを鳴らし続ける設計。
+関連PR: [moondsp #125](https://github.com/dowdiness/moondsp/pull/125)
+
+さらに、external authoring graphをMoonDspへ渡すコストを見るbenchmarkも追加した。
+まず基本形を入れ、その後により現実的なauthoring shapeを追加している。
+
+これはCanopy側のsource-backed graph demoと同じ問題を、MoonDsp runtime側の受け口から測るための土台。
+関連PR: [moondsp #126](https://github.com/dowdiness/moondsp/pull/126)
+作業ブランチ: `issue-127-realistic-external-authoring-benchmarks`
+
+### incr
+
+incrでは、public event APIの名前を `MemoEvent` から `DerivedEvent` へ寄せた。
+実際にはMemoだけでなくDerived recompute eventを表していたため、6月2日のCanopy visualizer側の `Recompute*` 命名整理とも方向が揃っている。
+
+古い `MemoEvent` / `Runtime::on_memo_event` はdeprecated alias / forwarding methodとして残し、外部consumerのsource compatibilityは保った。
+ただしversion bumpとmooncakes publishはまだ行わず、`0.8.0` 向けの変更としてUnreleasedに置いている。
+関連PR: [incr #171](https://github.com/dowdiness/incr/pull/171)
+
+Codex reviewでは、最初にchecked examplesやroadmap docsに古い名前が残っていることを検出していた。
+その後、compat testとdocs更新を入れてからmergeされた。
+
+並行して、`Input::id` やruntime identity surfaceの設計レビューも行った。
+こちらはまだ実装ではなく、single-cell handleだけにidentityを出す方針と、`RuntimeId` wrapperを切る案を確認した段階。
