@@ -1,17 +1,22 @@
 ---
 title: Canopy開発日誌-6月
 publish: true
-tags: [canopy, projectional-editing]
+tags: [blog, canopy, projectional-editing]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-06-03T13:58:04+09:00
+modified: 2026-06-03T14:20:36+09:00
 ---
 
 # Canopy開発日誌-6月
 
 2026年6月のCanopy開発ログ。
 
+全体方針: [MoonDsp / Canopy ecosystem vision](https://github.com/dowdiness/canopy/blob/main/docs/research/2026-06-01-moondsp-canopy-ecosystem-vision.md)
+
 6月1日は、5月末に進めたLambdaのscope graphやgo-to-definitionを、実際の構造編集へ近づける作業が中心だった。
 同時に、CanopyとMoonDspの関係、性能改善の優先度、エージェントの使い分けも整理した。
+
+6月2日は、午前にLambda projectionの命名とidentity整理を締め、午後からincr graph visualizerとcanvas graph demoを進めた。
+CIのノイズ対策と、Codexによるreview / 実装計画の使い分けも少し固まった。
 
 ## 2026/6/1
 
@@ -90,3 +95,93 @@ Claude / Codex / piの使い分けも整理した。
 Codexはpre-PR reviewだけでなく、実装順序や検証点を含む計画を書く役割も持つ。
 
 この運用はLoomのjson-settings exampleで最初に使い、`GraphBlocked` stateのような設計漏れも拾えた。
+
+## 2026/6/2
+
+### Canopy
+
+まず、BAND 2bのJS target addendumを追加した。
+`to_flat_proj_incremental` のcliffはNode上でも再現し、1000 defsのtailで約4msまで伸びた。
+
+一方で、原因の説明は修正した。
+当初疑っていたper-positionの `start()` / `cst_node()` walkではなく、reuseされたdef subtree同士の `CstNode==` とcache-boundなpointer chasingが支配的だった。
+
+ここでも最適化コードは入れていない。
+cross-parse interningとhash-only reuseというfix leverは残しつつ、実際のdocument scaleが必要になるまではparkする判断にした。
+関連PR: [#451](https://github.com/dowdiness/canopy/pull/451)
+
+Lambda projectionでは、`FlatProj` を `ModuleProjection` に改名した。
+これは単なる名前の置換ではなく、「Moduleのlet defsとfinal exprをflattenした、incremental projection diffの単位」という責務を表に出すための整理。
+
+同時に、ReuseCursor、ProjectionIdentityTracker、`to_module_projection_incremental` の3つのidentity / reuse mechanismをADRに分けて記録した。
+`#396` のsource-span tensionや、BAND 2bのparkした最適化がclarity refactorではなく設計トレードオフを持つこともここに残した。
+
+依存関係は `dowdiness/incr@0.7.1` とLoom側の追従へ寄せた。
+review後には、full delete後に古いmodule root `NodeId` を再利用しうるcache reset漏れも直している。
+関連PR: [#452](https://github.com/dowdiness/canopy/pull/452)
+
+microbenchmark側では、本番と同じようにID sourceを前へ進めるよう修正した。
+古いprojectionを作ったあと、そのhigh-water markからincremental callを再開する形。
+これは性能改善ではなく、benchmark setupが本番のID割り当てとずれないようにする修正。
+関連PR: [#453](https://github.com/dowdiness/canopy/pull/453)
+
+### Incr visualizer
+
+IdealのIncrGraphは、topologyを見るだけのpanelから、recomputeの状態とcostも見えるpanelへ少し進んだ。
+
+まず、`IncrMemoEventTap` の一時event bufferをappend-onlyではなく「cellごとに最後のeventだけ残す」形にした。
+status coloringはもともと各cellの最新eventしか使っていなかったので、bufferをdistinct cell数でboundできる。
+関連PR: [#462](https://github.com/dowdiness/canopy/pull/462)
+
+その上で、各cellの最新recompute時間をnode detailへ出すようにした。
+`ns` / `us` / `ms` の単位を切り替えて表示するので、遅いcellが周囲から浮いて見える。
+Codexのreview履歴でも、この変更はstatus pathやJS targetのInt64 formattingを確認したうえでPASSしていた。
+関連PR: [#465](https://github.com/dowdiness/canopy/pull/465)
+
+UI側には、IncrGraph panelの色の意味を示すlegendを追加した。
+Idle / Recomputing / Changed / Failedの4つで、SVG rendererと同じ `VisualNodeStatus::stroke` / `::fill` を使う。
+関連PR: [#469](https://github.com/dowdiness/canopy/pull/469)
+
+命名も整理した。
+tapがMemoだけでなくDerivedのrecomputeも見ているので、`IncrMemoEvent*` を `Recompute*` 系へ改名し、snapshot側も `RecomputeSnapshot*` に揃えた。
+夜のCodexメモでは、incr本体側の `MemoEvent` / `DerivedEvent` 命名移行も検討していて、Canopy側のvisualizer名をrecompute中心に寄せる流れとつながっている。
+関連PR: [#471](https://github.com/dowdiness/canopy/pull/471)、[#475](https://github.com/dowdiness/canopy/pull/475)
+
+### Canvas
+
+Canvas exampleでは、graph DSLとUIの接続を進めた。
+
+まず、Graph DSL sourceをroundtripするsmoke testを追加した。
+ここでLoom submoduleも進め、canvas側がsource-backed graphを扱う準備を始めた。
+関連PR: [#466](https://github.com/dowdiness/canopy/pull/466)
+
+次に、canvasのgraph modelを `examples/canvas/graph_model` へ切り出した。
+巨大化していた `canvas_state` / `canvas_update` から、graph operationの責務を分けた形。
+同時に、web側には `GraphAdapter` lifecycleのstubを置いた。
+関連PR: [#474](https://github.com/dowdiness/canopy/pull/474)
+
+その後、graph UI stateをincrで分け、`canvas_runtime` を作った。
+状態更新を直接UI stateに詰め込むのではなく、graph model、runtime、adapterの境界を少し見えるようにした。
+関連PR: [#477](https://github.com/dowdiness/canopy/pull/477)
+
+最後に、source-backed graph adapterを追加した。
+source graphからrealized node idを取り出してlogできるようになり、hard-codedなgraph demoから、sourceを背後に持つdemoへ近づいた。
+関連PR: [#476](https://github.com/dowdiness/canopy/pull/476)
+
+### CI / 作業運用
+
+CIでは、editor-response benchmarkと `moon update` の2つを安定化した。
+
+editor-responseは、CI runner上の単発p95 paintがflakeしやすかった。
+一度CI-only budgetを175msへ緩めたあと、10% trimmed meanを主なgateにして、keystroke数も30から40へ増やした。
+一時的なspikeではなく、全paintが遅くなる本物のregressionを拾うための変更。
+関連PR: [#459](https://github.com/dowdiness/canopy/pull/459)、[#463](https://github.com/dowdiness/canopy/pull/463)
+
+`moon update` は、mooncakes CDNの一時的な403で落ちることがあった。
+そのため、transientな403 / 429 / 5xx / DNS / connection errorだけをbounded retryする `scripts/moon-update.sh` を追加した。
+Codex reviewでは、最初のretry判定が広すぎる点と設定値validation漏れがfindingになり、修正後にPASSしている。
+関連PR: [#468](https://github.com/dowdiness/canopy/pull/468)
+
+さらに、残っていたbare `moon update` call siteをwrapper経由へ寄せ、再発防止のguardも追加した。
+MakefileやCloudflare build-deploy scriptまでscan対象を広げたことで、PR CIだけでなくdeploy path側も同じretry policyに乗った。
+関連PR: [#470](https://github.com/dowdiness/canopy/pull/470)、[#473](https://github.com/dowdiness/canopy/pull/473)
