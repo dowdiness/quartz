@@ -1,9 +1,9 @@
 ---
 title: Canopy開発日誌-6月
 publish: true
-tags: [blog, canopy, projectional-editing]
+tags: [blogcanopyprojectional-editing]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-06-03T15:39:12+09:00
+modified: 2026-06-04T15:46:28+09:00
 ---
 
 # Canopy開発日誌-6月
@@ -248,3 +248,4 @@ Codex reviewでは、最初にchecked examplesやroadmap docsに古い名前が�
 
 並行して、`Input::id` やruntime identity surfaceの設計レビューも行った。
 こちらはまだ実装ではなく、single-cell handleだけにidentityを出す方針と、`RuntimeId` wrapperを切る案を確認した段階。
+
