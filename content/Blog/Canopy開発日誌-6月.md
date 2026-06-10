@@ -30,6 +30,10 @@ modified: 2026-06-11T04:43:24+09:00
 
 6月9日は、日付が変わった時点でPR2が進行中。`NodeId` / `EdgeId`を文字列identityへ寄せ、Loomの`GraphDoc::find_node_by_id`を使う方向でbinding remap shimを消す作業を続けている。
 
+6月10日は、incrのIncremental TEAを一気に仕上げた日。renderer lifecycle、keyed VDOM diff、ベンチマーク、subscriptionsが順にmergeされ、prototypeの主要issueがすべて閉じた。MoonDspはloomパーサー置き換えcampaignのPhase 2 parityを完走してADR-0016をAcceptedにし、js_engineはv0.3.0をリリースした。
+
+6月11日は、loomのseparated-list（#279）とgroup shape helpers（#196）を畳んだあと、Canopyのアーキテクチャ再設計に着手し、S0のproposal + API boundary ADRとS1のprotocol/wire抽出を同じ日にmergeした。js_engineではCIのcache系改善が効かないことを実測で確認し、test262のshardingへ方針を切り替えた。
+
 ## 2026/6/1
 
 ### Canopy
@@ -409,3 +413,109 @@ renameだけはbindingがtokenに含まれるため、古いtokenから新しい
 
 MoonDsp側では、loom-mini-cstのlast-good projectionを進めた。parse error時にlast-goodなprojected docを返す実装を入れ、value-collisionの前提やempty-acceptのケースもテストで固定した。その後、BackdateEq / last-goodのテストをmatch / guard / map寄りに整理している。
 関連ブランチ: `feat/loom-mini-cst-last-good`
+
+## 2026/6/10
+
+### incr / Incremental TEA
+
+Incremental TEAの残りのissueを、この日でほぼすべて畳んだ。
+
+まず#209のrenderer unmount / dispose lifecycle。`BrowserRenderer`がすべてのrootを所有する形にして、mounted（毎rAFでflush）とdetached（DOMからは外すがProgram / Scope / Watchは生かしたまま）の2バケツで管理する。detach / reattach / destroy / disposeを揃え、Programを共有しているrootが残っていないか数えてから破棄するので、共有viewを壊さない。
+関連PR: [incr #239](https://github.com/dowdiness/incr/pull/239)
+
+次に#211のkeyed VDOM diffとpureなevent payload。`EventBinding`が`Msg`を直接持つのをやめて、`Const(Msg) | Input(tag~)`というpureなdescriptorにした。text入力の解決はrenderer boundaryのresolver（mount時の`on_input`）に置いたので、`Html`値はEqでcacheできるpure dataのまま保たれる。keyed childrenは、DOMに触らないpureなplanner `plan_keyed_diff`がreuse計画を立て、applierがkeyごとにnodeとlistenerを再利用する。
+関連PR: [incr #240](https://github.com/dowdiness/incr/pull/240)
+
+#189のベンチマークも取った。毎回viewを再構築してEqでdiffするdirty-cellなbaselineと比べると、viewが読んでいないフィールドのmutationをincrはO(1)（約0.5µs）でskipし、N=16 / 64 / 256で9.5× / 36× / 159×速い。skipの効きがviewサイズに比例する、というのが見たかった数字だ。一方、読まれるmutationではbatchとpropagationのオーバーヘッドでほぼ同等。plannerはO(n·m)なので、key-map + LIS化はfollow-up（#241）に残した。
+関連PR: [incr #243](https://github.com/dowdiness/incr/pull/243)
+
+最後に#188のsubscriptions。望ましいsubscription集合をtrackedな`Derived[Subscriptions[Msg]]`として持ち、graph外の`SubscriptionsManager`がtimerなどのside-effect handleを管理する。`SubKey(namespace_id, identity)`で安定したreconciliationを行い、同じkeyのhandlerは作り直さずin-placeで更新する。仕上げにwarning掃除も入れた。
+関連PR: [incr #244](https://github.com/dowdiness/incr/pull/244)、[#245](https://github.com/dowdiness/incr/pull/245)
+
+これでTEA trackの主要issueは、ベンチマークまで含めてすべて閉じた。
+
+### MoonDsp
+
+前日の夜、loomで本番のminiパーサー（runtimeの`@mini.parse`とauthoring pipelineの両方）を置き換えるcampaignを立ち上げていた。Phase 0のfeasibility gate（3 backendでのbuild、依存の隔離、error adapterの形、publish bundleの分離）はGO（[moondsp #189](https://github.com/dowdiness/moondsp/pull/189)）。この日はPhase 2のauthoring parityを完走した。
+
+Piece 1はvalue-levelのdifferential parity。40-inputのcorpusでloom版とhand-written版のPatternDocを突き合わせ、value-levelのdivergenceはゼロだった。
+関連PR: [moondsp #190](https://github.com/dowdiness/moondsp/pull/190)
+
+Piece 2はsong-levelの対応。songのgrammarとprojectionを足し、bpm、sectionのlayout、occurrence id、sectionごとのbody eventsをoracleと突き合わせるparity harnessを入れた。song keywordは専用tokenではなく`Ident` + `LParen`の隣接で判定する。
+関連PR: [moondsp #192](https://github.com/dowdiness/moondsp/pull/192)
+
+Pieces 4+3でcorpusを40から84へ広げた。本物のdivergenceは1件だけ — oracle側のtrailing-junk leniencyで、`s("bd] sd")`を黙って`bd`として解釈してsdを落とす。loomは拒否する。loomの方が正しい挙動なので、characterization testで両側の現状を固定した。
+関連PR: [moondsp #194](https://github.com/dowdiness/moondsp/pull/194)
+
+そのうえで、Phase 3（runtime swap）のgateとなるADR-0016をAcceptedにした。`@mini`のsurface / ABI / error contractを凍結したままloomへ差し替える方針で、error adapterはraw CST diagnosticsからposition付きのメッセージを組み立てる。corpus parse latency ≤1.3msなどのacceptance gateもここで決めた。
+関連PR: [moondsp #196](https://github.com/dowdiness/moondsp/pull/196)
+
+細かいものでは、ADR-0010のcompile-seam reuse invariantのテスト固定、agent guideのportable化、shipping packageへのcore Iter / Array / Stringメソッドの適用、宣言的iterator chainへのsweep（日付が変わった直後にmerge）も入った。
+関連PR: [moondsp #191](https://github.com/dowdiness/moondsp/pull/191)、[#193](https://github.com/dowdiness/moondsp/pull/193)、[#195](https://github.com/dowdiness/moondsp/pull/195)、[#197](https://github.com/dowdiness/moondsp/pull/197)、[#198](https://github.com/dowdiness/moondsp/pull/198)
+
+### loom
+
+Phase 2のsong projectionを作る過程で出てきたupstream要求のうち、#280のtoken adjacency primitivesを実装した。`ParserContext::at_adjacent` / `expect_adjacent`で、trivia無しの連接を判定する。Codex reviewが「index-onlyの隣接判定はunsound」という本質的な穴を見つけた — zero-widthのtokenが間に挟まるケースと、sourceに現れないgapのケースがあるため、indexのcheckとoffsetのcheckの両方が要る。merge後、moondsp側の`expect_song_keyword`は手書きのoffset比較からこれに移行した（上の[moondsp #197](https://github.com/dowdiness/moondsp/pull/197)）。
+関連PR: [loom #284](https://github.com/dowdiness/loom/pull/284)
+
+#281の`SyntaxNode::text()`（covered-source accessor）と、seam helperのpositioned iterator chains化も入れた。`token_at_offset`のdeclarative化はbenchmarkで悪化が出たため棄却し、imperativeのまま残している。
+関連PR: [loom #282](https://github.com/dowdiness/loom/pull/282)、[#283](https://github.com/dowdiness/loom/pull/283)
+
+### Canopy
+
+日付が変わってすぐ、Canvasのsource panelのpollingをincrのreactive invalidationへ置き換えるPRをmergeした（#565のfollow-up）。settle pingを1つの`SyncFromGraph`にまとめるperf修正も含む。なお前日の日中には、stable canvas node identityのPR2自体が[#571](https://github.com/dowdiness/canopy/pull/571)としてmerge済みで、source-backed canvasの`NodeId`はprojection tokenの文字列になっている。
+関連PR: [#576](https://github.com/dowdiness/canopy/pull/576)
+
+前日の夜にはincr 0.9.0のbump train（incrのpublish → loom [#276](https://github.com/dowdiness/loom/pull/276) → canopy [#572](https://github.com/dowdiness/canopy/pull/572)）が完走していて、canopy側はMoonBit 0.10.0 toolchainのpin、incr minor driftのCI check（[#574](https://github.com/dowdiness/canopy/pull/574)）、loom submoduleの追従（[#575](https://github.com/dowdiness/canopy/pull/575)）まで済んでいた。この日はそれを制度として固定するshared-substrate incr version-lockのADRを入れ、issue #441を閉じた。canopyとMoonDspが同じincr minorに揃っていることと、bottom-up（incr → egglog → loom → canopy）のpaired-bump protocolを文書として残した形だ。
+関連PR: [#577](https://github.com/dowdiness/canopy/pull/577)
+
+AGENTS.mdの整理も行った。workspace / submodule記述のdrift修正、重複セクションの削減、実装ポリシーの追記。
+関連PR: [#580](https://github.com/dowdiness/canopy/pull/580)
+
+### js_engine
+
+v0.3.0をリリースした。リリース後に、report_test262がghのnumericなdatabaseIdをdecodeできない問題を直し、RELEASING.mdに具体的なmooncakes publishチェックリストを足した。
+関連PR: [js_engine #287](https://github.com/dowdiness/js_engine/pull/287)、[#288](https://github.com/dowdiness/js_engine/pull/288)、[#289](https://github.com/dowdiness/js_engine/pull/289)
+
+## 2026/6/11
+
+### loom
+
+separated-list parsing（#279）を、独立した2本のPRで仕上げた。
+
+[#285](https://github.com/dowdiness/loom/pull/285)はseam側の`SyntaxNode::direct_elements_grouped_by(separator)`。N個のseparatorをN+1個のgroupに分け、empty groupも保持する。[#286](https://github.com/dowdiness/loom/pull/286)はcore側の`ParserContext::separated_list` combinator。markerによるretroactive wrapで実装し、separatorに隣接するemptyなslotにはzero-widthのerror placeholderと「expected element」診断を入れる。slotごとにreuse-awareで、reuse round-tripのテストで全slotが再利用されることも確認した。
+
+[#287](https://github.com/dowdiness/loom/pull/287)でplan docsをarchiveしてboundary-modelのADRを追加し、#279をclose。続けて#196（group-level shape helpers）も、span-carrying `DirectElementGroup`のAPIとして実装してcloseした。
+関連PR: [#288](https://github.com/dowdiness/loom/pull/288)
+
+Codexのpre-PR reviewは2本ともFAIL判定で、lone-separatorケースなどのtest gapを拾った。実装のdefectはゼロで、指摘はすべてテスト追加で対応している。
+
+### Canopy / アーキテクチャ再設計
+
+repo構造の再設計に着手し、S0とS1を同じ日にmergeした。
+
+S0はdocs-only（[#581](https://github.com/dowdiness/canopy/pull/581)）。S0からS6までのstaged migrationを定めたredesign proposalと、3-tierのAPI boundary ADRを入れた。Tier 1がlibrary surface（core / projection / editor / protocol / 将来のprotocol/wire / ephemeralはmodelのみ）、Tier 2がlanguage SPI（lang/*）、Tier 3がinternal（ffi/*、workspace/*、relay、llm、examplesなど）という区分だ。
+
+設計にあたっては、まずExplore agent 4本の並列調査（editorの構造、ideal / ffiの構造、docsの意図、lang-familyの対称性）で現状を把握してから、Codexのdesign reviewを通した。Codexの指摘でmigrationの進め方にはいくつか修正が入った。たとえばS5のde-dup方向は逆転して、loom側をregistryのegglogへ寄せ、canopyはegw submoduleを直接keepする — 外すとegwの変更ごとにloom PRのgateが1つ増えるからだ。target architecture自体は変わっていない。
+
+S1は最初の実装ステージ（[#582](https://github.com/dowdiness/canopy/pull/582)）。sync wire protocolのcodec、ProtocolError、envelope定数、EphemeralNamespaceのframe APIを`protocol/wire`へbyte-equivalentに移した。frozen fixturesは無修正のまま通り、editor側は`#deprecated`のtransparent aliasとforwarding shimで互換を保つ。wire → ephemeral → editorとchainしたpub usingが機能して、`.mbti`に`@wire`起源が出ることも確認した。`SyncTransport`はS2のscopeなのでeditorに残している。
+
+拾った罠が2つ。bare cross-package variant spelling（`@editor.CrdtOps`のような書き方）はtransparentなenum aliasを生き残らないので、該当のcall siteは新package側へ寄せる必要がある。そして`moon.pkg`の`import {`へのsedはmain / test / wbtestの3つのblock全部に当たる — こちらは/code-reviewが拾ってくれた。
+
+### js_engine / CI
+
+CIの高速化に取り組んだ。まずcache系を3つ入れた。`_build` artifact cache（#291）、MoonBit toolchainのcache（#292 → [#295](https://github.com/dowdiness/js_engine/pull/295)）、unit-testの2分割並列（#293 → [#296](https://github.com/dowdiness/js_engine/pull/296)）。
+
+ところが実測すると、workflow全体には意味のある短縮が出なかった。unit-testはもともと1分弱で、test262は実行そのもの（30k超のテスト、1 modeあたり約45分）が支配的。しかもrun間の分散が18分もあり、cacheの改善はその中に埋もれてしまう。
+
+そこでshardingへ切り替えた。`--shard N/M`はrunner側に実装済みだったので、CI matrixにshard次元を足して2 modes × 4 shards = 8並列にする。机上の推定では45分 → 11分だったが、実測では約18分。推定には届かなかったものの、半分以下にはなった。report_test262側もshard artifactをmergeできるようにした。このPRはまだopen。
+関連PR: [js_engine #297](https://github.com/dowdiness/js_engine/pull/297)
+
+また、toolingのMoonBit移行が完了してv0.3.0のbakeも済んだため、Phase 4として移行用のPythonスクリプト26本を削除した。
+関連PR: [js_engine #290](https://github.com/dowdiness/js_engine/pull/290)
+
+### 作業運用
+
+「長い実装計画はCodexが書く」運用が、この2日でも機能した。loom #279の2-PR分割計画とS1のprotocol/wire移動計画はどちらもCodexが書き、orchestrator側の修正は少数（S1で3件）。pre-PR reviewも全PRで回っていて、loomの2本ではtest gap、S1では最初の返答にevidenceがない問題（probeを要求して解消）を拾った。
+
+一方で、調査をfan-outしたExplore agentは4本とも語数上限を超えて返してきた（350-400語の指定に対して500-700語）。boundの指定方法には改善の余地がある。
