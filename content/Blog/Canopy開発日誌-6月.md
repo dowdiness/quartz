@@ -3,7 +3,7 @@ title: Canopy開発日誌-6月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-06-11T04:43:24+09:00
+modified: 2026-06-13T14:30:00+09:00
 ---
 
 # Canopy開発日誌-6月
@@ -33,6 +33,10 @@ modified: 2026-06-11T04:43:24+09:00
 6月10日は、incrのIncremental TEAを一気に仕上げた日。renderer lifecycle、keyed VDOM diff、ベンチマーク、subscriptionsが順にmergeされ、prototypeの主要issueがすべて閉じた。MoonDspはloomパーサー置き換えcampaignのPhase 2 parityを完走してADR-0016をAcceptedにし、js_engineはv0.3.0をリリースした。
 
 6月11日は、loomのseparated-list（#279）とgroup shape helpers（#196）を畳んだあと、Canopyのアーキテクチャ再設計に着手し、S0のproposal + API boundary ADRとS1のprotocol/wire抽出を同じ日にmergeした。js_engineではCIのcache系改善が効かないことを実測で確認し、test262のshardingへ方針を切り替えた。
+
+6月12日は、アーキテクチャ再設計のS2からS5aまでを一気に畳み、あわせてCanopyのプロダクトとしての方向そのものを見直した日だった。editorからsync sessionとtransportを切り出し、lang/runtime SPIとffi/host registryを分け、substrate governanceとimport-graph lintで境界を制度として固定した。並行して、Canopyを「editor / frameworkの証明」から「write-to-selfのpost product」へ寄せる方針転換を決め、最小のwrite→surfaceループのprototypeを置いた。incrとjs_engineも、それぞれの軸で前へ進んだ。
+
+6月13日は、再設計の仕上げとしてeditorをlanguageから完全に切り離すneutral test grammarを入れ、Codexとの連携の可能性をdocsで検証した。js_engineでも同じ「責務で分割してから動かす」流れがStage 0-7のarchitecture refactorとして走り、`bytecode.mbt`の分割と`static_semantics` packageの切り出しまで進んだ。プロダクト側のwrite→surfaceループは、resurfacing signalでの並べ替えへ入っている。
 
 ## 2026/6/1
 
@@ -519,3 +523,97 @@ CIの高速化に取り組んだ。まずcache系を3つ入れた。`_build` art
 「長い実装計画はCodexが書く」運用が、この2日でも機能した。loom #279の2-PR分割計画とS1のprotocol/wire移動計画はどちらもCodexが書き、orchestrator側の修正は少数（S1で3件）。pre-PR reviewも全PRで回っていて、loomの2本ではtest gap、S1では最初の返答にevidenceがない問題（probeを要求して解消）を拾った。
 
 一方で、調査をfan-outしたExplore agentは4本とも語数上限を超えて返してきた（350-400語の指定に対して500-700語）。boundの指定方法には改善の余地がある。
+
+## 2026/6/12
+
+### Canopy / アーキテクチャ再設計
+
+6月11日のS1（protocol/wire抽出）に続けて、S2からS5aまでを同じ流れで畳んだ。S2とS3 PR1は前日6月11日のうちにmergeされていて、S3 PR2以降をこの日に進めた形だ。
+
+S2では、editorからsync sessionとtransportを切り出した。`SyncSession`と、host依存をclosure-recordにまとめる設計にして、`.mbti`のsurfaceは凍結したままpriv fieldをその裏へ畳んでいる。
+関連PR: [#583](https://github.com/dowdiness/canopy/pull/583)
+
+S3はlanguage SPIの抽出だ。まず`lang/runtime` SPIを切ってJSON familyを移し（PR1）、no-edit SPIをfoldしてmarkdown familyを移し（PR2）、最後にlambdaを例外として扱う決定をADRに残した（PR3）。lambdaだけはplanのStep 4から外れるが、Codexのdesign validationで「この逸脱は否定できず、むしろS4をunblockする」ことを確認してから入れている。LanguageSpecのtemplateもここで置いた。
+関連PR: [#584](https://github.com/dowdiness/canopy/pull/584)、[#585](https://github.com/dowdiness/canopy/pull/585)、[#586](https://github.com/dowdiness/canopy/pull/586)
+
+S4ではffi/host registryを切り出し、language FFI packageを移した（PR1）。続けて、移行前後でFFI exportが一致しているかをparallel-runで突き合わせ、discrepancyを検出するcheckを足した（PR2）。move-onlyの移行が本当にbyte-equivalentかを、機械的に保証するための仕組みだ。
+関連PR: [#587](https://github.com/dowdiness/canopy/pull/587)、[#588](https://github.com/dowdiness/canopy/pull/588)
+
+S5aは、ここまでの境界を制度として固定する段になる。substrate governanceのADRと、egwのresolver-identityをCIで守るguardを入れた。最初のguardはworkspace memberの一部しか見ていなかったので、全memberのdeclared versionをscanするよう直した。
+関連PR: [#589](https://github.com/dowdiness/canopy/pull/589)、[#590](https://github.com/dowdiness/canopy/pull/590)
+
+最後に、S0のADRで決めたtier boundaryをimport-graph lintとして機械化した。packageごとの依存方向（Tier 1 library → Tier 2 SPI → Tier 3 internal）をlintが検査するので、再設計後の境界が口約束で終わらない。
+関連PR: [#599](https://github.com/dowdiness/canopy/pull/599)
+
+### Canopy / プロダクト方針の見直し
+
+この日のもう一つの軸は、Canopyのプロダクトとしての方向の見直しだった。`docs/architecture/product-vision.md`をめぐるレビューとCodexのdirection reviewを通して、現状をこう整理した。CanopyはCRDT text、incremental parsing、projection、semantic annotation、syncという「editor / frameworkの証明」は強い。一方で、「書くとそれが後から役に立つ形で戻ってくる」personal knowledge productはまだ証明できていない。
+
+そこで、LLM編集や非テキスト入力、clusteringの高度化に進む前に、いちばん単純な`write → surface`ループを先に検証することにした（umbrella issue [#591](https://github.com/dowdiness/canopy/issues/591)）。
+
+最初のsliceとして、text-onlyでlocal-firstなpost appのprototypeを置いた。常時開いている入力が1つあり、submitでdurableなpostになり、reload後も残り、時系列で並ぶ。API keyは要らない。
+関連PR: [#597](https://github.com/dowdiness/canopy/pull/597)（issue [#592](https://github.com/dowdiness/canopy/issues/592)）
+
+次に、draftを書いている最中に関連する過去のpostを出す部分を入れた。既存の`echo` similarity engineをpost appに繋ぎ、draftのテキストで問い合わせて、上位の関連postを邪魔にならない形で見せる。検索やタグ付けを強いずに「書くことを支えるresurfacing」を成り立たせるのが狙いだ。
+関連PR: [#598](https://github.com/dowdiness/canopy/pull/598)（issue [#593](https://github.com/dowdiness/canopy/issues/593)）
+
+### incr / Incremental TEA
+
+6月10日でTEA trackの主要issueは閉じたが、この日はブラウザ実測と方向付けが進んだ。
+
+まず、keyed DOM applierをChromiumで実測した。その上で、Rabbita / Qwik / Lunaと`incr_tea`を比較するresearch noteを書き、`incr_tea`をRabbitaやLunaの置き換えではなく「semanticなincremental rendering substrate」として位置づけ直した。follow-up issue（#248-257）もそこから切り出している。
+関連PR: [incr #247](https://github.com/dowdiness/incr/pull/247)、[incr #253](https://github.com/dowdiness/incr/pull/253)
+
+実装側では、keyed DOM identityとfocus retentionのbrowser regression testを足し、6月10日にfollow-up（#241）へ残していたplannerのO(n·m)を、keyed diff plannerの最適化として畳んだ。さらにpayload event descriptorを広げ、editor-shapedなsemantic editor demoまで入れた。
+関連PR: [incr #258](https://github.com/dowdiness/incr/pull/258)、[incr #259](https://github.com/dowdiness/incr/pull/259)、[incr #260](https://github.com/dowdiness/incr/pull/260)、[incr #261](https://github.com/dowdiness/incr/pull/261)
+
+### loom
+
+separated-list周りをさらに固めた。missing-comma recoveryのguard testを置いてから、separated-listのseparator欠落をrecoverする実装を入れた。あわせて、`from_cst_at`を`from_cst`のoptional offsetへ畳み、ParserContextのgrammar-author surfaceをmethod-onlyに揃え、diagnostic error handlingを整理している。
+関連PR: [loom #289](https://github.com/dowdiness/loom/pull/289)、[loom #290](https://github.com/dowdiness/loom/pull/290)、[loom #292](https://github.com/dowdiness/loom/pull/292)、[loom #293](https://github.com/dowdiness/loom/pull/293)、[loom #296](https://github.com/dowdiness/loom/pull/296)
+
+parser runtime attachmentまわりも進んだ。callers attachmentのlifecycleをテストで固定し、parser-backedなcallers pipeline constructorを足して、attachment lifecycleをdocsに残した。deprecated tryの移行も完了させている。
+関連PR: [loom #294](https://github.com/dowdiness/loom/pull/294)、[loom #295](https://github.com/dowdiness/loom/pull/295)、[loom #303](https://github.com/dowdiness/loom/pull/303)、[loom #304](https://github.com/dowdiness/loom/pull/304)
+
+### js_engine
+
+conformance修正を続けつつ、こちらでもarchitecture redesignを立ち上げた。修正側では、empty array patternのiterator protocol復元、sloppy modeのTDZ SyntaxError、interpreter contextのthreadingやbuilt-inのcoercionまわりを直した。
+関連PR: [js_engine #303](https://github.com/dowdiness/js_engine/pull/303)、[js_engine #306](https://github.com/dowdiness/js_engine/pull/306)、[js_engine #308](https://github.com/dowdiness/js_engine/pull/308)、[js_engine #313](https://github.com/dowdiness/js_engine/pull/313)
+
+redesign側は、まずexecution planを置き、import boundary auditとrepresentation access inventory auditという2つの監査toolを入れた。Canopyの再設計と同じく、「今どこが何に依存しているか」を機械的に可視化してから動かす入り口だ。
+関連PR: [js_engine #311](https://github.com/dowdiness/js_engine/pull/311)、[js_engine #312](https://github.com/dowdiness/js_engine/pull/312)、[js_engine #314](https://github.com/dowdiness/js_engine/pull/314)
+
+### MoonDsp
+
+6月10日に完走したloomパーサー置き換えcampaignのPhase 3（runtime swap、ADR-0016がgate）はまだ着手前で、12-13日のMoonDspはv0.6.0のrelease prep中心で目立つmergeはなかった。
+
+## 2026/6/13
+
+### Canopy / editor-neutral test grammar
+
+再設計の仕上げとして、editorをlanguageから完全に切り離した。これまでeditorはテストの中ではlambdaをimportしていたが、`workspace/probe`にneutralな`TestExpr` grammarを導入し、lambda固有のeditorテストは`lang/lambda/companion`へ移した。これでeditorは本番でもテストでもどのlanguageにも依存しなくなる。
+関連PR: [#602](https://github.com/dowdiness/canopy/pull/602)
+
+ただ、この移動で穴も空いた。移したテストはlambdaのprojectionに対してしか効かず、generic（language非依存）pipelineのカバレッジが落ちる。`/code-review`がこれを拾ったので、empty-document view transition、edit跨ぎのNodeId stability、diagnostics breadth、diff minimalityをneutral grammar側に再追加し（issue #600）、あわせて二重定義になっていたTestExpr fixtureを1か所へ寄せた（issue #601）。
+関連PR: [#604](https://github.com/dowdiness/canopy/pull/604)
+
+### Canopy / Codex連携の検証
+
+Codexをこのプロジェクトのtoolingからどう駆動するか、そしてCodexの変更をCanopyへどう取り込めるかを、2本のdocsで検証した。
+
+1本目は、Codexのapp-serverとMCP wrapperの比較だ。design validationやreviewのような「相談役」にはMCP、streamingやinteractive approval、`thread/fork`のような「Codexの上に作る」用途にはapp-server、という使い分けを11次元の表で整理した。app-serverのcontrol socketがraw JSON-RPCではなくWebSocket framingだという非自明な点も含め、stdlibだけで1 turnを回すclientを添えている。
+関連PR: [#605](https://github.com/dowdiness/canopy/pull/605)
+
+2本目は、Codexのapp-serverが出すfile変更が、Canopyのinbound `UserIntent::TextEdit`へどう落ちるかのverification noteだ。要点は、Canopyのsource of truthはtextのCRDTで、`ProjNode` ASTはその上のreactive Memo derivationだということ。そしてoffset単位のずれ — CodexのdiffはUTF-8 line / byte、`TextEdit`はUTF-16 code-unit offsetなので、BMP内のmultibyteでもconverterが必須になる。`apply_text_edit_exact`はgrapheme alignmentしか守らないので、「正しいがズレた境界」に着地する編集は黙って受理されうる、という点まで実機のprobeで確かめて、code-verifiedな部分とaspirationalな部分を分けて記録した。
+関連PR: [#606](https://github.com/dowdiness/canopy/pull/606)
+
+なお、6月12日に置いたwrite→surfaceループは、resurfacing signalでの並べ替え（issue [#594](https://github.com/dowdiness/canopy/issues/594)）へ進んでいる。revisitやresurfacingのeventを記録して、lexical similarityやrecencyと合わせて関連postをrankする段で、まだmerge前の作業中だ。
+作業ブランチ: `issue-594-resurfacing`（[#607](https://github.com/dowdiness/canopy/pull/607)）
+
+### loom / js_engine
+
+loomでは、ParserContext boundaryのplan docをarchiveした。
+関連PR: [loom #306](https://github.com/dowdiness/loom/pull/306)
+
+js_engineは、6月12日に立てたredesign planに沿ってStage 0-7のrefactorを一気に進めた。surface taxonomy inventory audit（Stage 0）から始め、closure conversionをlegacy experimentalとしてlabel付けし（Stage 1）、`bytecode.mbt`をIR / lowering / VMの3ファイルに分割し（Stage 2）、bytecode equivalence harnessを置いた（Stage 3）。その上で、`has_use_strict`、strict-name validator、declaration factsを`static_semantics` packageへ順に切り出し（Stage 4-6）、最後にbytecode literal accumulatorのpathをruntime ops経由に通した（Stage 7）。Canopyの再設計と同じ「責務で分けてから動かす」進め方になっている。
+関連PR: [js_engine #315](https://github.com/dowdiness/js_engine/pull/315)、[#316](https://github.com/dowdiness/js_engine/pull/316)、[#317](https://github.com/dowdiness/js_engine/pull/317)、[#318](https://github.com/dowdiness/js_engine/pull/318)、[#319](https://github.com/dowdiness/js_engine/pull/319)、[#321](https://github.com/dowdiness/js_engine/pull/321)、[#322](https://github.com/dowdiness/js_engine/pull/322)、[#323](https://github.com/dowdiness/js_engine/pull/323)、[#324](https://github.com/dowdiness/js_engine/pull/324)、[#333](https://github.com/dowdiness/js_engine/pull/333)
