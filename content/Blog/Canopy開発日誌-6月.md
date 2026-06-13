@@ -3,7 +3,7 @@ title: Canopy開発日誌-6月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-06-13T15:00:33+09:00
+modified: 2026-06-13T17:31:53+09:00
 ---
 
 # Canopy開発日誌-6月
@@ -36,7 +36,7 @@ modified: 2026-06-13T15:00:33+09:00
 
 6月12日は、アーキテクチャ再設計のS2からS5aまでを一気に畳み、あわせてCanopyのプロダクトとしての方向そのものを見直した日だった。editorからsync sessionとtransportを切り出し、lang/runtime SPIとffi/host registryを分け、substrate governanceとimport-graph lintで境界を制度として固定した。並行して、Canopyを「editor / frameworkの証明」から「write-to-selfのpost product」へ寄せる方針転換を決め、最小のwrite→surfaceループのprototypeを置いた。incrとjs_engineも、それぞれの軸で前へ進んだ。
 
-6月13日は、再設計の仕上げとしてeditorをlanguageから完全に切り離すneutral test grammarを入れ、Codexとの連携の可能性をdocsで検証した。js_engineでも同じ「責務で分割してから動かす」流れがStage 0-7のarchitecture refactorとして走り、`bytecode.mbt`の分割と`static_semantics` packageの切り出しまで進んだ。プロダクト側のwrite→surfaceループは、resurfacing signalでの並べ替えへ入っている。
+6月13日は、再設計の仕上げとしてeditorをlanguageから完全に切り離すneutral test grammarを入れ、Codexとの連携をdocsで検証してから、そのloweringをprototypeまで進めた。js_engineでも同じ「責務で分割してから動かす」流れがStage 0-7のarchitecture refactorとして走り、`bytecode.mbt`の分割と`static_semantics` packageの切り出しまで進んだ。プロダクト側のwrite→surfaceループも、resurfacing signalでの並べ替えとsame-input askを足して前へ進めている。
 
 ## 2026/6/1
 
@@ -69,7 +69,7 @@ incr依存も整理して、Loomの3つのconsumerをregistryの`dowdiness/incr@
 
 ### js_engine
 
-benchmarkを読みやすくする作業を進めた。focused repeat benchmark runnerを追加し、複数回の測定からmedianやCVを見られるようにした。単発の結果ではなく、ノイズ込みで判断するための道具だ。
+benchmarkを読みやすくする作業を進めた。focused repeat benchmark runnerを追加し、複数回の測定からmedianやCVを見られるようにした。単発の結果ではなく、ノイズ込みで判断するための道具だ。あわせて、shared property helperのhot pathも最適化している。
 関連PR: [js_engine #186](https://github.com/dowdiness/js_engine/pull/186)、[js_engine #187](https://github.com/dowdiness/js_engine/pull/187)
 
 startup側では、`new_interpreter`の中を分けて測り、final realm stampingを軽くした。runtimeで作られるiterator callbackやPromise callbackにもrealmを付ける整理をした。
@@ -167,7 +167,7 @@ Canvas exampleでは、6月2日に追加したsource-backed graph adapterを、�
 このdemoでは、node dragはlocal layoutを変えるだけでsource本文には触れない。一方、handle同士をつなぐcanvasのジェスチャーや、`Connect osc -> meter` / `Insert reverb`の操作はcanonical sourceへ下ろされる。
 
 Playwright E2Eでは、dragがsourceを汚さないこと、canvasジェスチャーが`meter = scope(input: osc)`へ反映されること、source editorから4 node / 2 edgeの状態へreparseできることを確認している。
-作業ブランチ: `feat/source-backed-canvas-demo`
+関連PR: [#479](https://github.com/dowdiness/canopy/pull/479)
 
 ### MoonDsp
 
@@ -322,7 +322,7 @@ CIでは、MoonBitのregistry stateをcacheし、`moon-update.sh`のdiagnostics�
 
 ### loom
 
-Loomはこの日大きく進んだ。まず、zero-widthなlexer tokenのreuse boundaryを固めた。located token adapter、token provenance offsets、zero-width boundaryのdocs、synthetic zero-width hookのparser-owned化、property test、benchmark、RepeatGroup canonicalizationの修正と文書化まで一気に進んでいる。
+Loomはこの日大きく進んだ。まず、zero-widthなlexer tokenのreuse boundaryを固めた。具体的には、located token adapter、token provenance offsets、zero-width boundaryのdocs、synthetic zero-width hookのparser-owned化、property test、benchmark、RepeatGroup canonicalizationの修正と文書化まで一気に進めた。
 関連PR: [loom #221](https://github.com/dowdiness/loom/pull/221)、[#229](https://github.com/dowdiness/loom/pull/229)、[#230](https://github.com/dowdiness/loom/pull/230)、[#231](https://github.com/dowdiness/loom/pull/231)、[#233](https://github.com/dowdiness/loom/pull/233)、[#234](https://github.com/dowdiness/loom/pull/234)、[#235](https://github.com/dowdiness/loom/pull/235)、[#237](https://github.com/dowdiness/loom/pull/237)、[#240](https://github.com/dowdiness/loom/pull/240)、[#242](https://github.com/dowdiness/loom/pull/242)、[#246](https://github.com/dowdiness/loom/pull/246)
 
 MoonBit parser integrationも進み、full MoonBit token syntax kinds、top-level headers、differential fixtures、syntax-onlyのreactive parser、ParserContext grammar helpersまで入った。
@@ -508,11 +508,11 @@ S1は最初の実装ステージ（[#582](https://github.com/dowdiness/canopy/pu
 
 ### js_engine / CI
 
-CIの高速化に取り組んだ。まずcache系を3つ入れた。`_build` artifact cache（#291）、MoonBit toolchainのcache（#292 → [#295](https://github.com/dowdiness/js_engine/pull/295)）、unit-testの2分割並列（#293 → [#296](https://github.com/dowdiness/js_engine/pull/296)）。
+CIの高速化に取り組んだ。まずcache系を3つ入れた。`_build` artifact cache（#291 → [#294](https://github.com/dowdiness/js_engine/pull/294)）、MoonBit toolchainのcache（#292 → [#295](https://github.com/dowdiness/js_engine/pull/295)）、unit-testの2分割並列（#293 → [#296](https://github.com/dowdiness/js_engine/pull/296)）。
 
 ところが実測すると、workflow全体には意味のある短縮が出なかった。unit-testはもともと1分弱で、test262は実行そのもの（30k超のテスト、1 modeあたり約45分）が支配的。しかもrun間の分散が18分もあり、cacheの改善はその中に埋もれてしまう。
 
-そこでshardingへ切り替えた。`--shard N/M`はrunner側に実装済みだったので、CI matrixにshard次元を足して2 modes × 4 shards = 8並列にする。机上の推定では45分 → 11分だったが、実測では約18分。推定には届かなかったものの、半分以下にはなった。report_test262側もshard artifactをmergeできるようにした。このPRはまだopen。
+そこでshardingへ切り替えた。`--shard N/M`はrunner側に実装済みだったので、CI matrixにshard次元を足して2 modes × 4 shards = 8並列にする。机上の推定では45分 → 11分だったが、実測では約18分。推定には届かなかったものの、半分以下にはなった。report_test262側もshard artifactをmergeできるようにした。
 関連PR: [js_engine #297](https://github.com/dowdiness/js_engine/pull/297)
 
 また、toolingのMoonBit移行が完了してv0.3.0のbakeも済んだため、Phase 4として移行用のPythonスクリプト26本を削除した。
@@ -530,7 +530,7 @@ CIの高速化に取り組んだ。まずcache系を3つ入れた。`_build` art
 
 6月11日のS1（protocol/wire抽出）に続けて、S2からS5aまでを同じ流れで畳んだ。S2とS3 PR1は前日6月11日のうちにmergeされていて、S3 PR2以降をこの日に進めた形だ。
 
-S2では、editorからsync sessionとtransportを切り出した。`SyncSession`と、host依存をclosure-recordにまとめる設計にして、`.mbti`のsurfaceは凍結したままpriv fieldをその裏へ畳んでいる。
+S2では、editorからsync sessionとtransportを切り出した。host依存をclosure-recordにまとめる`SyncSession`を置き、`.mbti`のsurfaceは凍結したまま、その裏へpriv fieldを畳んでいる。
 関連PR: [#583](https://github.com/dowdiness/canopy/pull/583)
 
 S3はlanguage SPIの抽出だ。まず`lang/runtime` SPIを切ってJSON familyを移し（PR1）、no-edit SPIをfoldしてmarkdown familyを移し（PR2）、最後にlambdaを例外として扱う決定をADRに残した（PR3）。lambdaだけはplanのStep 4から外れるが、Codexのdesign validationで「この逸脱は否定できず、むしろS4をunblockする」ことを確認してから入れている。LanguageSpecのtemplateもここで置いた。
@@ -564,7 +564,7 @@ S5aは、ここまでの境界を制度として固定する段になる。subst
 まず、keyed DOM applierをChromiumで実測した。その上で、Rabbita / Qwik / Lunaと`incr_tea`を比較するresearch noteを書き、`incr_tea`をRabbitaやLunaの置き換えではなく「semanticなincremental rendering substrate」として位置づけ直した。follow-up issue（#248-257）もそこから切り出している。
 関連PR: [incr #247](https://github.com/dowdiness/incr/pull/247)、[incr #253](https://github.com/dowdiness/incr/pull/253)
 
-実装側では、keyed DOM identityとfocus retentionのbrowser regression testを足し、6月10日にfollow-up（#241）へ残していたplannerのO(n·m)を、keyed diff plannerの最適化として畳んだ。さらにpayload event descriptorを広げ、editor-shapedなsemantic editor demoまで入れた。
+実装側では、keyed DOM identityとfocus retentionのbrowser regression testを足し、6月10日にfollow-up（#241）へ残していたkeyed diff plannerのO(n·m)を最適化した。さらにpayload event descriptorを広げ、editor-shapedなsemantic editor demoまで入れた。
 関連PR: [incr #258](https://github.com/dowdiness/incr/pull/258)、[incr #259](https://github.com/dowdiness/incr/pull/259)、[incr #260](https://github.com/dowdiness/incr/pull/260)、[incr #261](https://github.com/dowdiness/incr/pull/261)
 
 ### loom
@@ -604,16 +604,31 @@ Codexをこのプロジェクトのtoolingからどう駆動するか、そし�
 1本目は、Codexのapp-serverとMCP wrapperの比較だ。design validationやreviewのような「相談役」にはMCP、streamingやinteractive approval、`thread/fork`のような「Codexの上に作る」用途にはapp-server、という使い分けを11次元の表で整理した。app-serverのcontrol socketがraw JSON-RPCではなくWebSocket framingだという非自明な点も含め、stdlibだけで1 turnを回すclientを添えている。
 関連PR: [#605](https://github.com/dowdiness/canopy/pull/605)
 
-2本目は、Codexのapp-serverが出すfile変更が、Canopyのinbound `UserIntent::TextEdit`へどう落ちるかのverification noteだ。要点は、Canopyのsource of truthはtextのCRDTで、`ProjNode` ASTはその上のreactive Memo derivationだということ。そしてoffset単位のずれ — CodexのdiffはUTF-8 line / byte、`TextEdit`はUTF-16 code-unit offsetなので、BMP内のmultibyteでもconverterが必須になる。`apply_text_edit_exact`はgrapheme alignmentしか守らないので、「正しいがズレた境界」に着地する編集は黙って受理されうる、という点まで実機のprobeで確かめて、code-verifiedな部分とaspirationalな部分を分けて記録した。
+2本目は、Codexのapp-serverが出すfile変更が、Canopyのinbound `UserIntent::TextEdit`へどう落ちるかのverification noteだ。要点は、Canopyのsource of truthはtextのCRDTで、`ProjNode` ASTはその上のreactive Memo derivationだということ。そしてoffset単位のずれ — CodexのdiffはUTF-8 line / byte、`TextEdit`はUTF-16 code-unit offsetなので、BMP内のmultibyteでもconverterが必須になる。`apply_text_edit_exact`はgrapheme alignmentしか守らないので、「正しいがズレた境界」に着地する編集は黙って受理されうる。この点まで実機のprobeで確かめたうえで、code-verifiedな部分とaspirationalな部分を分けて記録した。
 関連PR: [#606](https://github.com/dowdiness/canopy/pull/606)
 
-なお、6月12日に置いたwrite→surfaceループは、resurfacing signalでの並べ替え（issue [#594](https://github.com/dowdiness/canopy/issues/594)）へ進んでいる。revisitやresurfacingのeventを記録して、lexical similarityやrecencyと合わせて関連postをrankする段で、まだmerge前の作業中だ。
-作業ブランチ: `issue-594-resurfacing`（[#607](https://github.com/dowdiness/canopy/pull/607)）
+このverification noteを足場に、Codexのunified diffを`UserIntent::TextEdit`へ落とすloweringのprototypeまで進めた。研究ノートで「aspirational」としていた経路を、最初の実装として置いた形だ。
+関連PR: [#609](https://github.com/dowdiness/canopy/pull/609)
+
+### Canopy / プロダクトのwrite→surfaceループ
+
+6月12日に置いたwrite→surfaceループは、この日さらに前へ進んだ。
+
+まず、resurfacing signalでの並べ替え（issue [#594](https://github.com/dowdiness/canopy/issues/594)）をmergeした。post created / opened / dismissed / editedといったrevisit・resurfacingのeventを記録し、lexical similarityやrecencyと合わせて関連postをrankする。なぜ浮かんだかのreasonも軽く出して、debugと信頼性を支えている。
+関連PR: [#607](https://github.com/dowdiness/canopy/pull/607)
+
+続けて、同じ入力欄からそのままaskできるmodeをpost appに足した。書く導線と問い合わせの導線を1つの入力に寄せ、write→surfaceループの入り口を増やしている。
+関連PR: [#610](https://github.com/dowdiness/canopy/pull/610)
+
+### Canopy / visualizer・canvasの整理
+
+IncrGraph visualizerのincr snapshot lookupを最適化し、canvasの相互作用reducerを再利用可能な形に切り出した。どちらも本筋の隣で、後続の作業が乗りやすいよう足場を整える類の整理だ。
+関連PR: [#608](https://github.com/dowdiness/canopy/pull/608)、[#611](https://github.com/dowdiness/canopy/pull/611)
 
 ### loom / js_engine
 
-loomでは、ParserContext boundaryのplan docをarchiveした。
-関連PR: [loom #306](https://github.com/dowdiness/loom/pull/306)
+loomでは、ParserContext boundaryのplan docをarchiveし、lambda exampleのsyntaxを更新した。
+関連PR: [loom #306](https://github.com/dowdiness/loom/pull/306)、[loom #307](https://github.com/dowdiness/loom/pull/307)
 
-js_engineは、6月12日に立てたredesign planに沿ってStage 0-7のrefactorを一気に進めた。surface taxonomy inventory audit（Stage 0）から始め、closure conversionをlegacy experimentalとしてlabel付けし（Stage 1）、`bytecode.mbt`をIR / lowering / VMの3ファイルに分割し（Stage 2）、bytecode equivalence harnessを置いた（Stage 3）。その上で、`has_use_strict`、strict-name validator、declaration factsを`static_semantics` packageへ順に切り出し（Stage 4-6）、最後にbytecode literal accumulatorのpathをruntime ops経由に通した（Stage 7）。Canopyの再設計と同じ「責務で分けてから動かす」進め方になっている。
-関連PR: [js_engine #315](https://github.com/dowdiness/js_engine/pull/315)、[#316](https://github.com/dowdiness/js_engine/pull/316)、[#317](https://github.com/dowdiness/js_engine/pull/317)、[#318](https://github.com/dowdiness/js_engine/pull/318)、[#319](https://github.com/dowdiness/js_engine/pull/319)、[#321](https://github.com/dowdiness/js_engine/pull/321)、[#322](https://github.com/dowdiness/js_engine/pull/322)、[#323](https://github.com/dowdiness/js_engine/pull/323)、[#324](https://github.com/dowdiness/js_engine/pull/324)、[#333](https://github.com/dowdiness/js_engine/pull/333)
+js_engineは、6月12日に立てたredesign planに沿ってStage 0-7のrefactorを一気に進めた。surface taxonomy inventory audit（Stage 0）から始め、closure conversionをlegacy experimentalとしてlabel付けし（Stage 1）、`bytecode.mbt`をIR / lowering / VMの3ファイルに分割し（Stage 2）、bytecode equivalence harnessを置いた（Stage 3）。その上で、`has_use_strict`、strict-name validator、declaration factsを`static_semantics` packageへ順に切り出し（Stage 4-6）、最後にbytecode literal accumulatorのpathをruntime ops経由に通し（Stage 7）、その仕上げとしてenv-hoistのvar-name setを`BytecodeFunction`へ事前計算するperf改善まで入れた。Canopyの再設計と同じ「責務で分けてから動かす」進め方になっている。
+関連PR: [js_engine #315](https://github.com/dowdiness/js_engine/pull/315)、[#316](https://github.com/dowdiness/js_engine/pull/316)、[#317](https://github.com/dowdiness/js_engine/pull/317)、[#318](https://github.com/dowdiness/js_engine/pull/318)、[#319](https://github.com/dowdiness/js_engine/pull/319)、[#321](https://github.com/dowdiness/js_engine/pull/321)、[#322](https://github.com/dowdiness/js_engine/pull/322)、[#323](https://github.com/dowdiness/js_engine/pull/323)、[#324](https://github.com/dowdiness/js_engine/pull/324)、[#333](https://github.com/dowdiness/js_engine/pull/333)、[#334](https://github.com/dowdiness/js_engine/pull/334)
