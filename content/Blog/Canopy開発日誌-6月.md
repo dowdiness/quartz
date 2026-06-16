@@ -3,7 +3,7 @@ title: Canopy開発日誌-6月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-06-16T08:05:56+09:00
+modified: 2026-06-16T14:45:00+09:00
 ---
 
 # Canopy開発日誌-6月
@@ -37,6 +37,8 @@ modified: 2026-06-16T08:05:56+09:00
 6月12日は、アーキテクチャ再設計のS2からS5aまでを一気に畳み、あわせてCanopyのプロダクトとしての方向そのものを見直した日だった。editorからsync sessionとtransportを切り出し、lang/runtime SPIとffi/host registryを分け、substrate governanceとimport-graph lintで境界を制度として固定した。並行して、Canopyを「editor / frameworkの証明」から「write-to-selfのpost product」へ寄せる方針転換を決め、最小のwrite→surfaceループのprototypeを置いた。incrとjs_engineも、それぞれの軸で前へ進んだ。
 
 6月13日は、再設計の仕上げとしてeditorをlanguageから完全に切り離すneutral test grammarを入れ、Codexとの連携をdocsで検証してから、そのloweringをprototypeまで進めた。js_engineでも同じ「責務で分割してから動かす」流れがStage 0-7のarchitecture refactorとして走り、`bytecode.mbt`の分割と`static_semantics` packageの切り出しまで進んだ。プロダクト側のwrite→surfaceループも、resurfacing signalでの並べ替えとsame-input askを足して前へ進めている。
+
+6月14日から16日にかけては、Lambda投影のCstFold現代化とscope graphを締め、block-localな編集操作を一通り完成させた。同時にCanopyにJS interop coreとfile I/Oを導入し、Idealのbridgeを整理。LoomではMarkdownのincremental block reparseとMarkdownIRの設計、incrではincr_teaのspreadsheet proofとinactive root、js_engineではbytecode call-frameの高速化とES2024 Set methods、MoonDspではschedulerのfacade分割がそれぞれ進んだ。
 
 ## 2026/6/1
 
@@ -632,3 +634,104 @@ loomでは、ParserContext boundaryのplan docをarchiveし、lambda exampleのs
 
 js_engineは、6月12日に立てたredesign planに沿ってStage 0-7のrefactorを一気に進めた。surface taxonomy inventory audit（Stage 0）から始め、closure conversionをlegacy experimentalとしてlabel付けし（Stage 1）、`bytecode.mbt`をIR / lowering / VMの3ファイルに分割し（Stage 2）、bytecode equivalence harnessを置いた（Stage 3）。その上で、`has_use_strict`、strict-name validator、declaration factsを`static_semantics` packageへ順に切り出し（Stage 4-6）、最後にbytecode literal accumulatorのpathをruntime ops経由に通し（Stage 7）、その仕上げとしてenv-hoistのvar-name setを`BytecodeFunction`へ事前計算するperf改善まで入れた。Canopyの再設計と同じ「責務で分けてから動かす」進め方になっている。
 関連PR: [js_engine #315](https://github.com/dowdiness/js_engine/pull/315)、[#316](https://github.com/dowdiness/js_engine/pull/316)、[#317](https://github.com/dowdiness/js_engine/pull/317)、[#318](https://github.com/dowdiness/js_engine/pull/318)、[#319](https://github.com/dowdiness/js_engine/pull/319)、[#321](https://github.com/dowdiness/js_engine/pull/321)、[#322](https://github.com/dowdiness/js_engine/pull/322)、[#323](https://github.com/dowdiness/js_engine/pull/323)、[#324](https://github.com/dowdiness/js_engine/pull/324)、[#333](https://github.com/dowdiness/js_engine/pull/333)、[#334](https://github.com/dowdiness/js_engine/pull/334)
+
+## 2026/6/14
+
+### Canopy / Lambda CstFold modernization
+
+Lambda投影をCstFoldベースに置き換える作業が一気に進んだ。まず葉ノード（`IntLiteral`、`VarRef`、`HoleLiteral`）をCstFold経由に寄せた。
+関連PR: [#641](https://github.com/dowdiness/canopy/pull/641)
+
+続いて`IfExpr`をone-CST-node/one-`ProjNode` composite shapeで再構築し（[#644](https://github.com/dowdiness/canopy/pull/644)）、`AppExpr`/`BinaryExpr`のleft-nested spineもCstFoldのshallow shape抽出へルーティングした（[#647](https://github.com/dowdiness/canopy/pull/647)）。Block式のCstFold互換性は別途テストで固定している。
+関連PR: [#640](https://github.com/dowdiness/canopy/pull/640)
+
+この流れで、module定義のlookup用に`DefinitionIndex`を切り出し（[#648](https://github.com/dowdiness/canopy/pull/648)）、scope/edit/semantic/companion/idealの各consumerを`ModuleProjection`から新しいindex・ProjNode構造へ移行した（[#655](https://github.com/dowdiness/canopy/pull/655)）。block-localなbindingのrenameも正しく動くようになり、block内の`x`とrootの`x`を区別してrenameできるようになった。
+関連PR: [#645](https://github.com/dowdiness/canopy/pull/645)
+
+### Canopy / Canvas
+
+Canvasの接続preview互換性を、TypeScript側の手組み判定からMoonBitの`can_commit_edge`をbatchで呼び出す形に移行した。`CanvasRuntime`/`SourceBackedGraph`の内部はprivateのまま、source graphをdrag preview中に都度再構築しない設計にしている。
+関連PR: [#639](https://github.com/dowdiness/canopy/pull/639)
+
+source-backed demoの`defer_sync`フォールバックを整理し、JS targetでのmicrotask順序を明確にした。target widening時にコンパイル時revisitを促す形にして、stale source readを黙って復活させないようにした。
+関連PR: [#643](https://github.com/dowdiness/canopy/pull/643)
+
+### loom
+
+Markdownのincremental block reparseをプロトタイプし、incremental/full parseのdifferential helperを置いた。その上でMarkdown block reparseのparityテストを追加している。
+関連PR: [loom #313](https://github.com/dowdiness/loom/pull/313)、[#316](https://github.com/dowdiness/loom/pull/316)、[#317](https://github.com/dowdiness/loom/pull/317)、[#318](https://github.com/dowdiness/loom/pull/318)
+
+JSON exampleにJSONTestSuite conformanceテストを追加した。
+関連PR: [loom #313](https://github.com/dowdiness/loom/pull/313)
+
+### incr
+
+incr_teaの周辺整備を進めた。Eq-safeなHTML ergonomics、隣接view buildの比較、mounted counter/matrix、row/leaf localityのbenchmarkを順に追加した。
+関連PR: [incr #262](https://github.com/dowdiness/incr/pull/262)、[#263](https://github.com/dowdiness/incr/pull/263)、[#264](https://github.com/dowdiness/incr/pull/264)、[#265](https://github.com/dowdiness/incr/pull/265)、[#266](https://github.com/dowdiness/incr/pull/266)
+
+### MoonDsp
+
+schedulerのfacadeを内部voice runtimeへ責務分割した。active-note collectionのownership移動を始め、transport / playback snapshot / facade wrapperを細かく切り出している。
+関連PR: [moondsp #204](https://github.com/dowdiness/moondsp/pull/204)、[#205](https://github.com/dowdiness/moondsp/pull/205)、[#206](https://github.com/dowdiness/moondsp/pull/206)、[#207](https://github.com/dowdiness/moondsp/pull/207)、[#208](https://github.com/dowdiness/moondsp/pull/208)、[#209](https://github.com/dowdiness/moondsp/pull/209)、[#210](https://github.com/dowdiness/moondsp/pull/210)
+
+### js_engine
+
+architecture redesignのStage 8-10を畳んだ。Stage 8ではbuiltin install helpersとtyped internal-slot accessorsをruntime側へ移し（[#344](https://github.com/dowdiness/js_engine/pull/344)、[#345](https://github.com/dowdiness/js_engine/pull/345)）、Stage 9ではconstructor/prototypeのraw bag writeをruntime ops経由にした（[#346](https://github.com/dowdiness/js_engine/pull/346)）。Stage 10ではbytecode unsupported-kind labelをpub constに集約し（[#348](https://github.com/dowdiness/js_engine/pull/348)）、使われなくなった`SourceKind` enumを削除した（[#349](https://github.com/dowdiness/js_engine/pull/349)）。
+
+## 2026/6/15
+
+### Canopy / Lambda §20 completion
+
+Lambda編集のblock-local対応を一気に仕上げた。block-localなdelete/duplicate/move binding opsを追加し（[#660](https://github.com/dowdiness/canopy/pull/660)）、move opのscoping soundness holeを埋めた（[#663](https://github.com/dowdiness/canopy/pull/663)）。inline/extract/moveのblock-shadowing filterを統一し（[#671](https://github.com/dowdiness/canopy/pull/671)）、typed `fn` rewriteをtoken metadataに置き換えた（[#673](https://github.com/dowdiness/canopy/pull/673)）。EditContextのnode lookup prologueを`EditContext::resolve`に畳み（[#665](https://github.com/dowdiness/canopy/pull/665)）、`ModuleProjection`の互換surfaceを削り（[#664](https://github.com/dowdiness/canopy/pull/664)）、最後にlegacy `ModuleProjection`全体を削除してgeneric projection memosへ完全に移行した（[#658](https://github.com/dowdiness/canopy/pull/658)、[#677](https://github.com/dowdiness/canopy/pull/677)）。これでdocs/TODO.md §20のbinding clauseは完了。
+
+`FailureDiff` / `diff()`も`lang/lambda/scope`に追加し、編集前後のfree-variable影響を比較できるようにした。agent editの検証に使うための土台だ。
+
+### Canopy / FFI & Ideal
+
+JS interop coreとして`lib/js`を新設した。opaque `Any` handleとproperty/method/global escape hatch、JSON、Promise bridge over `moonbitlang/async`を持つ。これを使ってfile read/writeを`ffi/io`に実装し、IdealのOpen/Save toolbarから呼べるようにした。
+関連PR: [#666](https://github.com/dowdiness/canopy/pull/666)
+
+Ideal側では散らばっていた`globalThis.__canopy_*`を単一の`__canopy_bridge`オブジェクトに集約し、FFIの名前空間を整理した。`js_now_ms()`のsession timerはIIFE closureへ移し、globalThisを汚さないようにした。
+関連PR: [#670](https://github.com/dowdiness/canopy/pull/670)
+
+Lambdaのedit bridge boundaryを文書化し（[#669](https://github.com/dowdiness/canopy/pull/669)）、ModuleProjectionテストカバレッジを分類した（[#668](https://github.com/dowdiness/canopy/pull/668)）。alpha-safe beta pilotの設計もこの日のうちに計画docsを置いている。
+
+### loom
+
+Markdown block reparseをheadingとlist itemまで拡張し（[#320](https://github.com/dowdiness/loom/pull/320)）、unordered list reparseを有効にした（[#321](https://github.com/dowdiness/loom/pull/321)、[#322](https://github.com/dowdiness/loom/pull/322)）。MarkdownIRのM0 policyを文書化し（[#342](https://github.com/dowdiness/loom/pull/342)、[#343](https://github.com/dowdiness/loom/pull/343)、[#344](https://github.com/dowdiness/loom/pull/344)、[#345](https://github.com/dowdiness/loom/pull/345)）、M1 heading/paragraph vertical sliceを実装した。
+関連PR: [loom #346](https://github.com/dowdiness/loom/pull/346)
+
+### incr
+
+incr_teaをさらに実用形へ近づけた。typed spreadsheetのincr_tea proofを追加し（[#273](https://github.com/dowdiness/incr/pull/273)）、spreadsheet event descriptors（[#272](https://github.com/dowdiness/incr/pull/272)）、experimental core公開（[#269](https://github.com/dowdiness/incr/pull/269)）、direct leaf patching benchmark（[#267](https://github.com/dowdiness/incr/pull/267)）を順に入れた。inactive browser rootのprototypeも追加し、DOMを保ったままflushをskipできる状態を実証。amortized burst/activation islandのbenchmarkも取った。
+関連PR: [incr #267](https://github.com/dowdiness/incr/pull/267)、[#269](https://github.com/dowdiness/incr/pull/269)、[#272](https://github.com/dowdiness/incr/pull/272)、[#273](https://github.com/dowdiness/incr/pull/273)、[#274](https://github.com/dowdiness/incr/pull/274)、[#275](https://github.com/dowdiness/incr/pull/275)、[#276](https://github.com/dowdiness/incr/pull/276)
+
+### js_engine
+
+ES2024 Set methods（`union`/`intersection`/`difference`/`symmetricDifference`/`isSubsetOf`/`isSupersetOf`/`isDisjointFrom`）を実装した（[#356](https://github.com/dowdiness/js_engine/pull/356)）。`Map[String, Bool]`を`@set.Set`へ移行する作業を3 cohortで完了（[#351](https://github.com/dowdiness/js_engine/pull/351)、[#352](https://github.com/dowdiness/js_engine/pull/352)、[#354](https://github.com/dowdiness/js_engine/pull/354)）。Map/Set/WeakMap builtinのkey search loopを`Array::search_by`に置き換え（[#355](https://github.com/dowdiness/js_engine/pull/355)）、engine internal slotsを`PropertyBag.internal_slots`へ集約し、JS enumから隠す形にした（[#358](https://github.com/dowdiness/js_engine/pull/358)）。`Map::get_or_default`をcmdフラグlookupに適用した（[#350](https://github.com/dowdiness/js_engine/pull/350)）。
+
+## 2026/6/16
+
+### Canopy / Lambda §20 close & alpha pilot
+
+`ExtractToLet`をblock-awareにした（[#674](https://github.com/dowdiness/canopy/pull/674)）。block body pathではbody expressionの直前に、`let y = expr`を挿入し、block def pathではblock defsの前に挿入する。block scopeとlambda scopeを`node_scope`で区別し、block body/defそれぞれにcapture guardを追加した。docs/TODO.mdで§20を完了済みにマークした。
+関連issue: [#659](https://github.com/dowdiness/canopy/issues/659)
+
+あわせてTailwind Plus → Rabbita porting guideを追加した。
+関連コミット: `005af15`
+
+Lambdaのalpha-safe beta pilotを`lang/lambda/alpha`に置いた（[#678](https://github.com/dowdiness/canopy/pull/678)）。`ScopeGraph`を使って投影termをlowerし、binder identityでroot beta reduction、capture無しでnamed `@ast.Term`をreifyする実験的package。`((x) => (y) => x) y`のcanonical fixtureも含む。その後、branch上でalpha equalityとreify policyの調整、binder id collisionの修正、declarative helper traversalへの寄せなどのfollow-upを行っている。
+作業ブランチ: `docs/lambda-alpha-safe-core-boundary`
+
+### loom
+
+MarkdownIR M1のheading/paragraph vertical sliceをmergeした（[#346](https://github.com/dowdiness/loom/pull/346)）。document/heading/paragraph/text sliceのopaque IRと、`SyntaxNode -> MarkdownIR`、mdast JSON、preserve/local/canonical rewrite adapterを追加した。
+
+### incr
+
+incr_teaのinactive-root cohortを測定し、結果をdocsにまとめた（[#277](https://github.com/dowdiness/incr/pull/277)、[#278](https://github.com/dowdiness/incr/pull/278)、[#279](https://github.com/dowdiness/incr/pull/279)）。独立したinactive-root cohortとamortized burstの比較が追加されている。
+
+### js_engine
+
+bytecode call-frameのfast pathをmergeし、param bindingのenv round-tripをskipした（[#366](https://github.com/dowdiness/js_engine/pull/366)）。binding stepが483ns→42ns（11.6×）に改善した。property-access baselineを文書化し（[#365](https://github.com/dowdiness/js_engine/pull/365)）、leaf bytecode functionで`Environment::new`をskipする最適化を作業ブランチで進めている。
+作業ブランチ: `perf/needs-own-env`
