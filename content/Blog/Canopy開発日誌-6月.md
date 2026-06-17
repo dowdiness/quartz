@@ -3,7 +3,7 @@ title: Canopy開発日誌-6月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-06-17T23:10:00+09:00
+modified: 2026-06-17T23:25:00+09:00
 ---
 
 # Canopy開発日誌-6月
@@ -39,6 +39,8 @@ Loomではjson-settings exampleにlast-good semantic projection attachmentを追
 
 運用面では、Codexをpre-PR reviewだけでなく実装計画の書き手として使う流れが固まり始めた。
 
+主なPR / Issue: canopy [#445](https://github.com/dowdiness/canopy/issues/445), [#437](https://github.com/dowdiness/canopy/issues/437), [#447](https://github.com/dowdiness/canopy/issues/447) / loom [#206](https://github.com/dowdiness/loom/issues/206) / js_engine [#186](https://github.com/dowdiness/js_engine/issues/186)
+
 ## 2026/6/2
 
 ### Canopy
@@ -57,6 +59,8 @@ Canvasでは、graph demoをより構造編集寄りに使うための準備を�
 
 Ideal web E2EをPR gateへ載せるための準備と、CIノイズをどう扱うかの整理を進めた。
 
+主なPR / Issue: canopy [#451](https://github.com/dowdiness/canopy/issues/451), [#452](https://github.com/dowdiness/canopy/issues/452), [#453](https://github.com/dowdiness/canopy/issues/453), [#462](https://github.com/dowdiness/canopy/issues/462), [#465](https://github.com/dowdiness/canopy/issues/465), [#469](https://github.com/dowdiness/canopy/issues/469)
+
 ## 2026/6/3
 
 ### Canopy
@@ -71,6 +75,8 @@ MoonDspでは、Canopy連携を見据えながらGraph runtimeの境界を整理
 
 incr側ではpublic event APIの命名をDerived寄りに整理した。
 
+主なPR / Issue: canopy [#445](https://github.com/dowdiness/canopy/issues/445), [#461](https://github.com/dowdiness/canopy/issues/461), [#479](https://github.com/dowdiness/canopy/issues/479)
+
 ## 2026/6/4
 
 ### Canopy
@@ -80,6 +86,8 @@ Rabbita headless UIをCanopyで本当に使えるかを見極める日だった�
 ### MoonDsp / js_engine
 
 MoonDspではGraph runtimeのfacade / internal boundaryを切り始めた。js_engineではArray method fast path delegationやTest262 runner shadowの準備が進んだ。
+
+主なPR / Issue: canopy [#489](https://github.com/dowdiness/canopy/issues/489), [#508](https://github.com/dowdiness/canopy/issues/508), [#511](https://github.com/dowdiness/canopy/issues/511)
 
 ## 2026/6/5
 
@@ -91,6 +99,8 @@ Rabbitaのpatched更新を取り込み、IdealとCanvasからheadless UI primiti
 
 incrではtyped spreadsheetとIncremental TEAの実験が進んだ。MoonDspではeditor / audio runtimeのhandoff contractを文書化し、js_engineではArray mutatorやrunner shadow化を進めた。
 
+主なPR / Issue: canopy [#517](https://github.com/dowdiness/canopy/issues/517), [#523](https://github.com/dowdiness/canopy/issues/523), [#524](https://github.com/dowdiness/canopy/issues/524), [#525](https://github.com/dowdiness/canopy/issues/525), [#526](https://github.com/dowdiness/canopy/issues/526), [#528](https://github.com/dowdiness/canopy/issues/528)
+
 ## 2026/6/6
 
 ### Canopy / Ideal UI foundation
@@ -100,6 +110,8 @@ IdealのUI基盤を大きく整理した。Resizable、Status live-region、CSS 
 ### 周辺リポジトリ
 
 MoonDspではGraph runtime / scheduler / browser internalsの分割が進んだ。Loom、incr、js_engineでも、それぞれparser runtimeやIncremental TEA、test262 runnerの整備が続いた。
+
+主なPR / Issue: canopy [#529](https://github.com/dowdiness/canopy/issues/529), [#532](https://github.com/dowdiness/canopy/issues/532), [#534](https://github.com/dowdiness/canopy/issues/534), [#539](https://github.com/dowdiness/canopy/issues/539), [#541](https://github.com/dowdiness/canopy/issues/541), [#544](https://github.com/dowdiness/canopy/issues/544)
 
 ## 2026/6/7
 
@@ -113,6 +125,8 @@ Canvasは次のsource-backed段階へ戻した。`lib/canvas-graph`の抽出も�
 
 LoomではMoonBit parser integrationが進み、editorへ渡せるsyntax artifactを出せる方向へ寄っていった。
 
+主なPR / Issue: canopy [#553](https://github.com/dowdiness/canopy/issues/553), [#554](https://github.com/dowdiness/canopy/issues/554), [#558](https://github.com/dowdiness/canopy/issues/558), [#560](https://github.com/dowdiness/canopy/issues/560), [#562](https://github.com/dowdiness/canopy/issues/562)
+
 ## 2026/6/8
 
 ### Canvas
@@ -124,6 +138,8 @@ dirty edit recoveryは、rollbackではなく「editor bufferが常に真。pars
 ### loom / incr / js_engine
 
 Loomではparser-backed role span、incrではIncremental TEAのkeyed DOM benchmark、js_engineではArray shift / unshift fast pathやrunner parityが進んだ。
+
+主なPR / Issue: canopy [#569](https://github.com/dowdiness/canopy/issues/569), [#570](https://github.com/dowdiness/canopy/issues/570), [#571](https://github.com/dowdiness/canopy/issues/571), [#576](https://github.com/dowdiness/canopy/issues/576)
 
 ## 2026/6/9
 
@@ -137,6 +153,8 @@ Lambda側では、generic projection memosへ向かう前段として、scope gr
 
 Loomではparser runtime attachmentやdeprecated syntax移行が進んだ。MoonDspではmini parser置き換えcampaignが進み、loomへの置き換え方針が具体化した。
 
+主なPR / Issue: canopy [#571](https://github.com/dowdiness/canopy/issues/571), [#575](https://github.com/dowdiness/canopy/issues/575), [#577](https://github.com/dowdiness/canopy/issues/577)
+
 ## 2026/6/10
 
 ### incr / Incremental TEA
@@ -146,6 +164,8 @@ Incremental TEAを一気に仕上げた。renderer lifecycle、keyed VDOM diff�
 ### MoonDsp / loom / Canopy / js_engine
 
 MoonDspはloom parser置き換えcampaignのPhase 2 parityを完走し、ADR-0016をAcceptedにした。Loomではseparated-listやattachment系が進み、CanopyではCanvasのruntime seam整理が続いた。js_engineはv0.3.0をリリースした。
+
+主なPR / Issue: incr [#209](https://github.com/dowdiness/incr/issues/209), [#211](https://github.com/dowdiness/incr/issues/211), [#238](https://github.com/dowdiness/incr/issues/238), [#243](https://github.com/dowdiness/incr/issues/243), [#244](https://github.com/dowdiness/incr/issues/244) / canopy [#611](https://github.com/dowdiness/canopy/issues/611), [#615](https://github.com/dowdiness/canopy/issues/615)
 
 ## 2026/6/11
 
@@ -161,6 +181,8 @@ Canopyのアーキテクチャ再設計に着手した。S0のproposalとAPI bou
 
 js_engineではCI cache改善が効かないことを実測で確認し、test262 shardingへ方針を切り替えた。作業運用としては、相談・レビュー・実装計画をどのエージェントに任せるかの使い分けも少し固まった。
 
+主なPR / Issue: loom [#279](https://github.com/dowdiness/loom/issues/279), [#196](https://github.com/dowdiness/loom/issues/196) / canopy [#587](https://github.com/dowdiness/canopy/issues/587), [#588](https://github.com/dowdiness/canopy/issues/588) / js_engine [#344](https://github.com/dowdiness/js_engine/issues/344), [#349](https://github.com/dowdiness/js_engine/issues/349)
+
 ## 2026/6/12
 
 ### Canopy / アーキテクチャ再設計
@@ -174,6 +196,8 @@ Canopyを「editor / frameworkの証明」から、「write-to-selfのpost produ
 ### 周辺リポジトリ
 
 incrではIncremental TEAのrendererとsubscriptionがさらに進み、Loomではparser runtime attachment、js_engineではarchitecture refactor Stage 0-7、MoonDspではscheduler周辺の責務分割が進んだ。
+
+主なPR / Issue: canopy [#587](https://github.com/dowdiness/canopy/issues/587), [#588](https://github.com/dowdiness/canopy/issues/588), [#589](https://github.com/dowdiness/canopy/issues/589), [#590](https://github.com/dowdiness/canopy/issues/590), [#597](https://github.com/dowdiness/canopy/issues/597), [#599](https://github.com/dowdiness/canopy/issues/599), [#610](https://github.com/dowdiness/canopy/issues/610)
 
 ## 2026/6/13
 
@@ -193,6 +217,8 @@ write→surfaceループには、resurfacing signalでの並べ替えとsame-inp
 
 LoomではMarkdownIRやMarkdown block reparseの準備が進み、js_engineではStage 0-7のarchitecture refactorが進んだ。
 
+主なPR / Issue: canopy [#602](https://github.com/dowdiness/canopy/issues/602), [#604](https://github.com/dowdiness/canopy/issues/604), [#609](https://github.com/dowdiness/canopy/issues/609), [#610](https://github.com/dowdiness/canopy/issues/610), [#611](https://github.com/dowdiness/canopy/issues/611), [#615](https://github.com/dowdiness/canopy/issues/615), [#619](https://github.com/dowdiness/canopy/issues/619)
+
 ## 2026/6/14
 
 ### Canopy / Lambda CstFold modernization
@@ -204,6 +230,8 @@ Lambda投影のCstFold現代化を進めた。既存Canopy semanticsとLoom CstF
 ### Canvas / loom / incr / MoonDsp / js_engine
 
 Canvasでは接続preview互換性をMoonBit側へ寄せ、source-backed demoの`defer_sync`順序を整理した。LoomではMarkdown incremental block reparse、incrではincr_tea benchmark、MoonDspではscheduler facade分割、js_engineではarchitecture redesign Stage 8-10が進んだ。
+
+主なPR / Issue: canopy [#637](https://github.com/dowdiness/canopy/issues/637), [#638](https://github.com/dowdiness/canopy/issues/638), [#640](https://github.com/dowdiness/canopy/issues/640), [#641](https://github.com/dowdiness/canopy/issues/641), [#644](https://github.com/dowdiness/canopy/issues/644), [#647](https://github.com/dowdiness/canopy/issues/647), [#648](https://github.com/dowdiness/canopy/issues/648), [#655](https://github.com/dowdiness/canopy/issues/655), [#639](https://github.com/dowdiness/canopy/issues/639), [#643](https://github.com/dowdiness/canopy/issues/643)
 
 ## 2026/6/15
 
@@ -223,6 +251,8 @@ Ideal側では`globalThis.__canopy_*`を単一の`__canopy_bridge`へ集約し�
 
 LoomではMarkdownIR M0 policyとM1 heading/paragraph slice、incrではspreadsheet proofとinactive root、js_engineではES2024 Set methodsやinternal slots整理が進んだ。
 
+主なPR / Issue: canopy [#660](https://github.com/dowdiness/canopy/issues/660), [#663](https://github.com/dowdiness/canopy/issues/663), [#671](https://github.com/dowdiness/canopy/issues/671), [#673](https://github.com/dowdiness/canopy/issues/673), [#664](https://github.com/dowdiness/canopy/issues/664), [#677](https://github.com/dowdiness/canopy/issues/677), [#666](https://github.com/dowdiness/canopy/issues/666), [#670](https://github.com/dowdiness/canopy/issues/670), [#669](https://github.com/dowdiness/canopy/issues/669), [#668](https://github.com/dowdiness/canopy/issues/668) / loom [#342](https://github.com/dowdiness/loom/issues/342), [#346](https://github.com/dowdiness/loom/issues/346) / incr [#273](https://github.com/dowdiness/incr/issues/273) / js_engine [#356](https://github.com/dowdiness/js_engine/issues/356)
+
 ## 2026/6/16
 
 ### Canopy / Lambda §20完了とalpha pilot
@@ -237,6 +267,8 @@ Lambdaのalpha-safe beta pilotを`lang/lambda/alpha`に置いた。`ScopeGraph`�
 
 LoomではMarkdownIR M1 vertical slice、incrではinactive-root cohort測定、js_engineではbytecode call-frame fast pathが進んだ。js_engineではparam bindingのenv round-tripをskipし、binding stepが大きく改善した。
 
+主なPR / Issue: canopy [#674](https://github.com/dowdiness/canopy/issues/674), [#682](https://github.com/dowdiness/canopy/issues/682), [#683](https://github.com/dowdiness/canopy/issues/683), [#684](https://github.com/dowdiness/canopy/issues/684), [#685](https://github.com/dowdiness/canopy/issues/685), issue [#659](https://github.com/dowdiness/canopy/issues/659) / loom [#346](https://github.com/dowdiness/loom/issues/346) / incr [#277](https://github.com/dowdiness/incr/issues/277), [#279](https://github.com/dowdiness/incr/issues/279) / js_engine [#365](https://github.com/dowdiness/js_engine/issues/365), [#366](https://github.com/dowdiness/js_engine/issues/366)
+
 ## 2026/6/17
 
 ### Canopy / Lambda編集の健全性
@@ -248,7 +280,9 @@ Lambda編集は「生成された文字列を見る」よりも、「編集後�
 - `ExtractToLet`は#674の実装で#659の懸念を満たしていることを、再パース付きregression testで確認した。
 - `DuplicateBinding`は`_copy`ではなく`x1`, `x2`, ... のようなlexableな名前を使うようにした。後続のfree referenceを捕まえる候補も避ける。
 
-これで#649と#659は完了。#650はmove/deleteのindentationとして残る。
+これで[#649](https://github.com/dowdiness/canopy/issues/649)と[#659](https://github.com/dowdiness/canopy/issues/659)は完了。[#650](https://github.com/dowdiness/canopy/issues/650)はmove/deleteのindentationとして残る。
+
+主なPR / Issue: canopy [#688](https://github.com/dowdiness/canopy/issues/688), [#689](https://github.com/dowdiness/canopy/issues/689), [#691](https://github.com/dowdiness/canopy/issues/691), [#696](https://github.com/dowdiness/canopy/issues/696)
 
 ### Canopy / Grove Level 1 identity hint
 
@@ -260,29 +294,41 @@ core側では`IdentityTransform`と`reconcile_hinted`を追加した。editor側
 
 残りは、write / read / clearの2端contractを`HintChannel`型で包むことと、hintあり / なしreconcileの重複整理。
 
+主なPR / Issue: canopy [#690](https://github.com/dowdiness/canopy/issues/690), [#697](https://github.com/dowdiness/canopy/issues/697), [#698](https://github.com/dowdiness/canopy/issues/698)
+
 ### Canopy / analysis query layer設計
 
 外部解析結果をCanopyへ入れるためのanalysis query layer設計を追加した。ast-grepや将来の`moon ide`結果を、snapshotに紐づいたtyped factとして正規化し、decorationsとして表示する方針にした。
 
 Phase 1は、ast-grepのbyte offsetをUTF-16 rangeへ変換してrange highlightするだけ。rewrite、node-id mapping、protocol変更はまだしない。
 
+主なPR / Issue: canopy [#687](https://github.com/dowdiness/canopy/issues/687)
+
 ### Canopy / Ideal
 
 IdealのAction Overlayを値所有の境界へ寄せた。Cell / Emit handleをUI helperの外へ漏らさず、action overlayのflowとexecを分け直した。
+
+主なPR / Issue: canopy [#686](https://github.com/dowdiness/canopy/issues/686)
 
 ### loom
 
 MarkdownIRはM1からrecovery / raw node semanticsへ進んだ。raw / recovered diagnostics、mdast export、direct syntax diagnostics、recovery adapter contractを追加し、HTML harnessへ送る範囲も明確にした。
 
-現在の作業ツリーでは、次の#328相当としてMarkdownIR mdast exportにunist `position`を付ける変更が進行中。Canopy superprojectから見ると、`loom` submoduleは`0a827c3`から`3856167`へ進んだうえで未コミット差分が残っている。
+現在の作業ツリーでは、次の[#328](https://github.com/dowdiness/loom/issues/328)相当としてMarkdownIR mdast exportにunist `position`を付ける変更が進行中。Canopy superprojectから見ると、`loom` submoduleは`0a827c3`から`3856167`へ進んだうえで未コミット差分が残っている。
+
+主なPR / Issue: loom [#348](https://github.com/dowdiness/loom/issues/348), [#350](https://github.com/dowdiness/loom/issues/350), [#351](https://github.com/dowdiness/loom/issues/351), [#352](https://github.com/dowdiness/loom/issues/352), [#353](https://github.com/dowdiness/loom/issues/353), [#354](https://github.com/dowdiness/loom/issues/354), [#355](https://github.com/dowdiness/loom/issues/355), [#356](https://github.com/dowdiness/loom/issues/356), [#357](https://github.com/dowdiness/loom/issues/357), [#358](https://github.com/dowdiness/loom/issues/358)
 
 ### incr
 
 incr_teaはinactive-root測定からactivation policyへ進んだ。ratio tableを再確認し、activation trigger probeを追加し、policyをdocsで決めて実装まで入れた。Loom submodule内の`incr`も`34ac477`から`f7681bc`へ進んでいる。
 
+主なPR / Issue: incr [#281](https://github.com/dowdiness/incr/issues/281), [#282](https://github.com/dowdiness/incr/issues/282), [#284](https://github.com/dowdiness/incr/issues/284), [#285](https://github.com/dowdiness/incr/issues/285)
+
 ### js_engine
 
 `needs_own_env`系列のbytecode最適化が続いた。leaf bytecode functionで`Environment::new`をskipし、same-realm calleeではrealm-proto wrapperを避け、active-override `Ref`も単一の`Ref[FunctionRealmProtos?]`へ畳んだ。最後にbenchmark tableへ`exec/for_of` rowを追加した。
+
+主なPR / Issue: js_engine [#367](https://github.com/dowdiness/js_engine/issues/367), [#368](https://github.com/dowdiness/js_engine/issues/368), [#369](https://github.com/dowdiness/js_engine/issues/369), [#370](https://github.com/dowdiness/js_engine/issues/370), [#371](https://github.com/dowdiness/js_engine/issues/371), [#372](https://github.com/dowdiness/js_engine/issues/372)
 
 ### 作業運用メモ
 
