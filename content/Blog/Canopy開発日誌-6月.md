@@ -3,7 +3,7 @@ title: Canopy開発日誌-6月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-06-16T14:45:00+09:00
+modified: 2026-06-17T22:45:00+09:00
 ---
 
 # Canopy開発日誌-6月
@@ -39,6 +39,8 @@ modified: 2026-06-16T14:45:00+09:00
 6月13日は、再設計の仕上げとしてeditorをlanguageから完全に切り離すneutral test grammarを入れ、Codexとの連携をdocsで検証してから、そのloweringをprototypeまで進めた。js_engineでも同じ「責務で分割してから動かす」流れがStage 0-7のarchitecture refactorとして走り、`bytecode.mbt`の分割と`static_semantics` packageの切り出しまで進んだ。プロダクト側のwrite→surfaceループも、resurfacing signalでの並べ替えとsame-input askを足して前へ進めている。
 
 6月14日から16日にかけては、Lambda投影のCstFold現代化とscope graphを締め、block-localな編集操作を一通り完成させた。同時にCanopyにJS interop coreとfile I/Oを導入し、Idealのbridgeを整理。LoomではMarkdownのincremental block reparseとMarkdownIRの設計、incrではincr_teaのspreadsheet proofとinactive root、js_engineではbytecode call-frameの高速化とES2024 Set methods、MoonDspではschedulerのfacade分割がそれぞれ進んだ。
+
+6月17日は、Lambda編集の安全性を「実際の出力をreparseして構造を見る」テストへ寄せ、DuplicateBindingとExtractToLetの境界を閉じた。その上でGrove Level 1としてstructural edit identity hint channelを入れ、Wrap/Unwrap後もNodeIdを保てる道筋を作った。並行してanalysis query layerの設計、Ideal overlayのvalue-owned化、Loom MarkdownIR recovery contract、incr_tea activation policy、js_engineのleaf function系高速化が進んだ。
 
 ## 2026/6/1
 
@@ -720,8 +722,7 @@ ES2024 Set methods（`union`/`intersection`/`difference`/`symmetricDifference`/`
 あわせてTailwind Plus → Rabbita porting guideを追加した。
 関連コミット: `005af15`
 
-Lambdaのalpha-safe beta pilotを`lang/lambda/alpha`に置いた（[#678](https://github.com/dowdiness/canopy/pull/678)）。`ScopeGraph`を使って投影termをlowerし、binder identityでroot beta reduction、capture無しでnamed `@ast.Term`をreifyする実験的package。`((x) => (y) => x) y`のcanonical fixtureも含む。その後、branch上でalpha equalityとreify policyの調整、binder id collisionの修正、declarative helper traversalへの寄せなどのfollow-upを行っている。
-作業ブランチ: `docs/lambda-alpha-safe-core-boundary`
+Lambdaのalpha-safe beta pilotを`lang/lambda/alpha`に置いた（[#682](https://github.com/dowdiness/canopy/pull/682)）。`ScopeGraph`を使って投影termをlowerし、binder identityでroot beta reduction、capture無しでnamed `@ast.Term`をreifyする実験的package。`((x) => (y) => x) y`のcanonical fixtureも含む。merge前のfollow-upで、alpha equalityのfree ref比較、reify policy、binder id collision、declarative helper traversalを調整し、named `Term`をsource/user boundaryに残す方針をADRへ固定した。
 
 ### loom
 
@@ -735,3 +736,74 @@ incr_teaのinactive-root cohortを測定し、結果をdocsにまとめた（[#2
 
 bytecode call-frameのfast pathをmergeし、param bindingのenv round-tripをskipした（[#366](https://github.com/dowdiness/js_engine/pull/366)）。binding stepが483ns→42ns（11.6×）に改善した。property-access baselineを文書化し（[#365](https://github.com/dowdiness/js_engine/pull/365)）、leaf bytecode functionで`Environment::new`をskipする最適化を作業ブランチで進めている。
 作業ブランチ: `perf/needs-own-env`
+
+### 6/16 late additions
+
+夕方以降に、alpha-safe core boundaryはmainへ入り（[#682](https://github.com/dowdiness/canopy/pull/682)）、続けてbinding-id compatibility fallbackを削った（[#683](https://github.com/dowdiness/canopy/pull/683)）。`DefinitionIndex::binding_for_node`は実LetDef idだけを見るようになり、init-child fallbackやsource-range fallbackを消して、post-`ModuleProjection` cleanupを一段進めた。
+
+Ideal側ではTabs UI helperをvalue-derivedな小さな層へ切り出し（[#684](https://github.com/dowdiness/canopy/pull/684)）、Rabbita component境界へ寄せる下準備をした。運用面ではagent model routing guidanceも更新した（[#685](https://github.com/dowdiness/canopy/pull/685)）。
+
+## 2026/6/17
+
+### Canopy / Lambda edit soundness
+
+まず、block-local binding editの敵対的なケースをテストで固めた。move up/downのscope violation guard、まだ参照されているblock bindingのdelete挙動、rootとblockで同名bindingがshadowするケースをwhitebox testに追加している。
+関連PR: [#688](https://github.com/dowdiness/canopy/pull/688)
+
+続いて、scope graphの内部mapを直接読む経路を閉じた。`scope_id_for_node`は`@scope.scope_for_node`経由になり、`ScopeGraph.node_scope` / `node_cutoffs`はprivate implementation stateとして隠した。これで#656のquery boundary cleanupを閉じた。
+関連PR: [#689](https://github.com/dowdiness/canopy/pull/689)
+
+ExtractToLetについては、#674のblock-aware実装が本当に#659の懸念を満たしているかを、実装変更ではなくregression testで確認した。emitされたtext editを実際に適用し、その結果をreparseし、scope graphを作り直してblock-local / rootのresolution shapeを検査する形にした。#659はこれでclose。
+関連PR: [#691](https://github.com/dowdiness/canopy/pull/691)
+
+DuplicateBindingでは、`_copy` suffixがLambda lexerで読めないという実害を直した。Lambda identifierはletters + digitsだけなので、copy名は`x1`, `x2`, ... のようなlexable numeric suffixに変更し、同scope / enclosing declarationだけでなく、後続のfree referenceを捕まえてしまう候補も避ける。ここでも「文字列を見てよさそう」ではなく、編集後のactual outputをreparseしてASTのdefinition orderを確認するテストにした。#649はclose、#650はmove/deleteのindentationとして残る。
+関連PR: [#696](https://github.com/dowdiness/canopy/pull/696)
+
+### Canopy / Grove Level 1 identity hints
+
+Grove Level 1として、structural edit identity hint channelを入れた。まずcore側で`IdentityTransform`と`reconcile_hinted`を追加し、`Wrap` / `Unwrap` / `Move` / `Replace` / `RenameLeaf` / `Opaque`などのhintをreconcileへ渡せるようにした。
+関連PR: [#690](https://github.com/dowdiness/canopy/pull/690)
+
+その上でeditorとLambda edit bridgeへ接続した。`SyncEditor`がspan edit batchに対応するhintを保持し、raw text editは`Opaque`でtaintする。Lambda側では`TreeEditOp`を`IdentityTransform`へ落とし、`WrapInLambda`などのstructural wrap後も内側のNodeIdを維持できるようにした。`ExtractToLet`や`ChangeOperator`のように正しいhintを出しづらいものは保守的に`Opaque`へ落とす。
+関連PR: [#697](https://github.com/dowdiness/canopy/pull/697)
+
+最後にUnwrap pathのE2E integration coverageを足した。WrapとUnwrapの両方で、hintが効く経路と効かないcontrolを並べ、NodeId preservationが本当にstructural edit hint由来であることを確認している。
+関連PR: [#698](https://github.com/dowdiness/canopy/pull/698)
+
+この一連の作業は、エージェントメモリー上では`project_grove_level1_hint_channel`として整理した。残りは、write/read/clearの2端を明示する`HintChannel`型と、hintあり/なしreconcileの重複整理。
+
+### Canopy / analysis query layer
+
+外部解析結果をCanopyへ入れるためのanalysis query layer設計を追加した。ast-grepや将来の`moon ide`結果を、editor modelへ直接埋め込むのではなく、snapshot-boundなtyped factとして正規化し、decorationsとして表示する方針。Phase 1はast-grepのbyte offsetをUTF-16 rangeへ変換してrange highlightするだけで、rewrite、node-id mapping、protocol変更はしない。
+関連PR: [#687](https://github.com/dowdiness/canopy/pull/687)
+
+この設計は、Grove Level 1の後続ともつながる。rangeをauthoritativeにしつつ、structural edit後にNodeIdがhint channelで生き残る場合は、将来のsemantic annotationやanalysis factをより安定して投影nodeへ添付できる。
+
+### Canopy / Ideal
+
+IdealのAction Overlayをvalue-owned boundaryへ寄せた。Cell / Emit handleをUI helperの外へ漏らさず、action overlayのflowとexecを分け直し、Rabbita child-component migrationの次のsliceに入りやすくした。
+関連PR: [#686](https://github.com/dowdiness/canopy/pull/686)
+
+### loom
+
+MarkdownIRはM1からrecovery / raw node semanticsへ進んだ。parser subsetを広げたあと、Block adapter parity、malformed block recovery parity、raw incoming diagnostics、mdast raw/recovered diagnostics、direct syntax diagnosticsを順に追加し、最後にrecovery adapter contractをADRとして固定した。`mdastRaw` / `mdastRecovered` diagnosticの扱い、editor/canonical/rewrite adapterの責務、HTML harnessへ先送りする範囲が明確になった。
+関連PR: [loom #348](https://github.com/dowdiness/loom/pull/348)、[#350](https://github.com/dowdiness/loom/pull/350)、[#351](https://github.com/dowdiness/loom/pull/351)、[#352](https://github.com/dowdiness/loom/pull/352)、[#353](https://github.com/dowdiness/loom/pull/353)、[#354](https://github.com/dowdiness/loom/pull/354)、[#355](https://github.com/dowdiness/loom/pull/355)、[#356](https://github.com/dowdiness/loom/pull/356)、[#357](https://github.com/dowdiness/loom/pull/357)、[#358](https://github.com/dowdiness/loom/pull/358)
+
+現在の作業ツリーでは、次の#328相当としてMarkdownIR mdast exportにunist `position`を付ける変更が進行中。`LineIndex`からline/column/offsetを作り、`experimental_markdown_ir_to_mdast_json`系をposition-awareにする差分が未コミットで残っている。Canopy superprojectから見ると、`loom` submoduleは`0a827c3`から`3856167`へ進んだうえでdirty。
+
+### incr
+
+incr_teaのinactive-root検証が、測定からactivation policyへ進んだ。inactive-root ratio tableを再確認し、activation trigger probeを追加し、その結果をもとにactivation policyをdocsで決め、実装まで入れた。Loom submodule内の`incr`は`34ac477`から`f7681bc`へ進んでおり、この一連のincr_tea workが現在のsubmodule dirty stateにも反映されている。
+関連PR: [incr #281](https://github.com/dowdiness/incr/pull/281)、[#282](https://github.com/dowdiness/incr/pull/282)、[#284](https://github.com/dowdiness/incr/pull/284)、[#285](https://github.com/dowdiness/incr/pull/285)
+
+### js_engine
+
+`needs_own_env`系列のbytecode最適化が続いた。leaf bytecode functionで`Environment::new`をskipし、same-realm calleeではrealm-proto wrapperを避け、10個あったactive-override `Ref`を単一の`Ref[FunctionRealmProtos?]`へ畳んだ。さらに`needs_own_env=false`のleaf functionではhoist callもskipするようにし、`apply_active_realm_protos`のall-None clear挙動をテストで固定した。
+関連PR: [js_engine #367](https://github.com/dowdiness/js_engine/pull/367)、[#368](https://github.com/dowdiness/js_engine/pull/368)、[#369](https://github.com/dowdiness/js_engine/pull/369)、[#370](https://github.com/dowdiness/js_engine/pull/370)、[#371](https://github.com/dowdiness/js_engine/pull/371)
+
+最後に、benchmark tableへ`exec/for_of` rowを追加した。
+関連PR: [js_engine #372](https://github.com/dowdiness/js_engine/pull/372)
+
+### 作業運用メモ
+
+今回の記録は、Canopy / Loom / nested incr / js_engineのGit log、現在のdirty state、Claude project memory、Codex memoryを突き合わせて書いた。特に6/17時点で重要な運用メモは、Lambda editの検証を「actual outputをreparseする」形へ寄せること、analysis factはsnapshot-boundでdiscardableにすること、Grove hint channelはまだwrite/read/clearの2端contractが暗黙なので次の構造編集言語へ広げる前に型で包むこと。
