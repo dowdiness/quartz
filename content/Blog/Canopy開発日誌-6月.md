@@ -3,7 +3,7 @@ title: Canopy開発日誌-6月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-06-18T09:55:00+09:00
+modified: 2026-06-18T15:42:27+09:00
 ---
 
 # Canopy開発日誌-6月
@@ -339,3 +339,51 @@ incr_teaはinactive-root測定からactivation policyへ進んだ。inactive-roo
 1. Lambda editの検証は、実際の編集後テキストを再パースして確認する。
 2. analysis factはsnapshotに紐づき、いつでも捨てられるものとして扱う。
 3. Grove hint channelは、次の構造編集言語へ広げる前に`HintChannel`型で明示する。
+
+## 2026/6/18
+
+### Canopy / analysis query layer実装
+
+前日に設計したanalysis query layerのPhase 1を実装してmainへ入れた。`lib/analysis`側には、document identity・version・32bit hash・UTF-16長を持つ`SourceSnapshot`、UTF-16 rangeとpattern id / capturesを持つ`PatternMatchFact`、ast-grepのbyte offsetをエディタ側のUTF-16 offsetへ変換するhelperを置いた。
+
+Canopy側の`analysis` packageでは、ast-grep由来のmatchを`PatternMatchFact`へ変換し、それをprotocol decorationやmatch-list entryへ落とすadapterを追加した。初期ルールとしてMoonBitの`fn`定義を拾うast-grep ruleも入った。途中で、snapshotの同一性判定がversionとhashだけだと、同じ内容の別documentを誤ってcurrent扱いしてしまう問題が見つかり、`doc_id`と`utf16_len`も見るように直した。
+
+これでPhase 1は「外部解析結果をsnapshotに紐づく捨てられるfactとして受け、range highlight / match list用の値へ変換する」ところまで到達した。まだhost-side FFI wiring、つまりJSから実際にast-grep結果を渡してUIへ表示する部分は次の段階に残っている。
+
+主なPR / Issue: canopy [#699](https://github.com/dowdiness/canopy/issues/699), [#692](https://github.com/dowdiness/canopy/issues/692), [#693](https://github.com/dowdiness/canopy/issues/693), [#694](https://github.com/dowdiness/canopy/issues/694), [#695](https://github.com/dowdiness/canopy/issues/695)
+
+### loom / MarkdownIR
+
+MarkdownIRはmdast exportにunist `position`を付けるところまで進んだ。positionはMarkdownIR内部のsource originと`LineIndex`からexport境界で作るもので、MarkdownIR自体をmdast位置情報に引きずられないようにしている。non-BMP文字、raw / recovered node、block separator、fenced code block、CRLFなど、位置がずれやすいケースもtestで押さえた。
+
+その後は[#333](https://github.com/dowdiness/loom/issues/333)のrewrite / canonical formatter側へ進み、code fenceとlinkのsource-preserving rewrite smoke coverageを追加した。特にcode fenceでは、contentだけを書き換える場合にfenceそのものや周辺sourceを壊さないこと、unclosed fenceでもrewriteの境界を守ることを確認している。
+
+主なPR / Issue: loom [#359](https://github.com/dowdiness/loom/issues/359), [#360](https://github.com/dowdiness/loom/issues/360), [#361](https://github.com/dowdiness/loom/issues/361)
+
+### incr / Incremental TEA
+
+incr_teaでは7GUIs stress testを追加した。Counter、Temperature Converter、Flight Booker、Timer、CRUD、Circle Drawer、Cellsを別packageとして置き、TEA風UIをincrの依存グラフでどこまで扱えるかを見るための実験面が広がった。
+
+同時に、`on_change`やpointer offsetまわりの小さなAPIも整えた。前日のinactive-root activation policyに続き、単体の小さなdemoではなく、複数のUIパターンを並べて「Rabbitaとは別のincremental UI substrateとして成立するか」を見る段階に入った。次は残っているTEA follow-up、特にlocal pointer coordinateまわりの整理が候補になる。
+
+主なPR / Issue: incr [#291](https://github.com/dowdiness/incr/issues/291), [#268](https://github.com/dowdiness/incr/issues/268), [#286](https://github.com/dowdiness/incr/issues/286), [#287](https://github.com/dowdiness/incr/issues/287), [#288](https://github.com/dowdiness/incr/issues/288), [#289](https://github.com/dowdiness/incr/issues/289), [#290](https://github.com/dowdiness/incr/issues/290)
+
+### Rabbita / pointer events
+
+Canopyが参照しているRabbita forkでは、pointer event bindingのbranchが進んだ。DOM / HTML / subscription層へ`PointerEvent`系のbindingを足し、後続のUIでmouse専用ではなくpointer入力として扱えるようにする準備になる。実装後にconstructorやcast styleを既存のmouse event conversionに揃える修正も入った。
+
+まだCanopy親リポジトリでは、`rabbita` submodule pointerが未コミット差分として残っている。
+
+### js_engine
+
+js_engineでは、Set iterationの仕様バグを直した。`Set.prototype.forEach`中にcallbackが最後の要素をdeleteしてaddし直すと、仕様上は再追加された値が未訪問の新しいslotとして再度訪問される。これに合わせて、activeな`forEach`中は物理削除せずtombstoneとして残し、外側のiterationが終わってからcompactするモデルにした。`clear()`、`values()` / `keys()` / `@@iterator`、`entries()`もtombstoneを考慮するようにして、無限ループを避けるone-shot guard付きtestも追加した。
+
+並行して、`Function.prototype.toString`が元sourceを返せるようにするPRが開かれている。parser / AST / runtimeへsource textやspanを通す大きめの変更で、review後にoriginal sourceからspanを作る修正まで進んだ。こちらはmainにはまだ入っていない。別PRではdocsのroadmap / design / decisions配置を整理し、現在のarchitecture targetやtest262 snapshotを更新した。
+
+主なPR / Issue: js_engine [#373](https://github.com/dowdiness/js_engine/issues/373), [#374](https://github.com/dowdiness/js_engine/issues/374), [#375](https://github.com/dowdiness/js_engine/issues/375), [#310](https://github.com/dowdiness/js_engine/issues/310), [#357](https://github.com/dowdiness/js_engine/issues/357)
+
+### 作業運用メモ
+
+今日の時点で、Canopy親リポジトリは`loom`と`rabbita` submodule pointerがdirtyになっている。`loom`は`b26a304`まで進み、その中の`incr` submoduleも`7a971ab`まで進んでいる。`rabbita`はpointer event branchの`54b3188`まで進んでいるが、親側で取り込むかどうかはまだ未整理。
+
+今日の大きな流れは、Canopy本体ではanalysis layerを最小実装まで進め、周辺ではMarkdownIRのexport / rewrite保証、incr_teaのUI stress surface、Rabbitaのpointer入力、js_engineのSet仕様適合とdocs整理が並行して進んだ、という感じだった。
