@@ -11,6 +11,8 @@ modified: 2026-06-11T04:43:46+09:00
 
 2026年5月18日から31日ごろまでの作業ログ。
 
+> Canopyは、テキストとプログラムの構造を同じ空間で直接編集できる、次世代のコードエディタです。ソースコードを文字列ではなく「構造」として扱うことで、安全なリファクタリングやAIとの協調作業、CRDTによる複数人同時編集を実現しています。
+
 中心はCanopyというprojectional editor（構造編集エディタ）の実験で、周辺ライブラリのloom、incr、moondsp、js_engineにも並行して手を入れている。Canopyでやりたいのは、テキストとしての編集とプログラムの構造を直接触る編集を同じワークスペースで扱えるようにすること。さらに、そのワークスペースの状態をAIへ渡せるコンテキストとして整理して、編集作業とAI支援をつなげることを目指している。
 
 生の作業メモに近いので、細かいPRリンクもそのまま残してある。大まかな流れとしては、前半はRabbitaとCodeMirrorの接続、途中からInspectorやLoom連携、後半はCognitionというAI用ナレッジベース機能の土台づくり。終盤はlambdaのscope graphやgo-to-definition、typed spreadsheet demo、bytecode benchmarkなど、構造編集とその基盤を実際のUIや性能測定へつなぐ作業に広がっていった。incrについては、[Build Systems à la Carte](https://hackage.haskell.org/package/build)を読みながら自分のライブラリのAPIや評価モデルを整理していった時期でもある。
@@ -165,7 +167,7 @@ prototype移行を続けた。object function、Promise、WeakMap / WeakSet、Ma
 
 ### Canopy / loom
 
-[Loom issue #147](https://github.com/dowdiness/loom/issues/147)の移行をCanopy側まで進めた。`text_change`と`moji`はCanopy配下ではなくLoom monorepoのtop-level moduleに置く方針にして、[loom PR #149](https://github.com/dowdiness/loom/pull/149)で両者をLoom側へ移し、Canopy側は[Canopy PR #341](https://github.com/dowdiness/canopy/pull/341)で`./loom/text-change`と`./loom/moji`を参照するようにした。
+[Loom issue #147](https://github.com/dowdiness/loom/pull/147)の移行をCanopy側まで進めた。`text_change`と`moji`はCanopy配下ではなくLoom monorepoのtop-level moduleに置く方針にして、[loom PR #149](https://github.com/dowdiness/loom/pull/149)で両者をLoom側へ移し、Canopy側は[Canopy PR #341](https://github.com/dowdiness/canopy/pull/341)で`./loom/text-change`と`./loom/moji`を参照するようにした。
 
 Canopy内の`lib/text-change`と`lib/moji`、使われていなかった`valtio` submoduleも整理した。Loomを単体でビルドしやすくするための移行で、Canopy側に置かれていた共通部品をLoomの責任範囲へ戻した形だ。
 
