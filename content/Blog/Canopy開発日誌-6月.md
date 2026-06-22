@@ -3,7 +3,7 @@ title: Canopy開発日誌-6月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-06-18T15:46:29+09:00
+modified: 2026-06-23T23:59:00+09:00
 ---
 
 # Canopy開発日誌-6月
@@ -14,14 +14,18 @@ modified: 2026-06-18T15:46:29+09:00
 
 ## 今月の大きな流れ
 
-6月前半は、Canopyを「構造編集の実験場」から、より明確なプロダクトとライブラリ群へ整理する作業が中心だった。
+6月前半は、Canopyを「構造編集の実験場」から、より明確なプロダクトとライブラリ群へ整理する作業が中心だった。後半は、Markdownの構造編集（SDEG: Structure-Directed Edit Grammar）、外部解析結果を取り込むanalysis query layer、全リポジトリのmoon.mod.json→moon.mod移行、js_engineのtest262適合率向上へと重心が移った。
 
 - **Lambda編集**: 名前の有効範囲を追跡するscope graph、block内だけに効くbinding編集、LoomのCstFoldを使った投影構築、古い`ModuleProjection`の削除、alpha変換に安全なbeta reductionの実験、構造編集後もNodeIdを保つGrove Level 1 hintまで進んだ。
+- **Markdown SDEG**: 見出しやリスト項目を構造編集の対象にするべく、heading identityの安定性調査、リスト項目の同一リスト内move、block move provenanceの追跡、リストmove blockerの敵対的ケース対応が進んだ。
 - **Ideal / Canvas**: 見た目を持たないUI部品ライブラリとしてRabbitaを使い、Tailwind v4へ寄せ、CanvasはUI状態ではなくsource textを正として動くsource-backed方式にした。CodeMirror source editorとFFI file I/Oも入った。
-- **Loom**: Lambda側の土台に加え、Markdownの変更されたblockだけを再パースする仕組みと、Markdownを安全に別表現へ変換するMarkdownIRの設計が進んだ。
-- **incr**: Incremental TEA prototypeが進んだ。これはTEA風のUIをincrの依存グラフで更新する実験で、描画の生存期間、key付き差分、subscription、非表示rootの停止、再有効化方針まで扱った。
-- **js_engine**: 責務でファイルを分けるarchitecture refactor、bytecode実行の近道になるfast path、ES2024 Set methods、test262/benchmark基盤の整備が進んだ。
+- **Analysis query layer**: 外部解析結果（ast-grepなど）をCanopyへ安全に取り込む層の設計・Phase 1実装。解析結果はsnapshotに紐づく捨てられるfactとして扱い、text CRDTの永続性を崩さない。
+- **moon.mod移行**: Canopyが所有する全マニフェストをmoon.mod.jsonからmoon.mod（TOML形式）へ移行。13 submoduleをworkspace memberに追加し、MOON_WORK=offの依存解決問題を解消した。
+- **Loom**: Lambda側の土台に加え、Markdownの変更されたblockだけを再パースする仕組み、MarkdownIRのmdast exportとposition付け、rewrite / canonical formatterのsource-preserving保証が進んだ。
+- **incr**: Incremental TEA prototypeが進んだ。TEA風のUIをincrの依存グラフで更新する実験で、7GUIs stress test、inactive-root activation policyまで扱った。
+- **js_engine**: 責務でファイルを分けるarchitecture refactor、bytecode実行の近道になるfast path、ES2024 Set methods、test262/benchmark基盤の整備が進んだ。後半はtest262適合率向上が中心で、JSON.parse 100% pass、Promise spec fixes、regex escapes修正、lexer UTF-16正確化、timer queue高速化など。
 - **MoonDsp**: Canopyとは直接統合せず、共有基盤を見ながらGraph runtimeやschedulerの責務分割を進めた。
+- **作業運用**: 作業記録をGit log・agent session・project memoryの突き合わせで書く運用が定着しつつある。
 
 ## 2026/6/1
 
@@ -387,3 +391,105 @@ js_engineでは、Set iterationの仕様バグを直した。`Set.prototype.forE
 今日の時点で、Canopy親リポジトリは`loom`と`rabbita` submodule pointerがdirtyになっている。`loom`は`b26a304`まで進み、その中の`incr` submoduleも`7a971ab`まで進んでいる。`rabbita`はpointer event branchの`54b3188`まで進んでいるが、親側で取り込むかどうかはまだ未整理。
 
 今日の大きな流れは、Canopy本体ではanalysis layerを最小実装まで進め、周辺ではMarkdownIRのexport / rewrite保証、incr_teaのUI stress surface、Rabbitaのpointer入力、js_engineのSet仕様適合とdocs整理が並行して進んだ、という感じだった。
+
+## 2026/6/19
+
+### Canopy / Markdown SDEG heading
+
+Markdown見出しを構造編集の対象にするSDEG（Structure-Directed Edit Grammar）の調査を進めた。
+
+- Markdown headingのNodeIdが編集をまたいでどのくらい安定するかを探るheading identity probeを追加した（[#716](https://github.com/dowdiness/canopy/issues/716)）。
+- SDEG NodeId side tableの設計スケッチをtestとして置いた（[#717](https://github.com/dowdiness/canopy/issues/717)）。これは、各blockのNodeIdを横断的に引ける補助表の構想になる。
+- heading edit pathのE2E validationを加え（[#718](https://github.com/dowdiness/canopy/issues/718)）、SDEG Phase 0での発見をPhase 1計画へ持ち越すdocsも更新した（[#719](https://github.com/dowdiness/canopy/issues/719)）。
+
+主なPR / Issue: canopy [#716](https://github.com/dowdiness/canopy/issues/716), [#717](https://github.com/dowdiness/canopy/issues/717), [#718](https://github.com/dowdiness/canopy/issues/718), [#719](https://github.com/dowdiness/canopy/issues/719)
+
+### js_engine
+
+- shared AsyncGeneratorPrototype chainを実装した（[#405](https://github.com/dowdiness/js_engine/issues/405)）。ES仕様 §27.4に従い、`async function*` で作られる各generatorが共通のprototype chainを共有するようにした。
+- tokenに`end_offset` fieldを追加し、parserがsourceを再スキャンする必要をなくした（[#403](https://github.com/dowdiness/js_engine/issues/403)）。これまではparserがトークンの終端位置を知るためにsource内を再度走査していたが、lexer時点でUTF-16コードユニット単位のend_offsetを記録するようにした。
+- runtime atomicsのtest coverage（[#402](https://github.com/dowdiness/js_engine/issues/402)）とtest262 toolingの回帰テスト（[#401](https://github.com/dowdiness/js_engine/issues/401)）を追加した。
+
+主なPR / Issue: js_engine [#405](https://github.com/dowdiness/js_engine/issues/405), [#403](https://github.com/dowdiness/js_engine/issues/403), [#402](https://github.com/dowdiness/js_engine/issues/402), [#401](https://github.com/dowdiness/js_engine/issues/401)
+
+## 2026/6/20
+
+### Canopy / Markdown list SDEG
+
+Markdownリストの構造編集向けの基盤を一気に進めた。
+
+- Markdown SDEG heading side tableを抽出し、見出し用の補助表を独立させた（[#722](https://github.com/dowdiness/canopy/issues/722)）。
+- block move provenanceを追加した（[#723](https://github.com/dowdiness/canopy/issues/723)）。これはblockを移動したときに「どこから来たか」を追跡する仕組みで、後続のリスト項目moveに必要な前提になる。
+- Markdown list move blockerをhardeningした（[#726](https://github.com/dowdiness/canopy/issues/726)）。これは、リスト項目の移動が安全にできないケース（異なる階層や種類のリスト間の移動など）をきちんと弾くためのもの。
+- same-list Markdown item movesを有効化し（[#731](https://github.com/dowdiness/canopy/issues/731)）、リスト項目payloadの消費も追加した（[#730](https://github.com/dowdiness/canopy/issues/730)）。
+
+主なPR / Issue: canopy [#722](https://github.com/dowdiness/canopy/issues/722), [#723](https://github.com/dowdiness/canopy/issues/723), [#726](https://github.com/dowdiness/canopy/issues/726), [#730](https://github.com/dowdiness/canopy/issues/730), [#731](https://github.com/dowdiness/canopy/issues/731)
+
+### js_engine / test262適合率向上
+
+この日はjs_engineにとって大きなfixデーになった。test262の失敗を系統的に潰し、JSON.parseが100% passに到達した。
+
+- **lexer: astral_count追跡**（[#408](https://github.com/dowdiness/js_engine/issues/408)）。MoonBitのStringはUTF-16ベースだが、lexerのoffset計算がコードポイント単位だったため、サロゲートペアを含むソースでは全トークンの位置がずれていた。`astral_count`変数を追加し、非BMP文字を読むたびに+1してUTF-16コードユニット数へ補正するようにした。
+- **JSON.parse reviver Proxy-aware**（[#419](https://github.com/dowdiness/js_engine/issues/419)）。`JSON.parse`のreviver処理をinterpreter-awareな抽象操作経由に置き換え、Proxyの`[[Get]]`/`[[Delete]]`/`[[DefineOwnProperty]]` trapが正しく発火するようにした。JSON/parse: 36 failures → 0（100%, 142/142）。
+- **Promise spec fixes 5件**（[#413](https://github.com/dowdiness/js_engine/issues/413)）。`Symbol.toStringTag`のdescriptor、non-object thisでのTypeError、iter-poisonedケース、`Promise.any`のresolve/reject element guard、newTarget.prototypeの反映。
+- **`__lookupGetter__`/`__lookupSetter__`と`replaceAll`修正**（[#412](https://github.com/dowdiness/js_engine/issues/412)）。Annex Bのgetter/setter lookupと、`String.prototype.replaceAll`のIsRegExp判定・`Symbol.replace` override対応。
+- **surrogate-safe string slicing**（[#411](https://github.com/dowdiness/js_engine/issues/411)）。`classify_by_edition`ツールが絵文字などでpanicするのを修正。
+- **regex `\u`/`\x` escape対応**（[#420](https://github.com/dowdiness/js_engine/issues/420)）。文字クラス内の`\uXXXX`/`\xHH`/`\f`/`\v`/`\0`/`\b`が全てリテラル文字扱いされていたバグを修正。Annex Bのidentity escapeやnon-Unicodeモードのサロゲートペア非結合もカバー。
+- **匿名built-in関数のname/length/property order**（[#410](https://github.com/dowdiness/js_engine/issues/410)）と**singleton %GeneratorPrototype%**（[#407](https://github.com/dowdiness/js_engine/issues/407)）。
+- test262: await-dictionary（`Promise.allKeyed`/`allSettledKeyed`）をskip（[#377](https://github.com/dowdiness/js_engine/issues/377)）。
+
+主なPR / Issue: js_engine [#408](https://github.com/dowdiness/js_engine/issues/408), [#419](https://github.com/dowdiness/js_engine/issues/419), [#413](https://github.com/dowdiness/js_engine/issues/413), [#412](https://github.com/dowdiness/js_engine/issues/412), [#411](https://github.com/dowdiness/js_engine/issues/411), [#420](https://github.com/dowdiness/js_engine/issues/420), [#410](https://github.com/dowdiness/js_engine/issues/410), [#407](https://github.com/dowdiness/js_engine/issues/407)
+
+## 2026/6/21
+
+### Canopy / Markdown list + moon.mod移行開始
+
+- Markdown listの構造編集を引き続き進め、list payloadの消費（[#730](https://github.com/dowdiness/canopy/issues/730)）とsame-list item move（[#731](https://github.com/dowdiness/canopy/issues/731)）をmainへ入れた。
+- package mapの文書化（[#736](https://github.com/dowdiness/canopy/issues/736)）を行い、全Canopyパッケージの依存関係と名称を整理した。
+- これを受けて、moon.mod.json→moon.mod移行の第一弾としてRabbita UI lib cluster（[#737](https://github.com/dowdiness/canopy/issues/737)）とlib/visualizer（[#738](https://github.com/dowdiness/canopy/issues/738)）を変換した。moon.mod（TOML形式）へ移行することで、MoonBitのworkspace membershipを使った依存解決が可能になり、`NEW_MOON_MOD=0`のデフォルト化へ近づく。
+
+主なPR / Issue: canopy [#736](https://github.com/dowdiness/canopy/issues/736), [#737](https://github.com/dowdiness/canopy/issues/737), [#738](https://github.com/dowdiness/canopy/issues/738)
+
+### js_engine / lexer・spec fixes・perf
+
+- **regex/division disambiguation after `}`**（[#422](https://github.com/dowdiness/js_engine/issues/422)）。`}`の後に`/`が来たとき、それが除算か正規表現リテラルの開始かを判定するcontext trackingを全面的に書き直した。`}`がstatement blockを閉じるかobject literalを閉じるかを追跡するbrace-is-block stack、ternary colonとlabel/case colonを区別するternary colon stack、nested classのextends内で状態が壊れないようにするbrace-is-block stackを導入した。
+- **bind length ToIntegerOrInfinity + new FunctionのJS ToString coercion**（[#431](https://github.com/dowdiness/js_engine/issues/431)）。`Function.prototype.bind`のlength引数処理を仕様通り`ToIntegerOrInfinity`へ修正し、`new Function`の引数をMoonBitの`.to_string()`ではなくJSの`ToString`抽象操作で評価するようにした。
+- **Annex B web-compat call-assign**（[#428](https://github.com/dowdiness/js_engine/issues/428)）。non-strict modeで`CallExpression`が代入の左辺に来たとき、parse時エラーではなくruntime `ReferenceError`にするAnnex B互換動作を実装した。
+- **analysis-family growth convention docs**（[#332](https://github.com/dowdiness/js_engine/issues/332)）。静的解析のファイル構成ルールを文書化した。
+- **timer queueをpriority_queueへ移行**（[#433](https://github.com/dowdiness/js_engine/issues/433)）。それまでの`Array[TimerTask] + sort_by + remove(0)`（O(n² log n)）を`@priority_queue.PriorityQueue[TimerTask]`（O(n log n)）へ置き換え、200タイマーのdrainが4.19ms→1.95ms（2.15×高速化）。キャンセルは遅延削除方式にした。
+
+主なPR / Issue: js_engine [#422](https://github.com/dowdiness/js_engine/issues/422), [#431](https://github.com/dowdiness/js_engine/issues/431), [#428](https://github.com/dowdiness/js_engine/issues/428), [#332](https://github.com/dowdiness/js_engine/issues/332), [#433](https://github.com/dowdiness/js_engine/issues/433)
+
+## 2026/6/22
+
+### Canopy / moon.mod移行完了
+
+全Canopy-ownedマニフェストのmoon.mod.json→moon.mod移行を完了した（[#740](https://github.com/dowdiness/canopy/issues/740)）。これが今週最大の変更で、以下の内容を含む。
+
+- **7つのCanopy-ownedマニフェストを変換**: ルート、lib/semantic、examples/resizable、examples/codemirror_demo、examples/block-editor、examples/canvas、examples/ideal。
+- **13 submoduleをworkspace memberに追加**: loom/examples/{markdown,json,lambda,graph-dsl}、loom/{loom,seam,pretty,text-change,moji,egglog,egraph}、event-graph-walker、rle、order-tree。
+- **全MOON_WORK=offを削除**: moon.modの`import { }`構文はworkspace membershipなしでは依存解決できないため、benchmark、E2Eテスト、Cloudflare deploy、JS build scriptからMOON_WORK=offを全て取り除いた。
+- **CI整備**: vendored-submoduleのエラーを抑止する共通filterを導入（`scripts/vendored-check-common.sh`）。workspace全体のcheckでsubmoduleが起こす21件のpre-existing errorを抑制しつつ、submodule自身のCIでは自前の失敗を隠さないよう`--keep`オプションを付ける設計にした。
+- **Cloudflare deploy修正**: workspace buildの成果物が`_build/js/release/build/<module>/<pkg>/`へ出力されるのに対し、vite-plugin-moonbitが期待するパスとのずれをsymlinkで吸収した（[#335](https://github.com/dowdiness/canopy/issues/335)）。
+
+並行して、loom submoduleのquickcheck 0.14 Arrow API compat対応や、AGENTS.mdのsubmodule guidance更新も行った。
+
+主なPR / Issue: canopy [#740](https://github.com/dowdiness/canopy/issues/740), [#335](https://github.com/dowdiness/canopy/issues/335)
+
+## 2026/6/23
+
+### Canopy / submodule bumpとHTML block修正
+
+月曜の大規模移行の後始末と後続のsubmodule更新を進めた。
+
+- **submodule bump**: egraphのmoon.mod移行（loom#455）、event-graph-walkerのtrait split修正（#58）、alga v0.4.0の取り込み、graphvizのDirectedGraph互換修正。これらのsubmoduleはmoon.mod.jsonからmoon.modへの移行をそれぞれ進めており、Canopy側で追従した。
+- **HTML blocks §4.6**: loom submoduleをbumpし、MarkdownのHTML blockをprojection block childrenに含める対応を入れた。block modeでHTML blockが`text:null`/`editable:false`として扱われてしまい、表示から消えるバグがあった。`HtmlBlock`に適切なtoken spanをpopulateすることで修正した。
+- 残っているsubmodule（svg-dsl、rle、order-tree、graphviz）のmoon.mod移行完了に伴うbumpが[#742](https://github.com/dowdiness/canopy/issues/742)として進行中。
+
+主なPR / Issue: canopy [#742](https://github.com/dowdiness/canopy/issues/742)
+
+### 作業運用メモ
+
+6/19〜23の期間は、CanopyではMarkdown SDEGの基盤整備とmoon.mod移行が2本柱だった。js_engineではtest262適合率の系統的な向上が続き、JSON.parse 100% pass到達がハイライト。
+
+今日時点でCanopyは、loom submoduleが`3856167`からHTML blocks §4.6を含む先まで進み、alga、event-graph-walker、graphvizもそれぞれ新バージョンへ進んでいる。js_engineはtest262適合率の改善が一段落し、次はbytecode最適化やPromise.allKeyedなどの残件へ向かう流れ。
