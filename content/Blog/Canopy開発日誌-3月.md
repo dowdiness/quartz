@@ -3,14 +3,14 @@ title: Canopy開発日誌-3月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-06-23T03:36:00+09:00
-modified: 2026-06-23T03:49:11+09:00
+modified: 2026-06-23T11:42:17+09:00
 ---
 
 # Canopy開発日誌-3月
 
 2026年3月のCanopy開発ログ。3月はCanopyのリポジトリ名確定、parser→loomの分離、Rabbita/Ideal editorの急速な成長、構造編集アクション、CRDTの性能改善、framework抽出、block editor、JSON editorまで、幅広い領域で大きな進捗があった。
 
-> Canopyは、テキストとプログラムの構造を同じ空間で直接編集できる、次世代のコードエディタです。ソースコードを文字列ではなく「構造」として扱うことで、安全なリファクタリングやAIとの協調作業、CRDTによる複数人同時編集を実現しています。
+> Canopyは、ソースコードを文字列ではなく構造（IR）として扱うエディタです。文字列を正として保ちつつ、そこから導出したプログラムの意味単位を直接操作することで、安全な構造編集やAI・複数人との協調作業がしやすくなります。
 
 ## 今月の大きな流れ
 

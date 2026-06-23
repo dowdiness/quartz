@@ -10,7 +10,7 @@ modified: 2026-06-23T23:59:00+09:00
 
 2026年6月のCanopy開発ログ。細かいPR単位の列挙よりも、作業の流れが追いやすいように要点だけを残す。
 
-> Canopyは、テキストとプログラムの構造を同じ空間で直接編集できる、次世代のコードエディタです。ソースコードを文字列ではなく「構造」として扱うことで、安全なリファクタリングやAIとの協調作業、CRDTによる複数人同時編集を実現しています。
+> Canopyは、ソースコードを文字列ではなく構造（IR）として扱うエディタです。文字列を正として保ちつつ、そこから導出したプログラムの意味単位を直接操作することで、安全な構造編集やAI・複数人との協調作業がしやすくなります。
 
 全体方針: [MoonDsp / Canopy ecosystem vision](https://github.com/dowdiness/canopy/blob/main/docs/research/2026-06-01-moondsp-canopy-ecosystem-vision.md)
 

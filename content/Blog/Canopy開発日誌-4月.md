@@ -3,14 +3,14 @@ title: Canopy開発日誌-4月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-06-23T03:38:00+09:00
-modified: 2026-06-23T03:47:14+09:00
+modified: 2026-06-23T11:44:11+09:00
 ---
 
 # Canopy開発日誌-4月
 
 2026年4月のCanopy開発ログ。4月はeditor protocolの統一、pretty-printer ViewNode bridge、Markdown block editor、generic B-tree、Confidence lattice、drag-and-drop、Web E2E、loom Parser[T]統一、moon.work workspace導入など、Canopyの土台を次の段階へ引き上げる月になった。
 
-> Canopyは、テキストとプログラムの構造を同じ空間で直接編集できる、次世代のコードエディタです。ソースコードを文字列ではなく「構造」として扱うことで、安全なリファクタリングやAIとの協調作業、CRDTによる複数人同時編集を実現しています。
+> Canopyは、ソースコードを文字列ではなく構造（IR）として扱うエディタです。文字列を正として保ちつつ、そこから導出したプログラムの意味単位を直接操作することで、安全な構造編集やAI・複数人との協調作業がしやすくなります。
 
 ## 今月の大きな流れ
 
