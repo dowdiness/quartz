@@ -3,7 +3,7 @@ title: Canopy開発日誌-6月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-06-23T23:59:00+09:00
+modified: 2026-06-25T23:59:00+09:00
 ---
 
 # Canopy開発日誌-6月
@@ -495,3 +495,78 @@ Markdownリストの構造編集向けの基盤を一気に進めた。
 6/19〜23の期間は、CanopyではMarkdown SDEGの基盤整備とmoon.mod移行が2本柱だった。js_engineではtest262適合率の系統的な向上が続き、JSON.parse 100% pass到達がハイライト。
 
 今日時点でCanopyは、loom submoduleが`3856167`からHTML blocks §4.6を含む先まで進み、alga、event-graph-walker、graphvizもそれぞれ新バージョンへ進んでいる。js_engineはtest262適合率の改善が一段落し、次はbytecode最適化やPromise.allKeyedなどの残件へ向かう流れ。
+
+## 2026/6/24
+
+### Canopy / Markdown SDEG lifecycle
+
+Markdown SDEGのheading side tableを、単なる「見出しIDの対応表」から、parse validityとlifecycleを持つ構造へ寄せた。
+
+- heading side tableのlifecycleをparse validityでgateした（[#763](https://github.com/dowdiness/canopy/pull/763)）。壊れたparse結果を見て、安定ID表を安易に更新しないための境界になる。
+- SDEGのretention thresholdを設定可能にし、消えたheadingをすぐ捨てず、一定期間後に`Retired` entryへ遷移させる形にした（[#755](https://github.com/dowdiness/canopy/pull/755), 元PR [#746](https://github.com/dowdiness/canopy/pull/746)）。復帰したheadingのstable idが落ちる問題や、retired rowのstable id重複も追加修正した。
+- loomgenの`RawKind` / content-hash identity decisionをdocsへ残した（[#750](https://github.com/dowdiness/canopy/pull/750)）。Markdownのraw / recovered領域を、どの単位で同一性判定するかの判断記録になる。
+- event-graph-walker、loom、alga、lang/markdown周辺のwarningを整理した（[#754](https://github.com/dowdiness/canopy/pull/754)）。
+
+この日のSDEG作業は、見出しやリスト項目のmoveそのものよりも、「構造編集の対象を追跡する表が、壊れた入力や一時的な消失にどう耐えるか」を詰める作業だった。
+
+主なPR / Issue: canopy [#746](https://github.com/dowdiness/canopy/pull/746), [#750](https://github.com/dowdiness/canopy/pull/750), [#754](https://github.com/dowdiness/canopy/pull/754), [#755](https://github.com/dowdiness/canopy/pull/755), [#763](https://github.com/dowdiness/canopy/pull/763)
+
+### Canopy / benchmark CIとprojection map
+
+benchmark regression workflowをPR gateへ近づけた。submodule gitlinkやshared vite pluginの変更もbenchmark gateの対象に含め、workflow自体も並列化したうえで高速化した（[#762](https://github.com/dowdiness/canopy/pull/762)）。ただし、vendored submodule由来の既存問題をどこまでgateに含めるかはまだ難しく、後日の「skipped checkをgreen扱いしない」運用につながった。
+
+投影構造側では、RoseNode mapとconstructor APIを追加した（[#761](https://github.com/dowdiness/canopy/pull/761)）。後続のProjNode mapに向けて、tree projectionを外から扱うための小さな足場が増えた。
+
+主なPR / Issue: canopy [#761](https://github.com/dowdiness/canopy/pull/761), [#762](https://github.com/dowdiness/canopy/pull/762)
+
+### loom / MarkdownIR
+
+Canopyが参照するloomでは、Markdown IR実装ファイルの分割（[#472](https://github.com/dowdiness/loom/pull/472)）と、raw kind / Tabs handlingの修正（[#473](https://github.com/dowdiness/loom/pull/473)）が進んだ。Markdown SDEG側でraw / recovered nodeを安定して扱うための下支えになる。
+
+主なPR / Issue: loom [#472](https://github.com/dowdiness/loom/pull/472), [#473](https://github.com/dowdiness/loom/pull/473)
+
+### js_engine
+
+js_engineではtest262適合率向上の流れが続いた。
+
+- environment markerを専用mapへ分離した（[#438](https://github.com/dowdiness/js_engine/pull/438)）。
+- call評価側ではgrouping unwrap dispatchを整理し、logical assignment operatorのNamedEvaluationを修正した。
+- sloppy functionのnon-simple paramsにおける`arguments.callee` accessorを仕様へ寄せた（[#440](https://github.com/dowdiness/js_engine/pull/440)）。
+- `SetIteratorPrototype.next`のbrand checkとdone flagを修正した（[#441](https://github.com/dowdiness/js_engine/pull/441)）。
+- `[[OwnPropertyKeys]]`列挙をcanonical opへ統一した（[#442](https://github.com/dowdiness/js_engine/pull/442)）。
+
+主なPR / Issue: js_engine [#438](https://github.com/dowdiness/js_engine/pull/438), [#440](https://github.com/dowdiness/js_engine/pull/440), [#441](https://github.com/dowdiness/js_engine/pull/441), [#442](https://github.com/dowdiness/js_engine/pull/442)
+
+## 2026/6/25
+
+### Canopy / SDEG snapshot validity
+
+Markdown SDEGのheading snapshot validityを明示した（[#766](https://github.com/dowdiness/canopy/pull/766)）。前日のparse validity gateをさらに進め、side tableがどのsnapshotに対して妥当なのかを曖昧にしない形にした。
+
+さらに、レビュー対応として「Markdown SDEG snapshot validityをwireする」PR作業も進んだ（[#767](https://github.com/dowdiness/canopy/pull/767)相当、commit `f4effe5`）。agent履歴上では、`lang/markdown/proj`と`lang/markdown/companion`のtargeted test、`moon fmt`、`moon info`、workspace `moon check`まで通っている。一方で、`Editor Response Benchmark`が`skipping`として残り、repo運用上「skippedはgreenではない」ためmergeは止めた。ここで、CI上のskipを明示的に扱う必要がはっきりした。
+
+主なPR / Issue: canopy [#766](https://github.com/dowdiness/canopy/pull/766), [#767](https://github.com/dowdiness/canopy/pull/767)
+
+### Canopy / ProjNode mapとCI cleanup
+
+RoseNode mapに続いてProjNode mapを追加した（[#765](https://github.com/dowdiness/canopy/pull/765)）。projection treeを言語ごとの特殊処理だけで扱うのではなく、共通のmap操作へ寄せる流れが見えてきた。
+
+CI側では、Playwright image更新やdependabotによるVite / Vitest / React DOM / actions checkout更新が入った。手元のCanopy worktreeでは、benchmark workflowのコメント整理、vendored check filterから`alga`を外す調整、`loom` submodule pointerを`6d7778b`へ進める差分が残っている。`loom`側の内容はMarkdown raw kindとTabs handling修正までを含む。
+
+主なPR / Issue: canopy [#765](https://github.com/dowdiness/canopy/pull/765), [#727](https://github.com/dowdiness/canopy/pull/727), [#547](https://github.com/dowdiness/canopy/pull/547), [#549](https://github.com/dowdiness/canopy/pull/549), [#550](https://github.com/dowdiness/canopy/pull/550)
+
+### js_engine
+
+js_engineではMap / Set / Promise / Proxy周辺の仕様適合を進めた。
+
+- `Reflect.ownKeys`をMap / Set / Promiseにも広げ、Proxyの`[[OwnPropertyKeys]]`でsymbol keyを正しく分類するようにした（[#445](https://github.com/dowdiness/js_engine/pull/445)）。
+- test262のper-mode regression diffを見るための`test262_failing_diff.js`を追加した（[#446](https://github.com/dowdiness/js_engine/pull/446)）。
+- branch上では、Map / Setのexpando assignment、Promise instance constructor keys、computed Map / Set writes、array own descriptorでMap / Set writesを止める修正が続いた。agent履歴ではPR [#449](https://github.com/dowdiness/js_engine/pull/449)として、Map / Set subclass chainにarray prototypeが挟まる回帰を追加し、`moon check`、targeted regression、`moon test`、`moon info`、`moon fmt`、`moon check --deny-warn`、release testまで通している。
+
+主なPR / Issue: js_engine [#445](https://github.com/dowdiness/js_engine/pull/445), [#446](https://github.com/dowdiness/js_engine/pull/446), [#449](https://github.com/dowdiness/js_engine/pull/449)
+
+### 作業運用メモ
+
+6/24〜25は、Git logだけを見ると小さめのSDEG follow-upとCI整備に見えるが、agent履歴まで見ると「skipしているCIをgreen扱いしない」運用判断が重要だった。PR #767は実装・targeted validationまでは進んだが、skipped benchmark checkが残ったためmergeを止めている。
+
+今日時点のCanopy手元差分は、benchmark workflow / vendored check script / `loom` submodule pointerの4件。本文には未merge・未コミットのものとして扱い、mainへ入ったPRとは分けて記録した。
