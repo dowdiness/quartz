@@ -3,7 +3,7 @@ title: Canopy開発日誌-6月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-06-25T23:59:00+09:00
+modified: 2026-06-25T15:56:50+09:00
 ---
 
 # Canopy開発日誌-6月
@@ -490,12 +490,6 @@ Markdownリストの構造編集向けの基盤を一気に進めた。
 
 主なPR / Issue: canopy [#742](https://github.com/dowdiness/canopy/pull/742)
 
-### 作業運用メモ
-
-6/19〜23の期間は、CanopyではMarkdown SDEGの基盤整備とmoon.mod移行が2本柱だった。js_engineではtest262適合率の系統的な向上が続き、JSON.parse 100% pass到達がハイライト。
-
-今日時点でCanopyは、loom submoduleが`3856167`からHTML blocks §4.6を含む先まで進み、alga、event-graph-walker、graphvizもそれぞれ新バージョンへ進んでいる。js_engineはtest262適合率の改善が一段落し、次はbytecode最適化やPromise.allKeyedなどの残件へ向かう流れ。
-
 ## 2026/6/24
 
 ### Canopy / Markdown SDEG lifecycle
@@ -564,9 +558,3 @@ js_engineではMap / Set / Promise / Proxy周辺の仕様適合を進めた。
 - branch上では、Map / Setのexpando assignment、Promise instance constructor keys、computed Map / Set writes、array own descriptorでMap / Set writesを止める修正が続いた。agent履歴ではPR [#449](https://github.com/dowdiness/js_engine/pull/449)として、Map / Set subclass chainにarray prototypeが挟まる回帰を追加し、`moon check`、targeted regression、`moon test`、`moon info`、`moon fmt`、`moon check --deny-warn`、release testまで通している。
 
 主なPR / Issue: js_engine [#445](https://github.com/dowdiness/js_engine/pull/445), [#446](https://github.com/dowdiness/js_engine/pull/446), [#449](https://github.com/dowdiness/js_engine/pull/449)
-
-### 作業運用メモ
-
-6/24〜25は、Git logだけを見ると小さめのSDEG follow-upとCI整備に見えるが、agent履歴まで見ると「skipしているCIをgreen扱いしない」運用判断が重要だった。PR #767は実装・targeted validationまでは進んだが、skipped benchmark checkが残ったためmergeを止めている。
-
-今日時点のCanopy手元差分は、benchmark workflow / vendored check script / `loom` submodule pointerの4件。本文には未merge・未コミットのものとして扱い、mainへ入ったPRとは分けて記録した。
