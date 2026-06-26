@@ -3,7 +3,7 @@ title: Canopy開発日誌-6月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-06-26T23:45:00+09:00
+modified: 2026-06-26T16:57:19+09:00
 ---
 
 # Canopy開発日誌-6月
