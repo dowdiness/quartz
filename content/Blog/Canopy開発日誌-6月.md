@@ -3,7 +3,7 @@ title: Canopy開発日誌-6月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-06-25T15:56:50+09:00
+modified: 2026-06-26T23:45:00+09:00
 ---
 
 # Canopy開発日誌-6月
@@ -558,3 +558,43 @@ js_engineではMap / Set / Promise / Proxy周辺の仕様適合を進めた。
 - branch上では、Map / Setのexpando assignment、Promise instance constructor keys、computed Map / Set writes、array own descriptorでMap / Set writesを止める修正が続いた。agent履歴ではPR [#449](https://github.com/dowdiness/js_engine/pull/449)として、Map / Set subclass chainにarray prototypeが挟まる回帰を追加し、`moon check`、targeted regression、`moon test`、`moon info`、`moon fmt`、`moon check --deny-warn`、release testまで通している。
 
 主なPR / Issue: js_engine [#445](https://github.com/dowdiness/js_engine/pull/445), [#446](https://github.com/dowdiness/js_engine/pull/446), [#449](https://github.com/dowdiness/js_engine/pull/449)
+
+## 2026/6/26
+
+### Canopy / JSON role spans + CI cleanup
+
+JSON role spanのeditor decoration連携を一気に仕上げた。Loomがパース時に出力するrole span（値の種類ごとに区別した構文情報）をFFI境界を通してCodeMirror Editorへ届け、decorationとして表示するまでの流れが通った（#781, #782, #783）。
+
+- #781: Loom JSON role-span exportをFFI/CodeMirror pathへ統合し、MoonBit→JSのデータ経路を作った。
+- #782: role spanを`Derived::map`のreactive cellで包み、source textの変更に応じて自動更新されるようにした。
+- #783: role spanをeditor decorationとして適用し、parser-drivenなsyntax coloringとして表示した。
+
+vendored error-suppression listの整理が完了した。6/22のmoon.mod移行後に残っていたalga/rle（#773）、order-tree（#778）、graphviz/svg-dsl（#779）、event-graph-walker（#780）を順にsuppressionから外し、これらsubmoduleのmoon.mod移行完了を反映した。
+
+benchmark regression CIも高速化した（#777）。Canopy subpackageとloom example benchmarkを-p flagsに追加し、cache keyをv3→v4へ更新、moon-updateとmoon benchの実行順序も工夫した。
+
+主なPR / Issue: canopy [#781](https://github.com/dowdiness/canopy/pull/781), [#782](https://github.com/dowdiness/canopy/pull/782), [#783](https://github.com/dowdiness/canopy/pull/783), [#773](https://github.com/dowdiness/canopy/pull/773), [#777](https://github.com/dowdiness/canopy/pull/777), [#778](https://github.com/dowdiness/canopy/pull/778), [#779](https://github.com/dowdiness/canopy/pull/779), [#780](https://github.com/dowdiness/canopy/pull/780)
+
+### Loom / arrow lambda + Pratt reuse
+
+Loomではarrow lambda構文のP2 fixが中心だった。ブロックbody、soft newline周り、typed arrow param（TypeAnnot/TypInt/TypeUnit/TypeArrow）、右再帰のTypeArrowと括弧付き型注釈などのregressionを修正した。incr依存を0.9.0→0.11.0へbumpし、JSON role spanのprojection slice trimmingも入った。
+
+retroactive Pratt reuse groundwork（#475）が入った。これは、Pratt parserの状態をbacktracking間で再利用するための下準備になる。deep nested-lambda benchmark workloadのB比較性も回復した（#476）。
+
+主なPR / Issue: loom [#475](https://github.com/dowdiness/loom/pull/475), [#476](https://github.com/dowdiness/loom/pull/476)
+
+### js_engine / NFE binding + async fixes + test262整備
+
+js_engineではtest262適合率向上のCluster 11（NFE self-name binding）が完了した（#463）。`FunctionNameBinding`を仕様通り実装し、strict mode threadingをbytecode StoreName env assignまで通し、generator/async methodでは抑制するhas_name_binding制御も入れた。
+
+async関数のエッジケースも修正した（#468）：parameter TDZ、non-strictでのthis、arrow arguments、mapped arguments。Array関係では、`ArraySpeciesCreate`のnon-object constructorでのTypeError（#467）、`Array.prototype[Symbol.iterator]`削除への対応（#462）、array-like lengthのInt64移行（#461）、`reverse/fill/copyWithin/sort`のprototype委譲（#471）が進んだ。
+
+CI面ではcopilot toolchain cacheとTest262 feature-gap比較ツールを追加し（#460）、baseline ratchetとcalibration automationも整えた。
+
+主なPR / Issue: js_engine [#463](https://github.com/dowdiness/js_engine/pull/463), [#468](https://github.com/dowdiness/js_engine/pull/468), [#466](https://github.com/dowdiness/js_engine/pull/466), [#467](https://github.com/dowdiness/js_engine/pull/467), [#471](https://github.com/dowdiness/js_engine/pull/471), [#462](https://github.com/dowdiness/js_engine/pull/462), [#461](https://github.com/dowdiness/js_engine/pull/461), [#460](https://github.com/dowdiness/js_engine/pull/460), [#470](https://github.com/dowdiness/js_engine/pull/470)
+
+### 作業運用メモ
+
+6/26は、CanopyではJSON role spanのeditor decoration連携が一つの区切りになった。vendored suppression整理も一通り完了し、benchmark CIも高速化した。LoomではP2 arrow lambda fixが中心で、js_engineではCluster 11完了とasync/Array fixが相次いだ。
+
+日付をまたいだ傾向として、6月最終週は「SDEGのvalidity境界」と「role spanの実用化」「test262 Cluster締め」が並行して進んでいる。
