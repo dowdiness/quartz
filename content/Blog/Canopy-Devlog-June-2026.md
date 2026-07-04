@@ -1,14 +1,17 @@
 ---
 title: Canopy Devlog — June 2026
 publish: true
-tags: [blog, canopy, projectional-editing, english]
+tags: [blog, canopy, english, projectional-editing]
 created: 2026-07-04T22:30:00+09:00
-modified: 2026-07-04T22:30:00+09:00
+modified: 2026-07-04T22:31:59+09:00
+aliases: [Canopy Devlog — June 2026]
 ---
 
 # Canopy Devlog — June 2026
 
 The Canopy development log for June 2026. Rather than enumerating every PR, this log keeps just the essentials so the flow of the work is easy to follow. (English translation of [[Canopy開発日誌-6月|the Japanese original]].)
+
+> **Short on time?** Read the [[Canopy-June-2026-Highlights|two-minute highlights version]] instead — this page is the full day-by-day record.
 
 > Canopy is an editor that treats source code as structure (IR) rather than as strings. Text remains the source of truth, but by letting you directly manipulate the semantic units of a program derived from it, Canopy makes safe structural editing and collaboration — with AI and with other people — much easier.
 
