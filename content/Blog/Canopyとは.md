@@ -3,7 +3,7 @@ title: Canopyとは
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-06-23T03:40:00+09:00
-modified: 2026-06-25T14:44:16+09:00
+modified: 2026-07-09T21:28:46+09:00
 ---
 
 # Canopyとは
