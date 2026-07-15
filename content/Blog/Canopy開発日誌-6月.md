@@ -3,7 +3,7 @@ title: Canopy開発日誌-6月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-06-26T16:57:19+09:00
+modified: 2026-06-30T22:40:00+09:00
 ---
 
 # Canopy開発日誌-6月
@@ -16,7 +16,7 @@ modified: 2026-06-26T16:57:19+09:00
 
 ## 今月の大きな流れ
 
-6月前半は、Canopyを「構造編集の実験場」から、より明確なプロダクトとライブラリ群へ整理する作業が中心だった。後半は、Markdownの構造編集（SDEG: Structure-Directed Edit Grammar）、外部解析結果を取り込むanalysis query layer、全リポジトリのmoon.mod.json→moon.mod移行、js_engineのtest262適合率向上へと重心が移った。
+6月前半は、Canopyを「構造編集の実験場」から、より明確なプロダクトとライブラリ群へ整理する作業が中心だった。後半は、Markdownの構造編集（SDEG: Structure-Directed Edit Grammar）、外部解析結果を取り込むanalysis query layer、全リポジトリのmoon.mod.json→moon.mod移行、js_engineのtest262適合率向上へと重心が移った。最終週（6/27-6/30）は、loomに新しいコード生成器「loomgen」が生まれ、incrのMemo→Derived facade移行が完了し、Canopyではblock-editorのdrag-dropとJSON tree editorが実用段階まで一気に進んだ。
 
 - **Lambda編集**: 名前の有効範囲を追跡するscope graph、block内だけに効くbinding編集、LoomのCstFoldを使った投影構築、古い`ModuleProjection`の削除、alpha変換に安全なbeta reductionの実験、構造編集後もNodeIdを保つGrove Level 1 hintまで進んだ。
 - **Markdown SDEG**: 見出しやリスト項目を構造編集の対象にするべく、heading identityの安定性調査、リスト項目の同一リスト内move、block move provenanceの追跡、リストmove blockerの敵対的ケース対応が進んだ。
@@ -28,6 +28,9 @@ modified: 2026-06-26T16:57:19+09:00
 - **js_engine**: 責務でファイルを分けるarchitecture refactor、bytecode実行の近道になるfast path、ES2024 Set methods、test262/benchmark基盤の整備が進んだ。後半はtest262適合率向上が中心で、JSON.parse 100% pass、Promise spec fixes、regex escapes修正、lexer UTF-16正確化、timer queue高速化など。
 - **MoonDsp**: Canopyとは直接統合せず、共有基盤を見ながらGraph runtimeやschedulerの責務分割を進めた。
 - **作業運用**: 作業記録をGit log・agent session・project memoryの突き合わせで書く運用が定着しつつある。
+- **loomgen**: 6/27に誕生したloom内のコード生成器。`#loom.*`アノテーション付きのToken/Term enumから、syntax kind・step lexer・grammar IR・projectionアクセサまでを生成する。月末までにtoken/term enum生成、`#loom.view` / `#loom.pattern` / `#loom.lexmode`などのアノテーション語彙、fail-closedなEBNF検証まで育った。
+- **incr Memo→Derived移行**: 6/27-6/29の3日間で、`Memo` / `HybridMemo` / `MemoMap`を`Derived` / `ReachableDerived` / `DerivedMap`へ完全移行し、レガシー`Signal[T]`も削除した。フェーズ分割された規律だった移行だった。
+- **Canopy block-editor / JSON editor**: block-editorのdrag-dropとJSON tree editorが、月末の数日でテスト付きの実用機能として立ち上がった。
 
 ## 2026/6/1
 
@@ -410,7 +413,7 @@ Markdown見出しを構造編集の対象にするSDEG（Structure-Directed Edit
 
 - shared AsyncGeneratorPrototype chainを実装した（[#405](https://github.com/dowdiness/js_engine/pull/405)）。ES仕様 §27.4に従い、`async function*` で作られる各generatorが共通のprototype chainを共有するようにした。
 - tokenに`end_offset` fieldを追加し、parserがsourceを再スキャンする必要をなくした（[#403](https://github.com/dowdiness/js_engine/pull/403)）。これまではparserがトークンの終端位置を知るためにsource内を再度走査していたが、lexer時点でUTF-16コードユニット単位のend_offsetを記録するようにした。
-- runtime atomicsのtest coverage（[#402](https://github.com/dowdiness/js_engine/pull/402)）とtest262 toolingの回帰テスト（[#401](https://github.com/dowdiness/js_engine/pull/401)）を追加した。
+- runtime atomicsのtest coverage（[#402](https://github.com/dowdiness/js_engine/pull/402)）とtest262 toolingのリグレッションテスト（[#401](https://github.com/dowdiness/js_engine/pull/401)）を追加した。
 
 主なPR / Issue: js_engine [#405](https://github.com/dowdiness/js_engine/pull/405), [#403](https://github.com/dowdiness/js_engine/pull/403), [#402](https://github.com/dowdiness/js_engine/pull/402), [#401](https://github.com/dowdiness/js_engine/pull/401)
 
@@ -555,7 +558,7 @@ js_engineではMap / Set / Promise / Proxy周辺の仕様適合を進めた。
 
 - `Reflect.ownKeys`をMap / Set / Promiseにも広げ、Proxyの`[[OwnPropertyKeys]]`でsymbol keyを正しく分類するようにした（[#445](https://github.com/dowdiness/js_engine/pull/445)）。
 - test262のper-mode regression diffを見るための`test262_failing_diff.js`を追加した（[#446](https://github.com/dowdiness/js_engine/pull/446)）。
-- branch上では、Map / Setのexpando assignment、Promise instance constructor keys、computed Map / Set writes、array own descriptorでMap / Set writesを止める修正が続いた。agent履歴ではPR [#449](https://github.com/dowdiness/js_engine/pull/449)として、Map / Set subclass chainにarray prototypeが挟まる回帰を追加し、`moon check`、targeted regression、`moon test`、`moon info`、`moon fmt`、`moon check --deny-warn`、release testまで通している。
+- branch上では、Map / Setのexpando assignment、Promise instance constructor keys、computed Map / Set writes、array own descriptorでMap / Set writesを止める修正が続いた。agent履歴ではPR [#449](https://github.com/dowdiness/js_engine/pull/449)として、Map / Set subclass chainにarray prototypeが挟まるリグレッションを追加し、`moon check`、targeted regression、`moon test`、`moon info`、`moon fmt`、`moon check --deny-warn`、release testまで通している。
 
 主なPR / Issue: js_engine [#445](https://github.com/dowdiness/js_engine/pull/445), [#446](https://github.com/dowdiness/js_engine/pull/446), [#449](https://github.com/dowdiness/js_engine/pull/449)
 
@@ -598,3 +601,97 @@ CI面ではcopilot toolchain cacheとTest262 feature-gap比較ツールを追加
 6/26は、CanopyではJSON role spanのeditor decoration連携が一つの区切りになった。vendored suppression整理も一通り完了し、benchmark CIも高速化した。LoomではP2 arrow lambda fixが中心で、js_engineではCluster 11完了とasync/Array fixが相次いだ。
 
 日付をまたいだ傾向として、6月最終週は「SDEGのvalidity境界」と「role spanの実用化」「test262 Cluster締め」が並行して進んでいる。
+
+## 2026/6/27
+
+### Canopy / block-editor drag-dropとcore primitives
+
+block-editorのdrag-dropを、実際に使える機能として仕上げる作業が本格化した。前提として、`ProjNode::walk_preorder`というアロケーションなしの前順走査visitorをcoreに追加し（[#793](https://github.com/dowdiness/canopy/pull/793)）、`SourceMap`のbuild/remove/patchをこれ経由にまとめた。続けて`modify_node_at`という、該当ノードまでのパスだけを複製して書き換える補助関数を追加した（[#794](https://github.com/dowdiness/canopy/pull/794)）。これはcatamorphismではなく、最初に見つかった箇所で止まってその祖先パスだけを再構築する、Clojureの`update-in`に近い操作で、`replace_loaded_subtree_node`や`update_node_collapsed`にあった重複コードを大きく削った。
+
+drag-dropの本体では、並行ドラッグの収束性をquickcheckで検証するテストを追加した（[#798](https://github.com/dowdiness/canopy/pull/798)）。複数の場所から同時にドロップしても、text・AST・ProjNodeの整合性が壊れないこと、concurrent dropの後のundoが正しく収束すること、3者が同時に編集しても構造エラーが出ないことを、ランダム化テストと7つの敵対的ケースで確認した。ここで、`Inside`ドロップは入れ子ではなく`SyncEditor::move_node`によるexchange（交換）として扱う、という意味的な決定をした。UI側では、`get_render_state()`にdepthやchild_count、生死フラグ、実際のparent_idを含むブロックmetadataを持たせ、TypeScript側のドロップターゲット判定（自分自身やdescendantへのドロップを弾く）を実装した（[#800](https://github.com/dowdiness/canopy/pull/800)）。
+
+loom submoduleを`454b460`へ更新し、loom側の`build_tree_buffered_with`統合を取り込んだ（[#796](https://github.com/dowdiness/canopy/pull/796)）。§7 aggregator-trimの監査完了もdocsに記録した（[#276](https://github.com/dowdiness/canopy/pull/276)）。
+
+主なPR / Issue: canopy [#793](https://github.com/dowdiness/canopy/pull/793), [#794](https://github.com/dowdiness/canopy/pull/794), [#796](https://github.com/dowdiness/canopy/pull/796), [#798](https://github.com/dowdiness/canopy/pull/798), [#800](https://github.com/dowdiness/canopy/pull/800), [#276](https://github.com/dowdiness/canopy/pull/276)
+
+### incr / Memo→Derived facade移行が本格化
+
+incrで、`Memo` / `HybridMemo` / `MemoMap`という旧世代の型を`Derived` / `ReachableDerived` / `DerivedMap`という新しいfacadeへ完全に移す作業が始まった。まず`@incr`からの互換re-exportを削除し（[#313](https://github.com/dowdiness/incr/pull/313), [#314](https://github.com/dowdiness/incr/pull/314)）、`Scope::adopt[T: Trackable]`でscopeのライフサイクル登録を型横断で統一した（[#315](https://github.com/dowdiness/incr/pull/315)）。
+
+このタイミングで、`Derived::map`ファミリーの命名を入れ替えるという意図的な決定をした（[#316](https://github.com/dowdiness/incr/pull/316)）。危険な（backdateしない）版を`map_no_backdate`、安全な（Eqでbackdateする）版を短い`map`にした。危ないほうに長い名前を割り当てることで、デフォルトで安全側に倒す設計だと分かる。続けて`Input::derived` / `Input::derived_no_backdate` / `Scope::derived_no_backdate` / `Derived::derived_no_backdate`という一連のコンストラクタを揃え（[#317](https://github.com/dowdiness/incr/pull/317), [#318](https://github.com/dowdiness/incr/pull/318), [#320](https://github.com/dowdiness/incr/pull/320)）、pipelineのどこからでも一貫した書き方でderivedを作れるようにした。午後にはwbtestファイルのMemo→Derived移行が始まった（[#322](https://github.com/dowdiness/incr/pull/322), [#323](https://github.com/dowdiness/incr/pull/323)）。
+
+### js_engine / constructor・TDZ・iteratorの仕様適合
+
+Function / Generator / AsyncFunctionの動的コンストラクタにあった4つの仕様漏れを直した（[#476](https://github.com/dowdiness/js_engine/pull/476)）。coercion順序、generatorパラメータ内のyield検出、`.prototype.constructor`の逆参照、AsyncFunctionの`[[Prototype]]`が対象になる。destructuring中にgeneratorがabrupt resumeした際、前のiteratorを閉じ忘れる問題も直し（[#480](https://github.com/dowdiness/js_engine/pull/480)）、SuperCallを正規のbinder経由にしてrest paramやdestructuringを含むケースを救った（[#479](https://github.com/dowdiness/js_engine/pull/479)）。class constructorのパラメータにも§10.2.11のTDZ事前チェックを追加し、`constructor(x = y, y = 1)`のような前方参照が`undefined`ではなく`ReferenceError`になるよう直した（[#481](https://github.com/dowdiness/js_engine/pull/481)）。test262 baselineは非strict 27650→27686、strict 25800→25923まで伸びた（[#477](https://github.com/dowdiness/js_engine/pull/477), [#482](https://github.com/dowdiness/js_engine/pull/482)）。
+
+### loom / loomgenの誕生
+
+この日、loomに新しいコード生成器「loomgen」が生まれた。`#loom.token` / `#loom.punct` / `#loom.keyword`のようなアノテーションを付けたMoonBitのToken/Term enumを読み、`syntax_kind.g.mbt`や`token_impls.g.mbt`を生成する仕組みで、Phase 1でトークンenum生成（[#492](https://github.com/dowdiness/loom/pull/492)）、Phase 2でterm enum（CSTノード種別）を統合した生成（[#493](https://github.com/dowdiness/loom/pull/493)）まで進んだ。Lambdaの26個のToken variantすべてを移行し、手書きのShow/IsTrivia/IsEof/ToRawKind実装を削除できた。生成結果と実際のソースがずれていないかを見るCI gate（`check-loomgen`）も入れた。`LanguageSpec`のファクトリ関数生成（[#496](https://github.com/dowdiness/loom/pull/496)）、エラーパスの終了コード修正や`main`からの名前付きフェーズ抽出（[#505](https://github.com/dowdiness/loom/pull/505), [#510](https://github.com/dowdiness/loom/pull/510), [#511](https://github.com/dowdiness/loom/pull/511)）も進んだ。
+
+loomgenとは別に、3つの`build_tree`亜種（トークン生成・再利用処理・ノード構築のcallbackだけが違う）を、5つのcallbackを取る`build_tree_buffered_with`ひとつへDRYした（[#494](https://github.com/dowdiness/loom/pull/494)）。293行が85行程度まで減った。
+
+主なPR / Issue: incr [#313](https://github.com/dowdiness/incr/pull/313), [#314](https://github.com/dowdiness/incr/pull/314), [#315](https://github.com/dowdiness/incr/pull/315), [#316](https://github.com/dowdiness/incr/pull/316), [#317](https://github.com/dowdiness/incr/pull/317), [#318](https://github.com/dowdiness/incr/pull/318), [#320](https://github.com/dowdiness/incr/pull/320), [#322](https://github.com/dowdiness/incr/pull/322), [#323](https://github.com/dowdiness/incr/pull/323) / js_engine [#476](https://github.com/dowdiness/js_engine/pull/476), [#477](https://github.com/dowdiness/js_engine/pull/477), [#478](https://github.com/dowdiness/js_engine/pull/478), [#479](https://github.com/dowdiness/js_engine/pull/479), [#480](https://github.com/dowdiness/js_engine/pull/480), [#481](https://github.com/dowdiness/js_engine/pull/481), [#482](https://github.com/dowdiness/js_engine/pull/482) / loom [#492](https://github.com/dowdiness/loom/pull/492), [#493](https://github.com/dowdiness/loom/pull/493), [#494](https://github.com/dowdiness/loom/pull/494), [#496](https://github.com/dowdiness/loom/pull/496), [#505](https://github.com/dowdiness/loom/pull/505), [#510](https://github.com/dowdiness/loom/pull/510), [#511](https://github.com/dowdiness/loom/pull/511)
+
+## 2026/6/28
+
+### Canopy / typed error modelとJSON tree editor
+
+Idealのaction overlayで、`error: String`だった状態を`error: OverlayError?`という閉じたenum（`EmptyName | BuildActionFailed(String) | ApplyActionFailed(String)`）に置き換えた（[#799](https://github.com/dowdiness/canopy/pull/799)）。空文字列を「エラーなし」の代用にしていた曖昧さをなくし、`None`だけがエラーなしを意味するようにした。
+
+block-editorのdrag-dropでは、抜けていた`Inside`ドロップゾーンを追加した（[#802](https://github.com/dowdiness/canopy/pull/802)）。上40%をBefore、中央20%をInside、下40%をAfterとする三分割ジオメトリと、`--depth` CSS変数によるネストの深さ表示を入れた。あわせて、MoonBitの4引数シグネチャに気づかず5番目の引数が黙って無視されていたバグと、`currentDropTarget`の代入漏れでインジケータが消えないバグの2つを直した。さらに、cross-parentなBefore/After移動が正しく親を付け替えられるようにした（[#806](https://github.com/dowdiness/canopy/pull/806)、[#801](https://github.com/dowdiness/canopy/pull/801)を閉じる。「Policy A: reparentを許可する」という方針）。event-graph-walkerの新しい`Document::parent`（loomの[#518](https://github.com/dowdiness/loom/pull/518)経由でbump）を使い、それまでハードコードされていた`root_block_id`を`self.tree.parent(ref_id)`に置き換えた。
+
+同じ日に、JSON tree editorが一気に実用段階へ進んだ。ノード種別ごとに描画を変えるrendering（展開/折りたたみ状態がpatch後も保持される、[#810](https://github.com/dowdiness/canopy/pull/810)）、キー・値のインライン編集や追加/削除/wrap/unwrapボタンをノードごとに配置する編集UI（[#811](https://github.com/dowdiness/canopy/pull/811)）、JSON.parse/stringifyの往復でフォーマットするFormatボタン（[#812](https://github.com/dowdiness/canopy/pull/812)）、直近100件を保持するpatchログ/履歴パネル（[#813](https://github.com/dowdiness/canopy/pull/813)）の4本が続けざまに入り、テスト数も16→24まで増えた。
+
+主なPR / Issue: canopy [#799](https://github.com/dowdiness/canopy/pull/799), [#802](https://github.com/dowdiness/canopy/pull/802), [#806](https://github.com/dowdiness/canopy/pull/806), [#810](https://github.com/dowdiness/canopy/pull/810), [#811](https://github.com/dowdiness/canopy/pull/811), [#812](https://github.com/dowdiness/canopy/pull/812), [#813](https://github.com/dowdiness/canopy/pull/813)
+
+### incr / Memo→Derived移行が完了
+
+前日始まった移行が、この日で本体まで完了した。wbtestファイルの残り移行（[#326](https://github.com/dowdiness/incr/pull/326), [#327](https://github.com/dowdiness/incr/pull/327), [#329](https://github.com/dowdiness/incr/pull/329), [#331](https://github.com/dowdiness/incr/pull/331)）に続き、docsとtraitコメントの更新（[#332](https://github.com/dowdiness/incr/pull/332)）を経て、`Memo` / `MemoMap` / `HybridMemo`という構造体そのものを削除する「Phase 2」の一括切り替えを行った（[#333](https://github.com/dowdiness/incr/pull/333)）。`Derived` / `ReachableDerived` / `DerivedMap`が、それまでラップしていた旧エンジン型のフィールドを直接持つようになった。
+
+さらに同じ日のうちに、レガシーな`Signal[T]`型も削除した（[#334](https://github.com/dowdiness/incr/pull/334)、breaking change）。`Input[T]`が唯一の入力セル型になり、`force_set` / `is_fresh` / `derived` / `derived_no_backdate`を吸収した。約60個のテストファイルが移行対象になり、1123件のテストが通った。2日足らずで「移行開始→黒箱テスト→型削除→エイリアス整理」まで駆け抜けた、規律だったフェーズ分割の移行だった。
+
+### loom / loomgenのアノテーション語彙が拡張
+
+loomgenのアノテーション語彙が急速に増えた。複数のtrivia variantを許すよう単一trivia制約を緩め（[#513](https://github.com/dowdiness/loom/pull/513)）、その直後に見つかった実バグ、つまり複数trivia対応後は副次的なtrivia（コメントトークンなど）が通常トークンとして漏れ、incremental再利用の判定を誤らせる問題を修正した（[#517](https://github.com/dowdiness/loom/pull/517)）。`#loom.view`で型付きprojectionアクセサを生成し（[#515](https://github.com/dowdiness/loom/pull/515)）、`#loom.void` / `#loom.rawtext`でHTML要素プロパティ表を生成し（[#519](https://github.com/dowdiness/loom/pull/519)）、`#loom.lexmode`でLexMode enumとdispatch関数を生成し（[#525](https://github.com/dowdiness/loom/pull/525)）、ついに`#loom.pattern`の正規表現アノテーションから実際のstep lexerを生成できるところまで進んだ（[#528](https://github.com/dowdiness/loom/pull/528)）。パターンはMoonBitのコンパイル時正規表現リテラルへコンパイルされ、`a*`のようなnullableなパターンは生成時に拒否される。Grammar IRからMoonBitソースを直接出すsource emitterも入った（[#533](https://github.com/dowdiness/loom/pull/533)）。
+
+event-graph-walkerを`Document::parent`が使えるバージョンへbumpし（[#518](https://github.com/dowdiness/loom/pull/518)、canopy側の同日#806が消費した）、pre-push fmt checkのスコープをvendored submoduleの巻き添えを避けるよう絞った（[#527](https://github.com/dowdiness/loom/pull/527)）。
+
+主なPR / Issue: incr [#326](https://github.com/dowdiness/incr/pull/326), [#327](https://github.com/dowdiness/incr/pull/327), [#329](https://github.com/dowdiness/incr/pull/329), [#331](https://github.com/dowdiness/incr/pull/331), [#332](https://github.com/dowdiness/incr/pull/332), [#333](https://github.com/dowdiness/incr/pull/333), [#334](https://github.com/dowdiness/incr/pull/334) / loom [#513](https://github.com/dowdiness/loom/pull/513), [#515](https://github.com/dowdiness/loom/pull/515), [#517](https://github.com/dowdiness/loom/pull/517), [#518](https://github.com/dowdiness/loom/pull/518), [#519](https://github.com/dowdiness/loom/pull/519), [#525](https://github.com/dowdiness/loom/pull/525), [#527](https://github.com/dowdiness/loom/pull/527), [#528](https://github.com/dowdiness/loom/pull/528), [#533](https://github.com/dowdiness/loom/pull/533)
+
+## 2026/6/29
+
+### Canopy
+
+JSON editorが「統一」段階に入った。読み取り専用パネルと同じtree viewを、そのまま編集可能な形でcontenteditableテキストエディタの代わりに使うようにした（[#814](https://github.com/dowdiness/canopy/pull/814)）。値クリックで編集、キークリックでリネーム、行ごとのadd/delete/wrap/unwrapボタン、折りたたみ状態の維持に加え、Raw/Structuredの表示切り替えも入れた。ツールバーは行ごとの操作に置き換えて廃止した。
+
+編集系の細かな整理も進んだ。ほぼ同じ処理だった`free_names_would_rebind_at_node`と`_at_module_end`を、resolver closureを引数に取る1つの関数へ統合し（[#816](https://github.com/dowdiness/canopy/pull/816)）、block-localなbindingの上下移動でインデントが二重になったり失われたりする問題を、テキストの継ぎ接ぎからインデント再計算へ変えて直した（[#819](https://github.com/dowdiness/canopy/pull/819)、[#650](https://github.com/dowdiness/canopy/pull/650)を閉じる）。§7のTODOのうち3件（Warren symlink、rle、seam build_tree DRY）が完了扱いになった（[#797](https://github.com/dowdiness/canopy/pull/797)）。dependabotによるCI action更新も3件入った（[#803](https://github.com/dowdiness/canopy/pull/803), [#804](https://github.com/dowdiness/canopy/pull/804), [#805](https://github.com/dowdiness/canopy/pull/805)）。
+
+### incr
+
+Signal時代の内部名をInput時代の名前へ機械的に置き換えた（[#336](https://github.com/dowdiness/incr/pull/336)、`PullSignalData`→`PullInputData`などファイル名ごと）。これは前日の`Signal`削除（#334）の内部側の仕上げになる。ドキュメント例も`Derived::map` / `map2`を使う形へ揃えた（[#337](https://github.com/dowdiness/incr/pull/337)）。
+
+そして`Input::derived2` / `derived3`を追加し、`#alias`によるlowercaseコンストラクタ（`input()`, `derived()`など）とフリー関数`Runtime::input`を用意した（[#338](https://github.com/dowdiness/incr/pull/338)）。これでMemo→Derivedの一連の移行は、公開APIの命名統一・Eqデフォルトの安全化・PascalCase/lowercase両対応のエントリポイントまで含めて、実質的に完了したことになる。
+
+### loom
+
+loomgenのgrammar IR側が成熟した。`#loom.rule("EBNF")`アノテーションから`@grammar.GrammarIr`を作るemitterを追加し（[#534](https://github.com/dowdiness/loom/pull/534)）、`Seq` / `Choice` / `Ref` / `Star` / `Plus` / `Opt` / `Expect`という素朴なEBNF部分集合を、未知シンボルや左再帰を検出してfail-closedに倒す形で実装した。`AstView` traitを`@core`から`@seam`へ移し、loomgen生成の`*Proj`構造体が直接実装できるようにして（[#535](https://github.com/dowdiness/loom/pull/535)）、当初二層構成（`*Proj`/`*View`）を予定していたのを一層に単純化できた。
+
+loomgenとは別に、Lambda exampleでは`free_vars`を既存のtagless-final fold（`TermSym`）の新しい解釈として実装し（[#536](https://github.com/dowdiness/loom/pull/536)）、新しい走査を書かずに済ませた。if式・lambda式のCSTラッパーノードと`*Proj`構造体を追加し（[#542](https://github.com/dowdiness/loom/pull/542)）、両方のprinter（`to_source`、`to_layout`）を`interpret`カタモルフィズム経由へ統一した（[#544](https://github.com/dowdiness/loom/pull/544)）。`resolve_walk`のwildcard節にあった網羅性の穴も塞いだ（[#545](https://github.com/dowdiness/loom/pull/545)）。
+
+主なPR / Issue: canopy [#814](https://github.com/dowdiness/canopy/pull/814), [#816](https://github.com/dowdiness/canopy/pull/816), [#819](https://github.com/dowdiness/canopy/pull/819), [#797](https://github.com/dowdiness/canopy/pull/797) / incr [#336](https://github.com/dowdiness/incr/pull/336), [#337](https://github.com/dowdiness/incr/pull/337), [#338](https://github.com/dowdiness/incr/pull/338) / loom [#534](https://github.com/dowdiness/loom/pull/534), [#535](https://github.com/dowdiness/loom/pull/535), [#536](https://github.com/dowdiness/loom/pull/536), [#542](https://github.com/dowdiness/loom/pull/542), [#544](https://github.com/dowdiness/loom/pull/544), [#545](https://github.com/dowdiness/loom/pull/545)
+
+## 2026/6/30
+
+### Canopy / moon.mod移行の仕上げとE2E分離
+
+技術的負債とCIに関する節目のPRをまとめて入れた（[#820](https://github.com/dowdiness/canopy/pull/820)）。ひとつは、`dump-deps.sh` / `test-focus.sh` / `package-release.sh`が旧`moon.mod.json`と新TOML形式`moon.mod`の両方を読めるようにする、moon.mod移行の下準備。もうひとつは、4つのE2E CIジョブ（web-e2e、ideal-web-e2e、demo-react-e2e、canvas-e2e）を、それぞれが個別にMoonBitのセットアップ・ビルドをする形から、単一の`build-js`ジョブの成果物をダウンロードする形へ変えたこと。E2EがMoonBit registryのflakinessから切り離された。
+
+### incr / MoonDsp
+
+incr_tea_7guisのPlaywright DOMテストをCIに載せ、cross-root localityの検証を加えた（[#339](https://github.com/dowdiness/incr/pull/339)）。`SubSpec::AnimationFrame(Msg)`を追加し、Timerデモにライブなフレームカウンタとして組み込んだ（[#340](https://github.com/dowdiness/incr/pull/340)、#290を完了）。
+
+### loom
+
+loomgenのリグレッションテストハーネス（7つのwhiteboxテスト）と`--seed`の自動検出を追加し、MoonBitツールチェーンのICEを避けるためcheck/testを`--target native`に固定した（[#546](https://github.com/dowdiness/loom/pull/546)）。`roles_match`を10節から5節へ絞り、CWD依存だったfixtureパスも直した（[#548](https://github.com/dowdiness/loom/pull/548)）。
+
+主なPR / Issue: canopy [#820](https://github.com/dowdiness/canopy/pull/820) / incr [#339](https://github.com/dowdiness/incr/pull/339), [#340](https://github.com/dowdiness/incr/pull/340) / loom [#546](https://github.com/dowdiness/loom/pull/546), [#548](https://github.com/dowdiness/loom/pull/548)
