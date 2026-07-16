@@ -3,7 +3,7 @@ title: Canopy開発日誌-3月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-06-23T03:36:00+09:00
-modified: 2026-07-16T16:15:00+09:00
+modified: 2026-07-16T18:20:00+09:00
 ---
 
 # Canopy開発日誌-3月
@@ -14,7 +14,7 @@ modified: 2026-07-16T16:15:00+09:00
 
 ## 今月の大きな流れ
 
-月全体の流れは[[Canopy開発日誌-3月-まとめ|3月-まとめ]]にまとめた。以下は週次ヘッダと日付見出しによる作業記録。月初（第1週）から loom 分離と SyncEditor 移行が始まる。
+月全体の流れは[[Canopy開発日誌-3月-まとめ|3月-まとめ]]にまとめた。以下は週次ヘッダと日付見出しによる作業記録。PR番号の一覧は文末の[PR索引](#pr索引)にある。月初（第1週）から loom 分離と SyncEditor 移行が始まる。
 
 ## 3月第1週: parser→loom分離、SyncEditor、名前解決
 
@@ -25,8 +25,6 @@ modified: 2026-07-16T16:15:00+09:00
 ### Canopy / parser → loom 移行開始
 
 parserサブモジュールのURLとディレクトリ名をloomへ変更した。`dowdiness/parser` APIから`dowdiness/loom` APIへの移行を開始した。
-
-主なコミット: rename parser submodule directory to loom, update parser submodule URL after repo rename to loom, migrate from dowdiness/parser to dowdiness/loom API
 
 ## 2026/3/5
 
@@ -58,7 +56,7 @@ Rabbitaベースのprojectional editorを本格化した。tree editorのsubtree
 
 Rabbita editorをCloudflare Pagesへデプロイする準備を進めた。Wrangler configの追加、tree edit bridgeのCRDT roundtrip対応を行った。
 
-主なコミット: Make Rabbita Cloudflare Pages ready, Add Wrangler config for Rabbita deploy, Add tree edit bridge for CRDT roundtrip
+
 
 ## 2026/3/11
 
@@ -80,7 +78,7 @@ web appとdemo-reactを`examples/`ディレクトリへ移動した。
 - peer presence awareness用のEphemeralStoreを実装し、SyncEditorとFFI surfaceへ統合。
 - Rabbita perf harnessをphase timingとdiagnosticsで再設計。
 
-主なコミット: switch to source_file_grammar for O(1) incremental edits, add source_file_to_proj_node for flat LetDef* structure, integrate EphemeralStore into SyncEditor
+
 
 ## 2026/3/15
 
@@ -153,7 +151,7 @@ ProseMirrorベースのprojectional editorを実装した。CrdtBridge、leaf ed
 
 - DirectedGraph traitとalgorithmsを持つgraph libraryを追加し、`dowdiness/alga`として切り出した。WebSocket協調編集にはerror recovery、offline queue、persistenceを追加した。`compute_text_edit`はhandler chain with middlewareへ分解した。
 
-主なコミット: add graph library with DirectedGraph trait, harden WebSocket collaboration with error recovery, decompose compute_text_edit into handler chain
+
 
 ## 3月第4週: Framework抽出、block editor、JSON editor
 
@@ -212,3 +210,143 @@ Genericなeditor frameworkを切り出し、CanopyをLambda専用から複数言
 - alga、event-graph-walker、loom等submoduleをbump。
 
 主なPR / Issue: canopy [#103](https://github.com/dowdiness/canopy/pull/103), [#104](https://github.com/dowdiness/canopy/pull/104), [#105](https://github.com/dowdiness/canopy/pull/105)
+
+## PR索引
+
+週ごとに折りたたんだ PR / Issue 一覧。GitHub 上の詳細への索引。PR レビュー前の日はコミットメッセージのみ。
+
+<details>
+<summary>3月第1週（3/2〜3/7）</summary>
+
+#### 2026/3/2
+
+**parser → loom 移行開始**
+
+- rename parser submodule directory to loom
+- update parser submodule URL after repo rename to loom
+- migrate from dowdiness/parser to dowdiness/loom API
+
+#### 2026/3/5
+
+**SyncEditor登場**
+
+canopy [#15](https://github.com/dowdiness/canopy/pull/15), [#16](https://github.com/dowdiness/canopy/pull/16), [#17](https://github.com/dowdiness/canopy/pull/17)
+
+#### 2026/3/7
+
+**名前解決とgraphviz**
+
+canopy [#18](https://github.com/dowdiness/canopy/pull/18), [#19](https://github.com/dowdiness/canopy/pull/19)
+
+</details>
+
+<details>
+<summary>3月第2週（3/10〜3/15）</summary>
+
+#### 2026/3/10
+
+**Rabbita Cloudflare Pages化**
+
+- Make Rabbita Cloudflare Pages ready
+- Add Wrangler config for Rabbita deploy
+- Add tree edit bridge for CRDT roundtrip
+
+#### 2026/3/11
+
+**Rabbita性能回復**
+
+canopy [#20](https://github.com/dowdiness/canopy/pull/20), [#21](https://github.com/dowdiness/canopy/pull/21)
+
+#### 2026/3/14
+
+**source_file_grammarとEphemeralStore**
+
+- switch to source_file_grammar for O(1) incremental edits
+- add source_file_to_proj_node for flat LetDef* structure
+- integrate EphemeralStore into SyncEditor
+
+#### 2026/3/15
+
+**flat grammar統合とprojection incremental updates**
+
+canopy [#32](https://github.com/dowdiness/canopy/pull/32)
+
+</details>
+
+<details>
+<summary>3月第3週（3/18〜3/23）</summary>
+
+#### 2026/3/18
+
+**ProseMirror + CodeMirror 6統合**
+
+canopy [#34](https://github.com/dowdiness/canopy/pull/34), [#35](https://github.com/dowdiness/canopy/pull/35), [#36](https://github.com/dowdiness/canopy/pull/36)
+
+#### 2026/3/19
+
+**Ephemeral Store v2とTransport**
+
+canopy [#37](https://github.com/dowdiness/canopy/pull/37), [#38](https://github.com/dowdiness/canopy/pull/38), [#39](https://github.com/dowdiness/canopy/pull/39)
+
+#### 2026/3/20
+
+**lazy tree refreshとWebSocket transport Phase 2**
+
+canopy [#41](https://github.com/dowdiness/canopy/pull/41), [#42](https://github.com/dowdiness/canopy/pull/42)
+
+#### 2026/3/21
+
+**構造編集アクションとincremental parser最適化**
+
+canopy [#46](https://github.com/dowdiness/canopy/pull/46), [#48](https://github.com/dowdiness/canopy/pull/48)
+
+#### 2026/3/22
+
+**incremental SourceMap/RegistryとCRDT性能**
+
+canopy [#51](https://github.com/dowdiness/canopy/pull/51), [#52](https://github.com/dowdiness/canopy/pull/52), [#53](https://github.com/dowdiness/canopy/pull/53)
+
+#### 2026/3/23
+
+**graph library (alga) とWebSocket hardened**
+
+- add graph library with DirectedGraph trait
+- harden WebSocket collaboration with error recovery
+- decompose compute_text_edit into handler chain
+
+</details>
+
+<details>
+<summary>3月第4週（3/24〜3/31）</summary>
+
+#### 2026/3/24
+
+**Framework Extraction Phase 1**
+
+canopy [#57](https://github.com/dowdiness/canopy/pull/57)
+
+#### 2026/3/28
+
+**Framework Extraction Phase 2/3 + block editor**
+
+canopy [#58](https://github.com/dowdiness/canopy/pull/58), [#60](https://github.com/dowdiness/canopy/pull/60), [#61](https://github.com/dowdiness/canopy/pull/61), [#62](https://github.com/dowdiness/canopy/pull/62), [#63](https://github.com/dowdiness/canopy/pull/63), [#64](https://github.com/dowdiness/canopy/pull/64), [#65](https://github.com/dowdiness/canopy/pull/65), [#66](https://github.com/dowdiness/canopy/pull/66), [#67](https://github.com/dowdiness/canopy/pull/67)
+
+#### 2026/3/29
+
+**JSON editor、AST Zipper、framework/core**
+
+canopy [#89](https://github.com/dowdiness/canopy/pull/89), [#98](https://github.com/dowdiness/canopy/pull/98), [#99](https://github.com/dowdiness/canopy/pull/99)
+
+#### 2026/3/30
+
+**JSON editor完成とCloudflare deploy**
+
+canopy [#100](https://github.com/dowdiness/canopy/pull/100)
+
+#### 2026/3/31
+
+**Container Phase 1とideal keyboard navigation**
+
+canopy [#103](https://github.com/dowdiness/canopy/pull/103), [#104](https://github.com/dowdiness/canopy/pull/104), [#105](https://github.com/dowdiness/canopy/pull/105)
+
+</details>

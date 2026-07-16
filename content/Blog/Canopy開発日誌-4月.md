@@ -3,7 +3,7 @@ title: Canopy開発日誌-4月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-06-23T03:38:00+09:00
-modified: 2026-07-16T16:15:00+09:00
+modified: 2026-07-16T18:20:00+09:00
 ---
 
 # Canopy開発日誌-4月
@@ -14,7 +14,7 @@ modified: 2026-07-16T16:15:00+09:00
 
 ## 今月の大きな流れ
 
-月全体の流れは[[Canopy開発日誌-4月-まとめ|4月-まとめ]]にまとめた。以下は週次・日次の作業記録。第1週から EditorProtocol 統一と Markdown block editor の立ち上げが始まる。
+月全体の流れは[[Canopy開発日誌-4月-まとめ|4月-まとめ]]にまとめた。以下は週次・日次の作業記録。PR番号の一覧は文末の[PR索引](#pr索引)にある。第1週から EditorProtocol 統一と Markdown block editor の立ち上げが始まる。
 
 ## 4月第1週: EditorProtocol、pretty-printer、Markdown block editor
 
@@ -199,3 +199,135 @@ MoonBit workspace（moon.work）を導入した。canopy + lib/text-change + lib
 ### Canopy / lambda typecheck pipeline evolution
 
 loomのtypecheck range wedge fixをbumpした。lambda typecheck pipeline evolution planをdocsに追加した。
+
+## PR索引
+
+週ごとに折りたたんだ PR / Issue 一覧。GitHub 上の詳細への索引。
+
+<details>
+<summary>4月第1週（4/1〜4/4）</summary>
+
+#### 2026/4/1
+
+**EditorProtocol、pretty-printer、inspector panel**
+
+canopy [#106](https://github.com/dowdiness/canopy/pull/106), [#107](https://github.com/dowdiness/canopy/pull/107)
+
+#### 2026/4/2
+
+**Pretty-printer ViewNode bridge**
+
+canopy [#109](https://github.com/dowdiness/canopy/pull/109)
+
+#### 2026/4/3
+
+**Container Phase 2とecho/TinySegmenter**
+
+canopy [#110](https://github.com/dowdiness/canopy/pull/110), [#112](https://github.com/dowdiness/canopy/pull/112)
+
+#### 2026/4/4
+
+**Markdown edit opsとweb editor**
+
+canopy [#113](https://github.com/dowdiness/canopy/pull/113), [#114](https://github.com/dowdiness/canopy/pull/114), [#115](https://github.com/dowdiness/canopy/pull/115)
+
+</details>
+
+<details>
+<summary>4月第2週（4/5〜4/10）</summary>
+
+#### 2026/4/5
+
+**BlockInputとMarkdownPreview**
+
+canopy [#117](https://github.com/dowdiness/canopy/pull/117)
+
+#### 2026/4/6
+
+**Block editing fixとscope highlighting**
+
+canopy [#121](https://github.com/dowdiness/canopy/pull/121), [#123](https://github.com/dowdiness/canopy/pull/123), [#125](https://github.com/dowdiness/canopy/pull/125), [#126](https://github.com/dowdiness/canopy/pull/126), [#128](https://github.com/dowdiness/canopy/pull/128)
+
+#### 2026/4/7
+
+**Rose tree zipperとMoonBit v0.9**
+
+canopy [#130](https://github.com/dowdiness/canopy/pull/130), [#131](https://github.com/dowdiness/canopy/pull/131), [#132](https://github.com/dowdiness/canopy/pull/132)
+
+#### 2026/4/8
+
+**lib/btreeとlib/semantic**
+
+canopy [#134](https://github.com/dowdiness/canopy/pull/134), [#135](https://github.com/dowdiness/canopy/pull/135), [#136](https://github.com/dowdiness/canopy/pull/136), [#137](https://github.com/dowdiness/canopy/pull/137)
+
+#### 2026/4/9
+
+**B-tree range delete extraction**
+
+canopy [#138](https://github.com/dowdiness/canopy/pull/138), [#139](https://github.com/dowdiness/canopy/pull/139), [#140](https://github.com/dowdiness/canopy/pull/140)
+
+#### 2026/4/10
+
+**B-tree defensive fix**
+
+canopy [#141](https://github.com/dowdiness/canopy/pull/141)
+
+</details>
+
+<details>
+<summary>4月第3週（4/11〜4/17）</summary>
+
+#### 2026/4/11
+
+**LanguageCapabilitiesとegraph optimizer**
+
+canopy [#142](https://github.com/dowdiness/canopy/pull/142), [#143](https://github.com/dowdiness/canopy/pull/143), [#145](https://github.com/dowdiness/canopy/pull/145), [#146](https://github.com/dowdiness/canopy/pull/146), [#147](https://github.com/dowdiness/canopy/pull/147), [#148](https://github.com/dowdiness/canopy/pull/148), [#150](https://github.com/dowdiness/canopy/pull/150), [#151](https://github.com/dowdiness/canopy/pull/151), [#152](https://github.com/dowdiness/canopy/pull/152), [#158](https://github.com/dowdiness/canopy/pull/158)
+
+#### 2026/4/12
+
+**Drag-and-drop foundation**
+
+canopy [#161](https://github.com/dowdiness/canopy/pull/161), [#172](https://github.com/dowdiness/canopy/pull/172), [#173](https://github.com/dowdiness/canopy/pull/173), [#174](https://github.com/dowdiness/canopy/pull/174)
+
+#### 2026/4/14
+
+**Drag-and-drop exchange**
+
+canopy [#176](https://github.com/dowdiness/canopy/pull/176)
+
+#### 2026/4/15
+
+**Block editor drag-and-dropとsemantic drop**
+
+canopy [#179](https://github.com/dowdiness/canopy/pull/179), [#180](https://github.com/dowdiness/canopy/pull/180), [#181](https://github.com/dowdiness/canopy/pull/181), [#182](https://github.com/dowdiness/canopy/pull/182)
+
+#### 2026/4/17
+
+**Document-level undoとlambda diagnostics**
+
+canopy [#185](https://github.com/dowdiness/canopy/pull/185), [#186](https://github.com/dowdiness/canopy/pull/186), [#187](https://github.com/dowdiness/canopy/pull/187)
+
+</details>
+
+<details>
+<summary>4月第4週（4/18〜4/26）</summary>
+
+#### 2026/4/18
+
+**Unified Parser[T]とFFI split**
+
+canopy [#191](https://github.com/dowdiness/canopy/pull/191), [#192](https://github.com/dowdiness/canopy/pull/192), [#193](https://github.com/dowdiness/canopy/pull/193), [#194](https://github.com/dowdiness/canopy/pull/194), [#195](https://github.com/dowdiness/canopy/pull/195), [#196](https://github.com/dowdiness/canopy/pull/196), [#197](https://github.com/dowdiness/canopy/pull/197), [#199](https://github.com/dowdiness/canopy/pull/199), [#200](https://github.com/dowdiness/canopy/pull/200), [#201](https://github.com/dowdiness/canopy/pull/201)
+
+#### 2026/4/19
+
+**loom Stage 5/6 bump**
+
+canopy [#202](https://github.com/dowdiness/canopy/pull/202), [#203](https://github.com/dowdiness/canopy/pull/203)
+
+#### 2026/4/22
+
+**moon.work workspace導入**
+
+canopy [#210](https://github.com/dowdiness/canopy/pull/210), [#211](https://github.com/dowdiness/canopy/pull/211), [#212](https://github.com/dowdiness/canopy/pull/212)
+
+</details>

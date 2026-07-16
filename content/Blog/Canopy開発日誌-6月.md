@@ -3,7 +3,7 @@ title: Canopy開発日誌-6月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-07-16T16:15:00+09:00
+modified: 2026-07-16T18:13:35+09:00
 ---
 
 # Canopy開発日誌-6月
@@ -647,43 +647,43 @@ loomgen リグレッション test ハーネス（7 whitebox test）と `--seed`
 <details>
 <summary>6月第1週（6/1〜6/7）</summary>
 
-#### 2026/6/1
+### 2026/6/1
 
 **loom / js_engine / 運用**
 
 canopy [#445](https://github.com/dowdiness/canopy/pull/445), [#437](https://github.com/dowdiness/canopy/pull/437), [#447](https://github.com/dowdiness/canopy/pull/447) / loom [#206](https://github.com/dowdiness/loom/pull/206) / js_engine [#186](https://github.com/dowdiness/js_engine/pull/186)
 
-#### 2026/6/2
+### 2026/6/2
 
 **CI / 運用**
 
 canopy [#451](https://github.com/dowdiness/canopy/pull/451), [#452](https://github.com/dowdiness/canopy/pull/452), [#453](https://github.com/dowdiness/canopy/pull/453), [#462](https://github.com/dowdiness/canopy/pull/462), [#465](https://github.com/dowdiness/canopy/pull/465), [#469](https://github.com/dowdiness/canopy/pull/469)
 
-#### 2026/6/3
+### 2026/6/3
 
 **MoonDsp / incr**
 
 canopy [#445](https://github.com/dowdiness/canopy/pull/445), [#461](https://github.com/dowdiness/canopy/pull/461), [#479](https://github.com/dowdiness/canopy/pull/479)
 
-#### 2026/6/4
+### 2026/6/4
 
 **MoonDsp / js_engine**
 
 canopy [#489](https://github.com/dowdiness/canopy/pull/489), [#508](https://github.com/dowdiness/canopy/pull/508), [#511](https://github.com/dowdiness/canopy/pull/511)
 
-#### 2026/6/5
+### 2026/6/5
 
 **incr / MoonDsp / js_engine**
 
 canopy [#517](https://github.com/dowdiness/canopy/pull/517), [#523](https://github.com/dowdiness/canopy/pull/523), [#524](https://github.com/dowdiness/canopy/pull/524), [#525](https://github.com/dowdiness/canopy/pull/525), [#526](https://github.com/dowdiness/canopy/pull/526), [#528](https://github.com/dowdiness/canopy/pull/528)
 
-#### 2026/6/6
+### 2026/6/6
 
 **周辺リポジトリ**
 
 canopy [#529](https://github.com/dowdiness/canopy/pull/529), [#532](https://github.com/dowdiness/canopy/pull/532), [#534](https://github.com/dowdiness/canopy/pull/534), [#539](https://github.com/dowdiness/canopy/pull/539), [#541](https://github.com/dowdiness/canopy/pull/541), [#544](https://github.com/dowdiness/canopy/pull/544)
 
-#### 2026/6/7
+### 2026/6/7
 
 **Canvas / loom**
 
@@ -694,43 +694,43 @@ canopy [#553](https://github.com/dowdiness/canopy/pull/553), [#554](https://gith
 <details>
 <summary>6月第2週（6/8〜6/14）</summary>
 
-#### 2026/6/8
+### 2026/6/8
 
 **loom / incr / js_engine**
 
 canopy [#569](https://github.com/dowdiness/canopy/pull/569), [#570](https://github.com/dowdiness/canopy/pull/570), [#571](https://github.com/dowdiness/canopy/pull/571), [#576](https://github.com/dowdiness/canopy/pull/576)
 
-#### 2026/6/9
+### 2026/6/9
 
 **loom / MoonDsp**
 
 canopy [#571](https://github.com/dowdiness/canopy/pull/571), [#575](https://github.com/dowdiness/canopy/pull/575), [#577](https://github.com/dowdiness/canopy/pull/577)
 
-#### 2026/6/10
+### 2026/6/10
 
 **MoonDsp / loom / Canopy / js_engine**
 
 incr [#209](https://github.com/dowdiness/incr/pull/209), [#211](https://github.com/dowdiness/incr/pull/211), [#238](https://github.com/dowdiness/incr/pull/238), [#243](https://github.com/dowdiness/incr/pull/243), [#244](https://github.com/dowdiness/incr/pull/244) / canopy [#611](https://github.com/dowdiness/canopy/pull/611), [#615](https://github.com/dowdiness/canopy/pull/615)
 
-#### 2026/6/11
+### 2026/6/11
 
 **js_engine / 運用**
 
 loom [#279](https://github.com/dowdiness/loom/pull/279), [#196](https://github.com/dowdiness/loom/pull/196) / canopy [#587](https://github.com/dowdiness/canopy/pull/587), [#588](https://github.com/dowdiness/canopy/pull/588) / js_engine [#344](https://github.com/dowdiness/js_engine/pull/344), [#349](https://github.com/dowdiness/js_engine/pull/349)
 
-#### 2026/6/12
+### 2026/6/12
 
 **周辺リポジトリ**
 
 canopy [#587](https://github.com/dowdiness/canopy/pull/587), [#588](https://github.com/dowdiness/canopy/pull/588), [#589](https://github.com/dowdiness/canopy/pull/589), [#590](https://github.com/dowdiness/canopy/pull/590), [#597](https://github.com/dowdiness/canopy/pull/597), [#599](https://github.com/dowdiness/canopy/pull/599), [#610](https://github.com/dowdiness/canopy/pull/610)
 
-#### 2026/6/13
+### 2026/6/13
 
 **loom / js_engine**
 
 canopy [#602](https://github.com/dowdiness/canopy/pull/602), [#604](https://github.com/dowdiness/canopy/pull/604), [#609](https://github.com/dowdiness/canopy/pull/609), [#610](https://github.com/dowdiness/canopy/pull/610), [#611](https://github.com/dowdiness/canopy/pull/611), [#615](https://github.com/dowdiness/canopy/pull/615), [#619](https://github.com/dowdiness/canopy/pull/619)
 
-#### 2026/6/14
+### 2026/6/14
 
 **Canvas / loom / incr / MoonDsp / js_engine**
 
@@ -741,19 +741,19 @@ canopy [#637](https://github.com/dowdiness/canopy/pull/637), [#638](https://gith
 <details>
 <summary>6月第3週（6/15〜6/21）</summary>
 
-#### 2026/6/15
+### 2026/6/15
 
 **周辺リポジトリ**
 
 canopy [#660](https://github.com/dowdiness/canopy/pull/660), [#663](https://github.com/dowdiness/canopy/pull/663), [#671](https://github.com/dowdiness/canopy/pull/671), [#673](https://github.com/dowdiness/canopy/pull/673), [#664](https://github.com/dowdiness/canopy/pull/664), [#677](https://github.com/dowdiness/canopy/pull/677), [#666](https://github.com/dowdiness/canopy/pull/666), [#670](https://github.com/dowdiness/canopy/pull/670), [#669](https://github.com/dowdiness/canopy/pull/669), [#668](https://github.com/dowdiness/canopy/pull/668) / loom [#342](https://github.com/dowdiness/loom/pull/342), [#346](https://github.com/dowdiness/loom/pull/346) / incr [#273](https://github.com/dowdiness/incr/pull/273) / js_engine [#356](https://github.com/dowdiness/js_engine/pull/356)
 
-#### 2026/6/16
+### 2026/6/16
 
 **周辺リポジトリ**
 
 canopy [#674](https://github.com/dowdiness/canopy/pull/674), [#682](https://github.com/dowdiness/canopy/pull/682), [#683](https://github.com/dowdiness/canopy/pull/683), [#684](https://github.com/dowdiness/canopy/pull/684), [#685](https://github.com/dowdiness/canopy/pull/685), issue [#659](https://github.com/dowdiness/canopy/pull/659) / loom [#346](https://github.com/dowdiness/loom/pull/346) / incr [#277](https://github.com/dowdiness/incr/pull/277), [#279](https://github.com/dowdiness/incr/pull/279) / js_engine [#365](https://github.com/dowdiness/js_engine/pull/365), [#366](https://github.com/dowdiness/js_engine/pull/366)
 
-#### 2026/6/17
+### 2026/6/17
 
 **Canopy / Lambda編集の健全性**
 
@@ -783,7 +783,7 @@ incr [#281](https://github.com/dowdiness/incr/pull/281), [#282](https://github.c
 
 js_engine [#367](https://github.com/dowdiness/js_engine/pull/367), [#368](https://github.com/dowdiness/js_engine/pull/368), [#369](https://github.com/dowdiness/js_engine/pull/369), [#370](https://github.com/dowdiness/js_engine/pull/370), [#371](https://github.com/dowdiness/js_engine/pull/371), [#372](https://github.com/dowdiness/js_engine/pull/372)
 
-#### 2026/6/18
+### 2026/6/18
 
 **Canopy / analysis query layer実装**
 
@@ -801,7 +801,7 @@ incr [#291](https://github.com/dowdiness/incr/pull/291), [#268](https://github.c
 
 js_engine [#373](https://github.com/dowdiness/js_engine/pull/373), [#374](https://github.com/dowdiness/js_engine/pull/374), [#375](https://github.com/dowdiness/js_engine/pull/375), [#310](https://github.com/dowdiness/js_engine/pull/310), [#357](https://github.com/dowdiness/js_engine/pull/357)
 
-#### 2026/6/19
+### 2026/6/19
 
 **Canopy / Markdown SDEG heading**
 
@@ -811,7 +811,7 @@ canopy [#716](https://github.com/dowdiness/canopy/pull/716), [#717](https://gith
 
 js_engine [#405](https://github.com/dowdiness/js_engine/pull/405), [#403](https://github.com/dowdiness/js_engine/pull/403), [#402](https://github.com/dowdiness/js_engine/pull/402), [#401](https://github.com/dowdiness/js_engine/pull/401)
 
-#### 2026/6/20
+### 2026/6/20
 
 **Canopy / Markdown list SDEG**
 
@@ -821,7 +821,7 @@ canopy [#722](https://github.com/dowdiness/canopy/pull/722), [#723](https://gith
 
 js_engine [#408](https://github.com/dowdiness/js_engine/pull/408), [#419](https://github.com/dowdiness/js_engine/pull/419), [#413](https://github.com/dowdiness/js_engine/pull/413), [#412](https://github.com/dowdiness/js_engine/pull/412), [#411](https://github.com/dowdiness/js_engine/pull/411), [#420](https://github.com/dowdiness/js_engine/pull/420), [#410](https://github.com/dowdiness/js_engine/pull/410), [#407](https://github.com/dowdiness/js_engine/pull/407)
 
-#### 2026/6/21
+### 2026/6/21
 
 **Canopy / Markdown list + moon.mod移行開始**
 
@@ -836,19 +836,19 @@ js_engine [#422](https://github.com/dowdiness/js_engine/pull/422), [#431](https:
 <details>
 <summary>6月第4週（6/22〜6/26）</summary>
 
-#### 2026/6/22
+### 2026/6/22
 
 **Canopy / moon.mod移行完了**
 
 canopy [#740](https://github.com/dowdiness/canopy/pull/740), [#335](https://github.com/dowdiness/canopy/pull/335)
 
-#### 2026/6/23
+### 2026/6/23
 
 **Canopy / submodule bumpとHTML block修正**
 
 canopy [#742](https://github.com/dowdiness/canopy/pull/742)
 
-#### 2026/6/24
+### 2026/6/24
 
 **Canopy / Markdown SDEG lifecycle**
 
@@ -866,7 +866,7 @@ loom [#472](https://github.com/dowdiness/loom/pull/472), [#473](https://github.c
 
 js_engine [#438](https://github.com/dowdiness/js_engine/pull/438), [#440](https://github.com/dowdiness/js_engine/pull/440), [#441](https://github.com/dowdiness/js_engine/pull/441), [#442](https://github.com/dowdiness/js_engine/pull/442)
 
-#### 2026/6/25
+### 2026/6/25
 
 **Canopy / SDEG snapshot validity**
 
@@ -880,7 +880,7 @@ canopy [#765](https://github.com/dowdiness/canopy/pull/765), [#727](https://gith
 
 js_engine [#445](https://github.com/dowdiness/js_engine/pull/445), [#446](https://github.com/dowdiness/js_engine/pull/446), [#449](https://github.com/dowdiness/js_engine/pull/449)
 
-#### 2026/6/26
+### 2026/6/26
 
 **Canopy / JSON role spans + CI cleanup**
 
@@ -899,7 +899,7 @@ js_engine [#463](https://github.com/dowdiness/js_engine/pull/463), [#468](https:
 <details>
 <summary>6月第5週（6/27〜6/30）</summary>
 
-#### 2026/6/27
+### 2026/6/27
 
 **Canopy / block-editor drag-dropとcore primitives**
 
@@ -909,7 +909,7 @@ canopy [#793](https://github.com/dowdiness/canopy/pull/793), [#794](https://gith
 
 incr [#313](https://github.com/dowdiness/incr/pull/313), [#314](https://github.com/dowdiness/incr/pull/314), [#315](https://github.com/dowdiness/incr/pull/315), [#316](https://github.com/dowdiness/incr/pull/316), [#317](https://github.com/dowdiness/incr/pull/317), [#318](https://github.com/dowdiness/incr/pull/318), [#320](https://github.com/dowdiness/incr/pull/320), [#322](https://github.com/dowdiness/incr/pull/322), [#323](https://github.com/dowdiness/incr/pull/323) / js_engine [#476](https://github.com/dowdiness/js_engine/pull/476), [#477](https://github.com/dowdiness/js_engine/pull/477), [#478](https://github.com/dowdiness/js_engine/pull/478), [#479](https://github.com/dowdiness/js_engine/pull/479), [#480](https://github.com/dowdiness/js_engine/pull/480), [#481](https://github.com/dowdiness/js_engine/pull/481), [#482](https://github.com/dowdiness/js_engine/pull/482) / loom [#492](https://github.com/dowdiness/loom/pull/492), [#493](https://github.com/dowdiness/loom/pull/493), [#494](https://github.com/dowdiness/loom/pull/494), [#496](https://github.com/dowdiness/loom/pull/496), [#505](https://github.com/dowdiness/loom/pull/505), [#510](https://github.com/dowdiness/loom/pull/510), [#511](https://github.com/dowdiness/loom/pull/511)
 
-#### 2026/6/28
+### 2026/6/28
 
 **Canopy / typed error modelとJSON tree editor**
 
@@ -919,13 +919,13 @@ canopy [#799](https://github.com/dowdiness/canopy/pull/799), [#802](https://gith
 
 incr [#326](https://github.com/dowdiness/incr/pull/326), [#327](https://github.com/dowdiness/incr/pull/327), [#329](https://github.com/dowdiness/incr/pull/329), [#331](https://github.com/dowdiness/incr/pull/331), [#332](https://github.com/dowdiness/incr/pull/332), [#333](https://github.com/dowdiness/incr/pull/333), [#334](https://github.com/dowdiness/incr/pull/334) / loom [#513](https://github.com/dowdiness/loom/pull/513), [#515](https://github.com/dowdiness/loom/pull/515), [#517](https://github.com/dowdiness/loom/pull/517), [#518](https://github.com/dowdiness/loom/pull/518), [#519](https://github.com/dowdiness/loom/pull/519), [#525](https://github.com/dowdiness/loom/pull/525), [#527](https://github.com/dowdiness/loom/pull/527), [#528](https://github.com/dowdiness/loom/pull/528), [#533](https://github.com/dowdiness/loom/pull/533)
 
-#### 2026/6/29
+### 2026/6/29
 
 **loom**
 
 canopy [#814](https://github.com/dowdiness/canopy/pull/814), [#816](https://github.com/dowdiness/canopy/pull/816), [#819](https://github.com/dowdiness/canopy/pull/819), [#797](https://github.com/dowdiness/canopy/pull/797) / incr [#336](https://github.com/dowdiness/incr/pull/336), [#337](https://github.com/dowdiness/incr/pull/337), [#338](https://github.com/dowdiness/incr/pull/338) / loom [#534](https://github.com/dowdiness/loom/pull/534), [#535](https://github.com/dowdiness/loom/pull/535), [#536](https://github.com/dowdiness/loom/pull/536), [#542](https://github.com/dowdiness/loom/pull/542), [#544](https://github.com/dowdiness/loom/pull/544), [#545](https://github.com/dowdiness/loom/pull/545)
 
-#### 2026/6/30
+### 2026/6/30
 
 **loom**
 
