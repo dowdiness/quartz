@@ -3,7 +3,8 @@ title: Canopy in June 2026 — Highlights
 publish: true
 tags: [blog, canopy, english, projectional-editing]
 created: 2026-07-04T23:30:00+09:00
-modified: 2026-07-04T23:30:00+09:00
+modified: 2026-07-16T10:19:26+09:00
+aliases: [Canopy in June 2026 — Highlights]
 ---
 
 # Canopy in June 2026 — Highlights

@@ -3,7 +3,7 @@ title: Canopyとは
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-06-23T03:40:00+09:00
-modified: 2026-07-09T21:28:58+09:00
+modified: 2026-07-16T10:27:34+09:00
 ---
 
 # Canopyとは
@@ -70,10 +70,13 @@ Canopyは単独のリポジトリではなく、以下のライブラリ群と�
 
 ## 開発日誌
 
-Canopyの開発状況は、月ごとの開発日誌で公開しています。
+Canopyの開発状況は、月ごとの開発日誌で公開しています。全PR単位の詳細まで追える「全文」（日本語）に加えて、2分で読める「まとめ」（日本語）と「Highlights」（英語）も用意しています。6月のみ、全文の英訳（Devlog）もあります。
 
-- [Canopy開発日誌-2025年12月〜2026年2月](./Canopy開発日誌-2025年12月〜2026年2月)
-- [Canopy開発日誌-3月](./Canopy開発日誌-3月)
-- [Canopy開発日誌-4月](./Canopy開発日誌-4月)
-- [Canopy開発日誌-5月](./Canopy開発日誌-5月)
-- [Canopy開発日誌-6月](./Canopy開発日誌-6月)
+| 期間 | 全文（日本語） | まとめ（日本語） | Highlights（英語） |
+| --- | --- | --- | --- |
+| 2025年12月〜2026年2月 | [日誌](./Canopy開発日誌-2025年12月〜2026年2月) | [まとめ](./Canopy開発日誌-2025年12月〜2026年2月-まとめ) | [Highlights](./Canopy-Dec2025-Feb2026-Highlights) |
+| 2026年3月 | [日誌](./Canopy開発日誌-3月) | [まとめ](./Canopy開発日誌-3月-まとめ) | [Highlights](./Canopy-March-2026-Highlights) |
+| 2026年4月 | [日誌](./Canopy開発日誌-4月) | [まとめ](./Canopy開発日誌-4月-まとめ) | [Highlights](./Canopy-April-2026-Highlights) |
+| 2026年5月 | [日誌](./Canopy開発日誌-5月) | [まとめ](./Canopy開発日誌-5月-まとめ) | [Highlights](./Canopy-May-2026-Highlights) |
+| 2026年6月 | [日誌](./Canopy開発日誌-6月) ・ [Devlog（英語全訳）](./Canopy-Devlog-June-2026) | [まとめ](./Canopy開発日誌-6月-まとめ) | [Highlights](./Canopy-June-2026-Highlights) |
+| 2026年7月 | [日誌](./Canopy開発日誌-7月) | [まとめ](./Canopy開発日誌-7月-まとめ) | [Highlights](./Canopy-July-2026-Highlights) |
