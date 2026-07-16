@@ -3,12 +3,12 @@ title: Canopy開発日誌-7月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-07-16T13:10:00+09:00
+modified: 2026-07-16T16:25:00+09:00
 ---
 
 # Canopy開発日誌-7月
 
-2026年7月のCanopy開発ログ。細かいPRの羅列ではなく、作業の流れが追いやすいよう要点だけを残した。
+2026年7月のCanopy開発ログ（日次記録）。月の要約は[[Canopy開発日誌-7月-まとめ|7月-まとめ]]。
 
 > ソースコードを構造（IR）として編集する MoonBit 製エディタ。概要は[[Canopyとは]]。
 
@@ -16,17 +16,11 @@ modified: 2026-07-16T13:10:00+09:00
 
 ## 今月の大きな流れ
 
-7月前半は、incrの破壊的API整理（0.13.0→0.14.0）と、それに追従するloom・Canopyのpin更新が基盤となった。中盤には、loomgenが手書きコード生成器（`emit_grammar.mbt`の削除）を自ら退け、interpretベースの文法解釈へ一本化するという大きな転換があった。後半にはCanopyにJSXという新言語ターゲットが加わり、そこから「generative UI（GenUI）」という実験が急速に立ち上がった。GenUIは、ストリーミングで届くLLM出力を構造的に妥当なJSXとして逐次パースし、差分reconcileでDOMへ反映する仕組みである。
+月全体の流れは[[Canopy開発日誌-7月-まとめ|7月-まとめ]]にまとめた。以下は週次ヘッダと日付見出しによる作業記録（7/15まで）。PR番号の一覧は文末の[PR索引](#pr索引)にある。GenUI の設計詳細は[[Canopy-GenUI実験-2026年7月|別記事]]。
 
-- **incr API境界整理**: 0.13.0（互換API surfaceの一括削除）と0.14.0（ghost handle削除・InternTableのinterior-mutation修正・ReadErrorチャネル化）という2つの破壊的リリースが7月前半に続いた。遅延評価の数式レイヤー`Expr[T]`も追加された。
-- **incr_tea独立**: TEAフレームワークを`examples/incr_tea`から独立ワークスペース`dowdiness/incr_tea`へ切り出した。incr本体の安定性保証とは切り離し、実験場として位置づけ直した。
-- **Input::force_set reentrancy**: MoonDspでの実デバッグ（`AcceptedDerived`）で見つかった、reactive compute中の`force_set`による再入伝播の問題。ADR執筆→ガード実装→事後レビューでの訂正→ガード範囲の意図的な非拡張という一連の流れが7/8–7/10に集中した。
-- **loomgenとGrammarIR**: EBNF演算子（`~` `!` `@until` `{Sep}` `Token~>` `@error_node` `@native`）が次々と追加され、7/10には手書きコード生成パス`emit_grammar.mbt`自体を削除してinterpretベースへ一本化した。後半はMarkdown向けのline-mode/line-patternレクサ生成に重心が移った。
-- **js_engine**: for-await-of/非同期iteratorプロトコルの実装と100%達成、RegExp lookbehind、`cache-for-X` builtin install contractへのstdlib全面移行、埋め込み向けhost-object API、class private field/method/static block、そして月内2回目のリリース（v0.6.0）まで進んだ。
-- **CanopyのJSXとGenUI**: 7/11にJSXの読み取り専用projectionが生まれ（Lambda/JSON/Markdownに続く4番目の言語ターゲット）、数日のうちにストリーミングJSXセッション、重複sibling識別子のreconcile修正、決定論的な非同期ドライバ、ブラウザ障害回復スライスが続き、7/15には「実プロバイダを繋ぐ実験」の設計書（kill date: 2026/7/29）が出た。
-- **Canopyのその他**: 型付きEditError modelを3言語の編集層へ展開、Ideal orchestrationをライブラリパッケージへ抽出、Lambdaの名前解決を`@scope`へ一本化。定数畳み込みミドルウェアを追加した同日に撤回するという設計判断もあった。
-- **MoonDsp**: 目立った活動は少ないが、7/8の`AcceptedDerived`実装がincrのforce_set調査の引き金になった。
-- **作業運用**: 6月に続き、Git log・agent session・project memoryの突き合わせで記録する運用を続けている。
+## 7月第1週: incr破壊的リリースとloomgen拡張（7/1〜7/6）
+
+Idealのレシピ化とloomgenの`.loomgrammar`追加から始まった週。7/3に`@scope`一本化と`EditError`移行、7/4〜7/5でincr 0.13.0・0.14.0が連続リリース。js_engineは非同期iterationのtest262が100%に届く。
 
 ## 2026/7/1
 
@@ -161,6 +155,10 @@ loomでは、docs中のバッククォート `@pkg.Symbol` 表記をコミット
 
 主なPR / Issue: incr [#359](https://github.com/dowdiness/incr/pull/359) / js_engine [#502](https://github.com/dowdiness/js_engine/pull/502) / loom [#633](https://github.com/dowdiness/loom/pull/633), [#634](https://github.com/dowdiness/loom/pull/634), [#638](https://github.com/dowdiness/loom/pull/638), [#639](https://github.com/dowdiness/loom/pull/639), [#641](https://github.com/dowdiness/loom/pull/641)
 
+## 7月第2週: 再入ガードとinterpretへの転換（7/7〜7/13）
+
+7/8の評価戦略ADRを起点に、MoonDspデバッグで見つかった再入を7/9〜7/10で契約化した。7/10に手書き`emit_grammar.mbt`を削除しinterpretベースへ。週末にJSXとGenUI実験が立ち上がる。
+
 ## 2026/7/7
 
 ### incr / whiteboxテスト移行とQuickCheck
@@ -175,7 +173,7 @@ lambda exampleを手書き文法から移行するための前提として、Pra
 
 ## 2026/7/8
 
-静かな一日だったが、翌日以降の伏線が2つ仕込まれた。incrでは、pull/push/Datalog-fixpointという3つの評価戦略の間の相互作用ルールを明文化するADRを書いた（[#372](https://github.com/dowdiness/incr/pull/372)）。ADR本文を読むと、単なる整理を超えた踏み込んだ決定が並んでいる。まずセルを「現在値だけに対して純粋（pure-of-current-values）」と「履歴依存（history-dependent）」の2種に分類し、前者だけがbackdatingや検証スキップといった透過的キャッシュの対象になれると定めた。この帰結として、Solid風に`createMemo(prev => ...)`のような形で前回値をすべてのcomputeへデフォルトで渡す設計は、キャッシュ層が観測可能になり透過性が静かに崩れるという理由で明示的に却下されている。履歴依存の状態が必要な場面には`mut`キャプチャとAccumulatorという2つの逃げ道を認めつつ、`fold`/`pairwise`という第一級プリミティブは「予約はするが今は作らない」とした。
+変更件数は少ないが、翌日以降の作業につながる2つの更新が入った。incrでは、pull/push/Datalog-fixpointという3つの評価戦略の間の相互作用ルールを明文化するADRを書いた（[#372](https://github.com/dowdiness/incr/pull/372)）。ADR本文を読むと、単なる整理を超えた踏み込んだ決定が並んでいる。まずセルを「現在値だけに対して純粋（pure-of-current-values）」と「履歴依存（history-dependent）」の2種に分類し、前者だけがbackdatingや検証スキップといった透過的キャッシュの対象になれると定めた。この帰結として、Solid風に`createMemo(prev => ...)`のような形で前回値をすべてのcomputeへデフォルトで渡す設計は、キャッシュ層が観測可能になり透過性が静かに崩れるという理由で明示的に却下されている。履歴依存の状態が必要な場面には`mut`キャプチャとAccumulatorという2つの逃げ道を認めつつ、`fold`/`pairwise`という第一級プリミティブは「予約はするが今は作らない」とした。
 
 型ではなく実行時に強制する理由も踏み込んで書かれている。handle分割（Reader/Writer）もtrait objectも、MoonBitのclosureが任意の環境をキャプチャできる以上、捕まえたwriterがcompute内でそのままコンパイルされてしまい、バグを型では防げない。context/tokenを渡すSalsa的な設計は本当に型で防げるが、全computeのシグネチャを作り直す必要があるため今回は却下、ただし「もしゼロから設計し直すなら」の第一候補として記録された。3つのエンジンを1つの`Runtime`にまとめる理由も実装の都合ではなく、incr_teaのUI Watchがparserのmemoに依存し、moondspのeager foldがmemoを読むという、戦略をまたぐ依存辺が実在するからだと明記されている。ライブラリを分ければこのseamはユーザー空間の橋渡しコードへ移動するだけで、伝播基盤（revision・dirty marking・subscriber・batch・GC）を3重に複製することになる。最後にこのADRは、「fold engineが本当にpush側だけのleafとして実装できるか」「同種のバグが再発しないか」という2つの反証可能な予測を立てて締めている。このADRが、翌々日に入る`force_set`の再入防止ガードの種になる。
 
@@ -281,6 +279,10 @@ reconcileの核心的なバグも直した（[#892](https://github.com/dowdiness
 
 主なPR / Issue: canopy [#890](https://github.com/dowdiness/canopy/pull/890), [#891](https://github.com/dowdiness/canopy/pull/891), [#892](https://github.com/dowdiness/canopy/pull/892) / incr [#390](https://github.com/dowdiness/incr/pull/390), [#391](https://github.com/dowdiness/incr/pull/391), [#392](https://github.com/dowdiness/incr/pull/392), [#393](https://github.com/dowdiness/incr/pull/393), [#397](https://github.com/dowdiness/incr/pull/397) / js_engine [#534](https://github.com/dowdiness/js_engine/pull/534), [#535](https://github.com/dowdiness/js_engine/pull/535), [#536](https://github.com/dowdiness/js_engine/pull/536), [#537](https://github.com/dowdiness/js_engine/pull/537), [#538](https://github.com/dowdiness/js_engine/pull/538) / loom [#704](https://github.com/dowdiness/loom/pull/704), [#705](https://github.com/dowdiness/loom/pull/705), [#706](https://github.com/dowdiness/loom/pull/706), [#707](https://github.com/dowdiness/loom/pull/707), [#708](https://github.com/dowdiness/loom/pull/708), [#709](https://github.com/dowdiness/loom/pull/709), [#711](https://github.com/dowdiness/loom/pull/711)
 
+## 7月第3週: GenUI kill dateとline-modeレクサ（7/14〜7/15）
+
+GenUIに7/29の判断日を付け、loomgenはMarkdown向けline-modeレクサ生成の総仕上げへ。日誌の記録は7/15で途切れている。
+
 ## 2026/7/14
 
 ### incr / 保持コストのベンチマークと「直さない」という決定
@@ -317,6 +319,111 @@ incr_teaの親子合成・意味的アイデンティティ・世代交代・リ
 
 主なPR / Issue: canopy [#893](https://github.com/dowdiness/canopy/pull/893), [#894](https://github.com/dowdiness/canopy/pull/894), [#895](https://github.com/dowdiness/canopy/pull/895), [#897](https://github.com/dowdiness/canopy/pull/897) / incr [#401](https://github.com/dowdiness/incr/pull/401), [#402](https://github.com/dowdiness/incr/pull/402), [#403](https://github.com/dowdiness/incr/pull/403), [#404](https://github.com/dowdiness/incr/pull/404) / js_engine [#539](https://github.com/dowdiness/js_engine/pull/539), [#540](https://github.com/dowdiness/js_engine/pull/540), [#541](https://github.com/dowdiness/js_engine/pull/541) / loom [#718](https://github.com/dowdiness/loom/pull/718)
 
-### 作業運用メモ
+## PR索引
 
-7月前半を振り返ると、incrの2度の破壊的リリース（0.13.0/0.14.0）がloomとCanopyのpin更新を連鎖させ、loomgenは手書きコード生成パスを削って身軽になった。その足場の上でCanopyのJSXとGenUIという新実験が急速に立ち上がった。GenUIは2026/7/29という明確なkill dateを持つ実験として設計されており、この日を境にCanopyがLLM出力を直接構造編集の対象にする方向へ進むのか、足場だけ残して畳まれるのかが見えてくる。
+週ごとに折りたたんだ PR / Issue 一覧。GitHub 上の詳細への索引。
+
+<details>
+<summary>7月第1週（7/1〜7/6）</summary>
+
+#### 2026/7/1
+
+**Canopy / loom**
+
+canopy [#821](https://github.com/dowdiness/canopy/pull/821), [#822](https://github.com/dowdiness/canopy/pull/822), [#825](https://github.com/dowdiness/canopy/pull/825), [#826](https://github.com/dowdiness/canopy/pull/826), [#827](https://github.com/dowdiness/canopy/pull/827) / loom [#547](https://github.com/dowdiness/loom/pull/547), [#550](https://github.com/dowdiness/loom/pull/550), [#551](https://github.com/dowdiness/loom/pull/551), [#552](https://github.com/dowdiness/loom/pull/552), [#553](https://github.com/dowdiness/loom/pull/553)
+
+#### 2026/7/2
+
+**Canopy / loom**
+
+canopy [#832](https://github.com/dowdiness/canopy/pull/832), [#833](https://github.com/dowdiness/canopy/pull/833) / loom [#555](https://github.com/dowdiness/loom/pull/555), [#558](https://github.com/dowdiness/loom/pull/558), [#566](https://github.com/dowdiness/loom/pull/566), [#567](https://github.com/dowdiness/loom/pull/567), [#568](https://github.com/dowdiness/loom/pull/568)
+
+#### 2026/7/3
+
+**Canopy / incr / loom**
+
+canopy [#839](https://github.com/dowdiness/canopy/pull/839), [#840](https://github.com/dowdiness/canopy/pull/840), [#842](https://github.com/dowdiness/canopy/pull/842), [#843](https://github.com/dowdiness/canopy/pull/843), [#844](https://github.com/dowdiness/canopy/pull/844), [#845](https://github.com/dowdiness/canopy/pull/845), [#846](https://github.com/dowdiness/canopy/pull/846), [#849](https://github.com/dowdiness/canopy/pull/849), [#850](https://github.com/dowdiness/canopy/pull/850), [#851](https://github.com/dowdiness/canopy/pull/851), [#852](https://github.com/dowdiness/canopy/pull/852), [#853](https://github.com/dowdiness/canopy/pull/853) / incr [#341](https://github.com/dowdiness/incr/pull/341), [#342](https://github.com/dowdiness/incr/pull/342), [#347](https://github.com/dowdiness/incr/pull/347), [#348](https://github.com/dowdiness/incr/pull/348), [#349](https://github.com/dowdiness/incr/pull/349), [#350](https://github.com/dowdiness/incr/pull/350) / js_engine [#483](https://github.com/dowdiness/js_engine/pull/483), [#484](https://github.com/dowdiness/js_engine/pull/484) / loom [#569](https://github.com/dowdiness/loom/pull/569), [#572](https://github.com/dowdiness/loom/pull/572), [#573](https://github.com/dowdiness/loom/pull/573), [#580](https://github.com/dowdiness/loom/pull/580), [#581](https://github.com/dowdiness/loom/pull/581), [#584](https://github.com/dowdiness/loom/pull/584), [#587](https://github.com/dowdiness/loom/pull/587), [#588](https://github.com/dowdiness/loom/pull/588)
+
+#### 2026/7/4
+
+**incr 0.13.0 / js_engine / loom**
+
+canopy [#854](https://github.com/dowdiness/canopy/pull/854), [#855](https://github.com/dowdiness/canopy/pull/855), [#856](https://github.com/dowdiness/canopy/pull/856), [#857](https://github.com/dowdiness/canopy/pull/857), [#859](https://github.com/dowdiness/canopy/pull/859), [#860](https://github.com/dowdiness/canopy/pull/860) / incr [#351](https://github.com/dowdiness/incr/pull/351) / js_engine [#485](https://github.com/dowdiness/js_engine/pull/485), [#486](https://github.com/dowdiness/js_engine/pull/486), [#489](https://github.com/dowdiness/js_engine/pull/489), [#492](https://github.com/dowdiness/js_engine/pull/492), [#493](https://github.com/dowdiness/js_engine/pull/493) / loom [#589](https://github.com/dowdiness/loom/pull/589), [#590](https://github.com/dowdiness/loom/pull/590), [#591](https://github.com/dowdiness/loom/pull/591), [#592](https://github.com/dowdiness/loom/pull/592), [#594](https://github.com/dowdiness/loom/pull/594), [#597](https://github.com/dowdiness/loom/pull/597), [#612](https://github.com/dowdiness/loom/pull/612), [#613](https://github.com/dowdiness/loom/pull/613)
+
+#### 2026/7/5
+
+**incr 0.14.0 / js_engine / loom**
+
+canopy [#861](https://github.com/dowdiness/canopy/pull/861), [#870](https://github.com/dowdiness/canopy/pull/870) / incr [#352](https://github.com/dowdiness/incr/pull/352), [#353](https://github.com/dowdiness/incr/pull/353), [#354](https://github.com/dowdiness/incr/pull/354), [#355](https://github.com/dowdiness/incr/pull/355), [#357](https://github.com/dowdiness/incr/pull/357), [#358](https://github.com/dowdiness/incr/pull/358), [#359](https://github.com/dowdiness/incr/pull/359) / js_engine [#494](https://github.com/dowdiness/js_engine/pull/494), [#495](https://github.com/dowdiness/js_engine/pull/495), [#496](https://github.com/dowdiness/js_engine/pull/496), [#499](https://github.com/dowdiness/js_engine/pull/499), [#501](https://github.com/dowdiness/js_engine/pull/501) / loom [#615](https://github.com/dowdiness/loom/pull/615), [#616](https://github.com/dowdiness/loom/pull/616), [#617](https://github.com/dowdiness/loom/pull/617), [#618](https://github.com/dowdiness/loom/pull/618), [#619](https://github.com/dowdiness/loom/pull/619), [#621](https://github.com/dowdiness/loom/pull/621), [#625](https://github.com/dowdiness/loom/pull/625), [#631](https://github.com/dowdiness/loom/pull/631), [#632](https://github.com/dowdiness/loom/pull/632), [#634](https://github.com/dowdiness/loom/pull/634), [#639](https://github.com/dowdiness/loom/pull/639)
+
+#### 2026/7/6
+
+**js_engine / loom**
+
+incr [#359](https://github.com/dowdiness/incr/pull/359) / js_engine [#502](https://github.com/dowdiness/js_engine/pull/502) / loom [#633](https://github.com/dowdiness/loom/pull/633), [#634](https://github.com/dowdiness/loom/pull/634), [#638](https://github.com/dowdiness/loom/pull/638), [#639](https://github.com/dowdiness/loom/pull/639), [#641](https://github.com/dowdiness/loom/pull/641)
+
+</details>
+
+<details>
+<summary>7月第2週（7/7〜7/13）</summary>
+
+#### 2026/7/7
+
+**incr / loom**
+
+incr [#360](https://github.com/dowdiness/incr/pull/360), [#361](https://github.com/dowdiness/incr/pull/361), [#362](https://github.com/dowdiness/incr/pull/362), [#363](https://github.com/dowdiness/incr/pull/363) / loom [#645](https://github.com/dowdiness/loom/pull/645), [#647](https://github.com/dowdiness/loom/pull/647), [#648](https://github.com/dowdiness/loom/pull/648)
+
+#### 2026/7/8
+
+**incr ADR / MoonDsp**
+
+incr [#372](https://github.com/dowdiness/incr/pull/372) / loom [#650](https://github.com/dowdiness/loom/pull/650) / MoonDsp [#227](https://github.com/dowdiness/MoonDsp/pull/227)
+
+#### 2026/7/9
+
+**incr再入ガード / js_engine / loom**
+
+canopy [#871](https://github.com/dowdiness/canopy/pull/871) / incr [#373](https://github.com/dowdiness/incr/pull/373), [#374](https://github.com/dowdiness/incr/pull/374), [#378](https://github.com/dowdiness/incr/pull/378), [#379](https://github.com/dowdiness/incr/pull/379), [#380](https://github.com/dowdiness/incr/pull/380), [#381](https://github.com/dowdiness/incr/pull/381), [#382](https://github.com/dowdiness/incr/pull/382), [#383](https://github.com/dowdiness/incr/pull/383), [#384](https://github.com/dowdiness/incr/pull/384) / js_engine [#503](https://github.com/dowdiness/js_engine/pull/503), [#508](https://github.com/dowdiness/js_engine/pull/508), [#509](https://github.com/dowdiness/js_engine/pull/509) / loom [#643](https://github.com/dowdiness/loom/pull/643), [#649](https://github.com/dowdiness/loom/pull/649), [#651](https://github.com/dowdiness/loom/pull/651), [#653](https://github.com/dowdiness/loom/pull/653), [#654](https://github.com/dowdiness/loom/pull/654), [#655](https://github.com/dowdiness/loom/pull/655), [#656](https://github.com/dowdiness/loom/pull/656), [#659](https://github.com/dowdiness/loom/pull/659), [#660](https://github.com/dowdiness/loom/pull/660), [#661](https://github.com/dowdiness/loom/pull/661)
+
+#### 2026/7/10
+
+**emit_grammar削除 / cache-for-X**
+
+canopy [#873](https://github.com/dowdiness/canopy/pull/873) / incr [#385](https://github.com/dowdiness/incr/pull/385), [#386](https://github.com/dowdiness/incr/pull/386), [#388](https://github.com/dowdiness/incr/pull/388) / js_engine [#510](https://github.com/dowdiness/js_engine/pull/510), [#511](https://github.com/dowdiness/js_engine/pull/511), [#513](https://github.com/dowdiness/js_engine/pull/513), [#514](https://github.com/dowdiness/js_engine/pull/514) / loom [#662](https://github.com/dowdiness/loom/pull/662), [#663](https://github.com/dowdiness/loom/pull/663), [#666](https://github.com/dowdiness/loom/pull/666), [#667](https://github.com/dowdiness/loom/pull/667), [#672](https://github.com/dowdiness/loom/pull/672), [#675](https://github.com/dowdiness/loom/pull/675), [#676](https://github.com/dowdiness/loom/pull/676)
+
+#### 2026/7/11
+
+**JSX / js_engine / loom**
+
+canopy [#875](https://github.com/dowdiness/canopy/pull/875), [#876](https://github.com/dowdiness/canopy/pull/876), [#877](https://github.com/dowdiness/canopy/pull/877), [#878](https://github.com/dowdiness/canopy/pull/878) / incr [#389](https://github.com/dowdiness/incr/pull/389) / js_engine [#515](https://github.com/dowdiness/js_engine/pull/515), [#516](https://github.com/dowdiness/js_engine/pull/516), [#520](https://github.com/dowdiness/js_engine/pull/520), [#521](https://github.com/dowdiness/js_engine/pull/521), [#522](https://github.com/dowdiness/js_engine/pull/522), [#523](https://github.com/dowdiness/js_engine/pull/523), [#524](https://github.com/dowdiness/js_engine/pull/524), [#526](https://github.com/dowdiness/js_engine/pull/526), [#527](https://github.com/dowdiness/js_engine/pull/527) / loom [#679](https://github.com/dowdiness/loom/pull/679), [#680](https://github.com/dowdiness/loom/pull/680), [#682](https://github.com/dowdiness/loom/pull/682), [#684](https://github.com/dowdiness/loom/pull/684), [#686](https://github.com/dowdiness/loom/pull/686), [#690](https://github.com/dowdiness/loom/pull/690), [#692](https://github.com/dowdiness/loom/pull/692), [#693](https://github.com/dowdiness/loom/pull/693), [#696](https://github.com/dowdiness/loom/pull/696), [#698](https://github.com/dowdiness/loom/pull/698)
+
+#### 2026/7/12
+
+**GenUI / js_engine / loom**
+
+canopy [#885](https://github.com/dowdiness/canopy/pull/885), [#887](https://github.com/dowdiness/canopy/pull/887) / js_engine [#532](https://github.com/dowdiness/js_engine/pull/532) / loom [#703](https://github.com/dowdiness/loom/pull/703)
+
+#### 2026/7/13
+
+**GenUI垂直スライス / line-mode lexer**
+
+canopy [#890](https://github.com/dowdiness/canopy/pull/890), [#891](https://github.com/dowdiness/canopy/pull/891), [#892](https://github.com/dowdiness/canopy/pull/892) / incr [#390](https://github.com/dowdiness/incr/pull/390), [#391](https://github.com/dowdiness/incr/pull/391), [#392](https://github.com/dowdiness/incr/pull/392), [#393](https://github.com/dowdiness/incr/pull/393), [#397](https://github.com/dowdiness/incr/pull/397) / js_engine [#534](https://github.com/dowdiness/js_engine/pull/534), [#535](https://github.com/dowdiness/js_engine/pull/535), [#536](https://github.com/dowdiness/js_engine/pull/536), [#537](https://github.com/dowdiness/js_engine/pull/537), [#538](https://github.com/dowdiness/js_engine/pull/538) / loom [#704](https://github.com/dowdiness/loom/pull/704), [#705](https://github.com/dowdiness/loom/pull/705), [#706](https://github.com/dowdiness/loom/pull/706), [#707](https://github.com/dowdiness/loom/pull/707), [#708](https://github.com/dowdiness/loom/pull/708), [#709](https://github.com/dowdiness/loom/pull/709), [#711](https://github.com/dowdiness/loom/pull/711)
+
+</details>
+
+<details>
+<summary>7月第3週（7/14〜7/15）</summary>
+
+#### 2026/7/14
+
+**incr / loom**
+
+incr [#398](https://github.com/dowdiness/incr/pull/398), [#400](https://github.com/dowdiness/incr/pull/400) / loom [#710](https://github.com/dowdiness/loom/pull/710), [#713](https://github.com/dowdiness/loom/pull/713), [#714](https://github.com/dowdiness/loom/pull/714), [#715](https://github.com/dowdiness/loom/pull/715), [#717](https://github.com/dowdiness/loom/pull/717)
+
+#### 2026/7/15
+
+**GenUI kill date / v0.6.0**
+
+canopy [#893](https://github.com/dowdiness/canopy/pull/893), [#894](https://github.com/dowdiness/canopy/pull/894), [#895](https://github.com/dowdiness/canopy/pull/895), [#897](https://github.com/dowdiness/canopy/pull/897) / incr [#401](https://github.com/dowdiness/incr/pull/401), [#402](https://github.com/dowdiness/incr/pull/402), [#403](https://github.com/dowdiness/incr/pull/403), [#404](https://github.com/dowdiness/incr/pull/404) / js_engine [#539](https://github.com/dowdiness/js_engine/pull/539), [#540](https://github.com/dowdiness/js_engine/pull/540), [#541](https://github.com/dowdiness/js_engine/pull/541) / loom [#718](https://github.com/dowdiness/loom/pull/718)
+
+</details>

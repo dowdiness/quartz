@@ -3,7 +3,7 @@ title: Canopy in May 2026 — Highlights
 publish: true
 tags: [blog, canopy, english, projectional-editing]
 created: 2026-07-16T09:15:00+09:00
-modified: 2026-07-16T10:19:29+09:00
+modified: 2026-07-16T14:21:19+09:00
 aliases: [Canopy in May 2026 — Highlights]
 ---
 

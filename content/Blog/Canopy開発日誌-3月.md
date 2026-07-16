@@ -3,26 +3,18 @@ title: Canopy開発日誌-3月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-06-23T03:36:00+09:00
-modified: 2026-07-16T13:10:00+09:00
+modified: 2026-07-16T16:15:00+09:00
 ---
 
 # Canopy開発日誌-3月
 
-2026年3月のCanopy開発ログ。3月はCanopyのリポジトリ名確定、parser→loomの分離、Rabbita/Ideal editorの急速な成長、構造編集アクション、CRDTの性能改善、framework抽出、block editor、JSON editorまで、幅広い領域で大きな進捗があった。
+2026年3月のCanopy開発ログ（日次記録）。月の要約は[[Canopy開発日誌-3月-まとめ|3月-まとめ]]。
 
 > ソースコードを構造（IR）として編集する MoonBit 製エディタ。概要は[[Canopyとは]]。
 
 ## 今月の大きな流れ
 
-- **parser → loom**: 2月までCanopy内にあったparserを`dowdiness/loom`として独立させ、APIを移行した。
-- **SyncEditor確立**: ParsedEditorからSyncEditorへ統一。編集・undo/redo・同期・presenceを一つのeditor abstractionで扱えるようにした。
-- **名前解決とgraphviz**: Lambdaの名前解決をSyncEditorに組み込み、ToDot/FromDot traitでgraph可視化と連携した。
-- **Rabbita/Ideal editor**: Rabbitaベースのprojectional editorを立ち上げ、性能問題を解消し、mobile layout、design tokens、tree pane navigation、Ideal editorのUI基盤を整えた。
-- **構造編集アクション**: 16の構造編集アクションを実装した。
-- **CRDT性能**: FugueTree/traverse_treeのiterative化、order-tree導入、event-graph-walkerの高速化（two-count retreatで17.7×）など。
-- **WebSocket協調編集**: transport layer、relay server、sync recovery protocol、ephemeral store v2を実装した。
-- **Framework抽出**: `ProjNode[T]`のgeneric化、`TreeNode`/`Renderable` traitの導入、framework/coreパッケージの切り出し。
-- **新しいeditor**: block editor、JSON editor、AST Zipper、Container Phase 1、pretty-printerの導入。
+月全体の流れは[[Canopy開発日誌-3月-まとめ|3月-まとめ]]にまとめた。以下は週次ヘッダと日付見出しによる作業記録。月初（第1週）から loom 分離と SyncEditor 移行が始まる。
 
 ## 3月第1週: parser→loom分離、SyncEditor、名前解決
 
@@ -220,7 +212,3 @@ Genericなeditor frameworkを切り出し、CanopyをLambda専用から複数言
 - alga、event-graph-walker、loom等submoduleをbump。
 
 主なPR / Issue: canopy [#103](https://github.com/dowdiness/canopy/pull/103), [#104](https://github.com/dowdiness/canopy/pull/104), [#105](https://github.com/dowdiness/canopy/pull/105)
-
-## 作業運用メモ
-
-3月はCanopyの"理想エディタ"となるIdeal editor、Rabbita、構造編集アクション、協調編集基盤が一気に育った月である。同時に、のちの独立リポジトリ化を見据えたframework抽出と、CRDT/パーサーの性能改善も並行して進んだ。4月はこの勢いを引き継ぎ、UI/UXと言語実装がさらに深まっていく。

@@ -1,9 +1,10 @@
 ---
 title: Canopy GenUI実験（2026年7月）
 publish: true
-tags: [blog, canopy, projectional-editing, genui]
+tags: [blog, canopy, genui, projectional-editing]
 created: 2026-07-16T13:35:00+09:00
-modified: 2026-07-16T13:35:00+09:00
+modified: 2026-07-16T14:16:19+09:00
+aliases: [Canopy GenUI実験（2026年7月）]
 ---
 
 # Canopy GenUI実験（2026年7月）

@@ -3,7 +3,7 @@ title: Canopy Devlog — June 2026
 publish: true
 tags: [blog, canopy, english, projectional-editing]
 created: 2026-07-04T22:30:00+09:00
-modified: 2026-07-04T22:31:59+09:00
+modified: 2026-07-16T14:16:24+09:00
 aliases: [Canopy Devlog — June 2026]
 ---
 

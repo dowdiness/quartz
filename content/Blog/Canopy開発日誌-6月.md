@@ -3,12 +3,12 @@ title: Canopy開発日誌-6月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-07-16T13:10:00+09:00
+modified: 2026-07-16T16:15:00+09:00
 ---
 
 # Canopy開発日誌-6月
 
-2026年6月の Canopy 開発ログ。細かい PR 列挙より、作業の流れが追いやすいよう要点だけを残している。
+2026年6月のCanopy開発ログ（日次記録）。月の要約は[[Canopy開発日誌-6月-まとめ|6月-まとめ]]。
 
 > ソースコードを構造（IR）として編集する MoonBit 製エディタ。概要は[[Canopyとは]]。
 
@@ -16,21 +16,12 @@ modified: 2026-07-16T13:10:00+09:00
 
 ## 今月の大きな流れ
 
-6月前半は、Canopy を「構造編集の実験場」から、より明確なプロダクトとライブラリ群へ整理する作業が中心だった。後半は Markdown の構造編集（SDEG: Structure-Directed Edit Grammar）、外部解析結果を取り込む analysis query layer、全リポジトリの moon.mod.json→moon.mod 移行、js_engine の test262 適合率向上へと重心が移った。最終週（6/27–6/30）では loom にコード生成器「loomgen」が生まれ、incr の Memo→Derived facade 移行が完了し、Canopy では block-editor の drag-drop と JSON tree editor が実用段階まで一気に進んだ。
+月全体の流れは[[Canopy開発日誌-6月-まとめ|6月-まとめ]]にまとめた。以下は週次ヘッダと日付見出しによる作業記録。PR番号の一覧は文末の[PR索引](#pr索引)にある。
 
-- **Lambda編集**: scope graph、block 内 binding 編集、Loom の CstFold を使った投影構築、古い `ModuleProjection` の削除、alpha 変換に安全な beta reduction の実験、構造編集後も NodeId を保つ Grove Level 1 hint まで進んだ。
-- **Markdown SDEG**: 見出しやリスト項目を構造編集の対象にするため、heading identity の安定性調査、同一リスト内 move、block move provenance の追跡、リスト move blocker の敵対的ケース対応が進んだ。
-- **Ideal / Canvas**: 見た目を持たない UI 部品ライブラリとして Rabbita を使い、Tailwind v4 へ寄せ、Canvas は UI 状態ではなく source text を正とする source-backed 方式にした。CodeMirror source editor と FFI file I/O も入った。
-- **Analysis query layer**: 外部解析結果（ast-grep など）を Canopy へ安全に取り込む層の設計・Phase 1 実装。解析結果は snapshot に紐づく捨てられる fact として扱い、text CRDT の永続性を崩さない。
-- **moon.mod移行**: Canopy が所有する全マニフェストを moon.mod.json から moon.mod（TOML 形式）へ移行。13 submodule を workspace member に追加し、MOON_WORK=off の依存解決問題を解消した。
-- **Loom**: Lambda 側の土台に加え、Markdown の変更 block だけを再パースする仕組み、MarkdownIR の mdast export と position 付け、rewrite / canonical formatter の source-preserving 保証が進んだ。
-- **incr**: Incremental TEA prototype が進んだ。TEA 風 UI を incr の依存グラフで更新する実験で、7GUIs stress test、inactive-root activation policy まで扱った。
-- **js_engine**: 責務別の architecture refactor、bytecode 実行 fast path、ES2024 Set methods、test262/benchmark 基盤の整備が進んだ。後半は test262 適合率向上が中心で、JSON.parse 100% pass、Promise spec fixes、regex escapes 修正、lexer UTF-16 正確化、timer queue 高速化など。
-- **MoonDsp**: Canopy とは直接統合せず、共有基盤を見ながら Graph runtime や scheduler の責務分割を進めた。
-- **作業運用**: Git log・agent session・project memory を突き合わせて記録する運用が定着しつつある。
-- **loomgen**: 6/27 に loom 内で誕生したコード生成器。`#loom.*` アノテーション付き Token/Term enum から syntax kind・step lexer・grammar IR・projection アクセサまでを生成する。月末までに token/term enum 生成、`#loom.view` / `#loom.pattern` / `#loom.lexmode` などのアノテーション語彙、fail-closed な EBNF 検証まで育った。
-- **incr Memo→Derived移行**: 6/27–6/29 の 3 日間で `Memo` / `HybridMemo` / `MemoMap` を `Derived` / `ReachableDerived` / `DerivedMap` へ完全移行し、レガシー `Signal[T]` も削除した。フェーズ分割された規律ある移行だった。
-- **Canopy block-editor / JSON editor**: block-editor の drag-drop と JSON tree editor が、月末の数日でテスト付きの実用機能として立ち上がった。
+
+## 6月第1週: Ideal・Rabbita・Canvas の土台（6/1〜6/7）
+
+LetDef導入と性能見送り、Rabbita headless UI、IdealのTailwind v4移行、source-backed Canvasの整備。性能より先に、構成を固めた週だった。
 
 ## 2026/6/1
 
@@ -48,7 +39,6 @@ Loom では json-settings example に last-good semantic projection attachment �
 
 運用面では、Codex を pre-PR review だけでなく実装計画の執筆にも使う流れが固まり始めた。
 
-主なPR / Issue: canopy [#445](https://github.com/dowdiness/canopy/pull/445), [#437](https://github.com/dowdiness/canopy/pull/437), [#447](https://github.com/dowdiness/canopy/pull/447) / loom [#206](https://github.com/dowdiness/loom/pull/206) / js_engine [#186](https://github.com/dowdiness/js_engine/pull/186)
 
 ## 2026/6/2
 
@@ -68,7 +58,6 @@ Canvas では graph demo をより構造編集寄りに使うための準備を�
 
 Ideal web E2E を PR gate へ載せる準備を進めた。ブラウザ上で Ideal が壊れていないことを PR ごとの自動チェックに含める方向へ進めた。同時に、CI の一時的な失敗と本当の失敗の見分け方も整理した。
 
-主なPR / Issue: canopy [#451](https://github.com/dowdiness/canopy/pull/451), [#452](https://github.com/dowdiness/canopy/pull/452), [#453](https://github.com/dowdiness/canopy/pull/453), [#462](https://github.com/dowdiness/canopy/pull/462), [#465](https://github.com/dowdiness/canopy/pull/465), [#469](https://github.com/dowdiness/canopy/pull/469)
 
 ## 2026/6/3
 
@@ -84,7 +73,6 @@ MoonDsp では Canopy 連携を見据え Graph runtime の境界を整理した�
 
 incr 側では public event API の命名を Derived 寄りに整理した。
 
-主なPR / Issue: canopy [#445](https://github.com/dowdiness/canopy/pull/445), [#461](https://github.com/dowdiness/canopy/pull/461), [#479](https://github.com/dowdiness/canopy/pull/479)
 
 ## 2026/6/4
 
@@ -96,7 +84,6 @@ Rabbita headless UI を Canopy で本当に使えるかを見極める日だっ�
 
 MoonDsp では Graph runtime の facade / internal boundary を切り始めた。外から使う公開 API と、内部だけで変えてよい実装部分を分ける作業になる。js_engine では Array method fast path delegation や Test262 runner shadow の準備が進んだ。
 
-主なPR / Issue: canopy [#489](https://github.com/dowdiness/canopy/pull/489), [#508](https://github.com/dowdiness/canopy/pull/508), [#511](https://github.com/dowdiness/canopy/pull/511)
 
 ## 2026/6/5
 
@@ -106,9 +93,8 @@ Rabbita の patched 更新を取り込み、Ideal と Canvas から headless UI 
 
 ### incr / MoonDsp / js_engine
 
-incrではtyped spreadsheetとIncremental TEAの実験が進んだ。MoonDspではeditor / audio runtimeのhandoff contractを文書化し、js_engineではArray mutatorやrunner shadow化を進めた。
+incr では typed spreadsheet と Incremental TEA の実験が進んだ。MoonDsp では editor / audio runtime の handoff contract を文書化し、js_engine では Array mutator や runner shadow 化を進めた。
 
-主なPR / Issue: canopy [#517](https://github.com/dowdiness/canopy/pull/517), [#523](https://github.com/dowdiness/canopy/pull/523), [#524](https://github.com/dowdiness/canopy/pull/524), [#525](https://github.com/dowdiness/canopy/pull/525), [#526](https://github.com/dowdiness/canopy/pull/526), [#528](https://github.com/dowdiness/canopy/pull/528)
 
 ## 2026/6/6
 
@@ -118,9 +104,8 @@ Ideal の UI 基盤を大きく整理した。パネルリサイズ、スクリ�
 
 ### 周辺リポジトリ
 
-MoonDspではGraph runtime / scheduler / browser internalsの分割が進んだ。Loom、incr、js_engineでも、それぞれparser runtimeやIncremental TEA、test262 runnerの整備が続いた。
+MoonDsp では Graph runtime / scheduler / browser internals の分割が進んだ。Loom、incr、js_engine でも parser runtime、Incremental TEA、test262 runner の整備が続いた。
 
-主なPR / Issue: canopy [#529](https://github.com/dowdiness/canopy/pull/529), [#532](https://github.com/dowdiness/canopy/pull/532), [#534](https://github.com/dowdiness/canopy/pull/534), [#539](https://github.com/dowdiness/canopy/pull/539), [#541](https://github.com/dowdiness/canopy/pull/541), [#544](https://github.com/dowdiness/canopy/pull/544)
 
 ## 2026/6/7
 
@@ -134,7 +119,10 @@ Canvas は次の source-backed 段階へ戻した。source-backed とは、画�
 
 Loom では MoonBit parser integration が進み、editor へ渡せる syntax artifact を出せる方向へ寄っていった。
 
-主なPR / Issue: canopy [#553](https://github.com/dowdiness/canopy/pull/553), [#554](https://github.com/dowdiness/canopy/pull/554), [#558](https://github.com/dowdiness/canopy/pull/558), [#560](https://github.com/dowdiness/canopy/pull/560), [#562](https://github.com/dowdiness/canopy/pull/562)
+
+## 6月第2週: アーキテクチャ再設計と Lambda 投影（6/8〜6/14）
+
+source-backed CanvasのCodeMirror化とLambda CstFoldの近代化が進んだ。§20完了の準備まで進めたが、性能最適化は先送りにした。
 
 ## 2026/6/8
 
@@ -148,7 +136,6 @@ Canvas の source-backed graph を CodeMirror source editor へ寄せた。sourc
 
 Loomではparser結果に基づいてsyntax roleの範囲を出すrole span、incrではIncremental TEAのkeyed DOM benchmark、js_engineではArray shift / unshiftのfast pathやrunner parityが進んだ。
 
-主なPR / Issue: canopy [#569](https://github.com/dowdiness/canopy/pull/569), [#570](https://github.com/dowdiness/canopy/pull/570), [#571](https://github.com/dowdiness/canopy/pull/571), [#576](https://github.com/dowdiness/canopy/pull/576)
 
 ## 2026/6/9
 
@@ -162,7 +149,6 @@ Lambda 側では generic projection memos へ向かう前段として、scope gr
 
 Loomではparser runtime attachmentやdeprecated syntax移行が進んだ。MoonDspではmini parser置き換えcampaignが進み、loomへの置き換え方針が具体化した。
 
-主なPR / Issue: canopy [#571](https://github.com/dowdiness/canopy/pull/571), [#575](https://github.com/dowdiness/canopy/pull/575), [#577](https://github.com/dowdiness/canopy/pull/577)
 
 ## 2026/6/10
 
@@ -174,7 +160,6 @@ Incremental TEA を一気に仕上げた。renderer lifecycle、keyed VDOM diff�
 
 MoonDsp は loom parser 置き換え campaign の Phase 2 parity を完走し、ADR-0016 を Accepted にした。Loom では separated-list や attachment 系が進み、Canopy では Canvas の runtime seam 整理が続いた。seam は境界面のことで、どこから先を runtime 責務にするかを明確にする作業だった。js_engine は v0.3.0 をリリースした。
 
-主なPR / Issue: incr [#209](https://github.com/dowdiness/incr/pull/209), [#211](https://github.com/dowdiness/incr/pull/211), [#238](https://github.com/dowdiness/incr/pull/238), [#243](https://github.com/dowdiness/incr/pull/243), [#244](https://github.com/dowdiness/incr/pull/244) / canopy [#611](https://github.com/dowdiness/canopy/pull/611), [#615](https://github.com/dowdiness/canopy/pull/615)
 
 ## 2026/6/11
 
@@ -190,7 +175,6 @@ Canopy のアーキテクチャ再設計に着手した。S0 の proposal と AP
 
 js_engine では CI cache 改善が効かないことを実測で確認し、test262 sharding へ方針を切り替えた。作業運用としては、相談・レビュー・実装計画をどのエージェントに任せるかの使い分けも少し固まった。
 
-主なPR / Issue: loom [#279](https://github.com/dowdiness/loom/pull/279), [#196](https://github.com/dowdiness/loom/pull/196) / canopy [#587](https://github.com/dowdiness/canopy/pull/587), [#588](https://github.com/dowdiness/canopy/pull/588) / js_engine [#344](https://github.com/dowdiness/js_engine/pull/344), [#349](https://github.com/dowdiness/js_engine/pull/349)
 
 ## 2026/6/12
 
@@ -206,7 +190,6 @@ Canopy を「editor / framework の証明」から「write-to-self の post prod
 
 incrではIncremental TEAのrendererとsubscriptionがさらに進み、Loomではparser runtime attachment、js_engineではarchitecture refactor Stage 0-7、MoonDspではscheduler周辺の責務分割が進んだ。
 
-主なPR / Issue: canopy [#587](https://github.com/dowdiness/canopy/pull/587), [#588](https://github.com/dowdiness/canopy/pull/588), [#589](https://github.com/dowdiness/canopy/pull/589), [#590](https://github.com/dowdiness/canopy/pull/590), [#597](https://github.com/dowdiness/canopy/pull/597), [#599](https://github.com/dowdiness/canopy/pull/599), [#610](https://github.com/dowdiness/canopy/pull/610)
 
 ## 2026/6/13
 
@@ -226,7 +209,6 @@ write→surface ループには、どのメモを再表示するかを決める 
 
 LoomではMarkdownIRやMarkdown block reparseの準備が進み、js_engineではStage 0-7のarchitecture refactorが進んだ。
 
-主なPR / Issue: canopy [#602](https://github.com/dowdiness/canopy/pull/602), [#604](https://github.com/dowdiness/canopy/pull/604), [#609](https://github.com/dowdiness/canopy/pull/609), [#610](https://github.com/dowdiness/canopy/pull/610), [#611](https://github.com/dowdiness/canopy/pull/611), [#615](https://github.com/dowdiness/canopy/pull/615), [#619](https://github.com/dowdiness/canopy/pull/619)
 
 ## 2026/6/14
 
@@ -240,7 +222,10 @@ Lambda 投影の CstFold 現代化を進めた。CstFold は Loom 側 CST（具�
 
 Canvasでは接続preview互換性をMoonBit側へ寄せ、source-backed demoの`defer_sync`順序を整理した。LoomではMarkdown incremental block reparse、incrではincr_tea benchmark、MoonDspではscheduler facade分割、js_engineではarchitecture redesign Stage 8-10が進んだ。
 
-主なPR / Issue: canopy [#637](https://github.com/dowdiness/canopy/pull/637), [#638](https://github.com/dowdiness/canopy/pull/638), [#640](https://github.com/dowdiness/canopy/pull/640), [#641](https://github.com/dowdiness/canopy/pull/641), [#644](https://github.com/dowdiness/canopy/pull/644), [#647](https://github.com/dowdiness/canopy/pull/647), [#648](https://github.com/dowdiness/canopy/pull/648), [#655](https://github.com/dowdiness/canopy/pull/655), [#639](https://github.com/dowdiness/canopy/pull/639), [#643](https://github.com/dowdiness/canopy/pull/643)
+
+## 6月第3週: Lambda 健全性・SDEG・moon.mod 移行（6/15〜6/21）
+
+Lambda編集の検証を「編集後テキストを再パースして確認する」方式に寄せた。Grove identity hint、analysis query layer、moon.mod移行が並行して進んだ。
 
 ## 2026/6/15
 
@@ -260,7 +245,6 @@ Ideal 側では `globalThis.__canopy_*` を単一の `__canopy_bridge` へ集約
 
 LoomではMarkdownIR M0 policyとM1 heading/paragraph slice、incrではspreadsheet proofとinactive root、js_engineではES2024 Set methodsやinternal slots整理が進んだ。
 
-主なPR / Issue: canopy [#660](https://github.com/dowdiness/canopy/pull/660), [#663](https://github.com/dowdiness/canopy/pull/663), [#671](https://github.com/dowdiness/canopy/pull/671), [#673](https://github.com/dowdiness/canopy/pull/673), [#664](https://github.com/dowdiness/canopy/pull/664), [#677](https://github.com/dowdiness/canopy/pull/677), [#666](https://github.com/dowdiness/canopy/pull/666), [#670](https://github.com/dowdiness/canopy/pull/670), [#669](https://github.com/dowdiness/canopy/pull/669), [#668](https://github.com/dowdiness/canopy/pull/668) / loom [#342](https://github.com/dowdiness/loom/pull/342), [#346](https://github.com/dowdiness/loom/pull/346) / incr [#273](https://github.com/dowdiness/incr/pull/273) / js_engine [#356](https://github.com/dowdiness/js_engine/pull/356)
 
 ## 2026/6/16
 
@@ -276,7 +260,6 @@ Lambda の alpha-safe beta pilot を `lang/lambda/alpha` に置いた。変数�
 
 LoomではMarkdownIR M1 vertical slice、incrではinactive-root cohort測定、js_engineではbytecode call-frame fast pathが進んだ。js_engineではparam bindingのenv round-tripをskipし、binding stepが大きく改善した。
 
-主なPR / Issue: canopy [#674](https://github.com/dowdiness/canopy/pull/674), [#682](https://github.com/dowdiness/canopy/pull/682), [#683](https://github.com/dowdiness/canopy/pull/683), [#684](https://github.com/dowdiness/canopy/pull/684), [#685](https://github.com/dowdiness/canopy/pull/685), issue [#659](https://github.com/dowdiness/canopy/pull/659) / loom [#346](https://github.com/dowdiness/loom/pull/346) / incr [#277](https://github.com/dowdiness/incr/pull/277), [#279](https://github.com/dowdiness/incr/pull/279) / js_engine [#365](https://github.com/dowdiness/js_engine/pull/365), [#366](https://github.com/dowdiness/js_engine/pull/366)
 
 ## 2026/6/17
 
@@ -291,7 +274,6 @@ Lambda 編集は「生成された文字列を見る」より「編集後テキ�
 
 これで [#649](https://github.com/dowdiness/canopy/pull/649) と [#659](https://github.com/dowdiness/canopy/pull/659) は完了。[#650](https://github.com/dowdiness/canopy/pull/650) は move/delete の indentation として残る。
 
-主なPR / Issue: canopy [#688](https://github.com/dowdiness/canopy/pull/688), [#689](https://github.com/dowdiness/canopy/pull/689), [#691](https://github.com/dowdiness/canopy/pull/691), [#696](https://github.com/dowdiness/canopy/pull/696)
 
 ### Canopy / Grove Level 1 identity hint
 
@@ -303,7 +285,6 @@ core 側では `IdentityTransform` と `reconcile_hinted` を追加した。`Ide
 
 残りは write / read / clear の 2 端 contract を `HintChannel` 型で包むことと、hint あり / なし reconcile の重複整理。
 
-主なPR / Issue: canopy [#690](https://github.com/dowdiness/canopy/pull/690), [#697](https://github.com/dowdiness/canopy/pull/697), [#698](https://github.com/dowdiness/canopy/pull/698)
 
 ### Canopy / analysis query layer設計
 
@@ -311,13 +292,11 @@ core 側では `IdentityTransform` と `reconcile_hinted` を追加した。`Ide
 
 Phase 1 は ast-grep の byte offset を UTF-16 range へ変換して range highlight するだけ。byte offset とエディタの文字位置はずれやすいので、まず位置変換を安全にするところから始める。rewrite、node-id mapping、protocol 変更はまだしない。
 
-主なPR / Issue: canopy [#687](https://github.com/dowdiness/canopy/pull/687)
 
 ### Canopy / Ideal
 
 Ideal の Action Overlay を、UI helper が Cell / Emit handle を直接持たず値だけを受け取る形へ寄せた。UI 描画補助関数が Rabbita の状態セルやイベント送信口を握らず、呼び出し側が計算済み値と callback を渡す形に近づけた。action overlay の flow と exec も分け直した。
 
-主なPR / Issue: canopy [#686](https://github.com/dowdiness/canopy/pull/686)
 
 ### loom
 
@@ -325,25 +304,20 @@ MarkdownIR は M1 から recovery / raw node semantics へ進んだ。raw node �
 
 現在の作業ツリーでは、次の [#328](https://github.com/dowdiness/loom/pull/328) 相当として MarkdownIR mdast export に unist `position` を付ける変更が進行中。Canopy superproject から見ると `loom` submodule は `0a827c3` から `3856167` へ進んだうえで未コミット差分が残っている。
 
-主なPR / Issue: loom [#348](https://github.com/dowdiness/loom/pull/348), [#350](https://github.com/dowdiness/loom/pull/350), [#351](https://github.com/dowdiness/loom/pull/351), [#352](https://github.com/dowdiness/loom/pull/352), [#353](https://github.com/dowdiness/loom/pull/353), [#354](https://github.com/dowdiness/loom/pull/354), [#355](https://github.com/dowdiness/loom/pull/355), [#356](https://github.com/dowdiness/loom/pull/356), [#357](https://github.com/dowdiness/loom/pull/357), [#358](https://github.com/dowdiness/loom/pull/358)
 
 ### incr
 
 incr_tea は inactive-root 測定から activation policy へ進んだ。inactive-root は DOM を残したまま更新を止めた非表示 UI subtree、activation policy はそれをいつ再び動かすかの方針になる。ratio table を再確認し、activation trigger probe を追加し、policy を docs で決めて実装まで入れた。Loom submodule 内の `incr` も `34ac477` から `f7681bc` へ進んでいる。
 
-主なPR / Issue: incr [#281](https://github.com/dowdiness/incr/pull/281), [#282](https://github.com/dowdiness/incr/pull/282), [#284](https://github.com/dowdiness/incr/pull/284), [#285](https://github.com/dowdiness/incr/pull/285)
 
 ### js_engine
 
 `needs_own_env` 系列の bytecode 最適化が続いた。関数呼び出し時に新しい Environment を本当に作る必要があるかを事前判定し、不要なら生成を skip する最適化になる。leaf bytecode function で `Environment::new` を skip し、same-realm callee では realm-proto wrapper を避け、active-override `Ref` も単一の `Ref[FunctionRealmProtos?]` へ畳んだ。最後に benchmark table へ `exec/for_of` row を追加した。
 
-主なPR / Issue: js_engine [#367](https://github.com/dowdiness/js_engine/pull/367), [#368](https://github.com/dowdiness/js_engine/pull/368), [#369](https://github.com/dowdiness/js_engine/pull/369), [#370](https://github.com/dowdiness/js_engine/pull/370), [#371](https://github.com/dowdiness/js_engine/pull/371), [#372](https://github.com/dowdiness/js_engine/pull/372)
 
 ### 作業運用メモ
 
-今回の記録は Canopy / Loom / nested incr / js_engine の Git log、現在の未コミット差分、Claude project memory、Codex memory を突き合わせて書いた。
-
-6/17 時点で特に重要なのは次の 3 点。
+6/17 時点で、次の三つが月の芯になっていた。
 
 1. Lambda edit の検証は、実際の編集後テキストを再パースして確認する。
 2. analysis fact は snapshot に紐づき、いつでも捨てられるものとして扱う。
@@ -359,7 +333,6 @@ Canopy 側 `analysis` package では ast-grep 由来 match を `PatternMatchFact
 
 これで Phase 1 は「外部解析結果を snapshot に紐づく捨てられる fact として受け、range highlight / match list 用の値へ変換する」ところまで到達した。host-side FFI wiring、つまり JS から ast-grep 結果を渡して UI へ表示する部分は次の段階に残っている。
 
-主なPR / Issue: canopy [#699](https://github.com/dowdiness/canopy/pull/699), [#692](https://github.com/dowdiness/canopy/pull/692), [#693](https://github.com/dowdiness/canopy/pull/693), [#694](https://github.com/dowdiness/canopy/pull/694), [#695](https://github.com/dowdiness/canopy/pull/695)
 
 ### loom / MarkdownIR
 
@@ -367,7 +340,6 @@ MarkdownIR は mdast export に unist `position` を付けるところまで進�
 
 その後 [#333](https://github.com/dowdiness/loom/pull/333) の rewrite / canonical formatter 側へ進み、code fence と link の source-preserving rewrite smoke coverage を追加した。code fence では content だけを書き換える場合に fence そのものや周辺 source を壊さないこと、unclosed fence でも rewrite 境界を守ることを確認している。
 
-主なPR / Issue: loom [#359](https://github.com/dowdiness/loom/pull/359), [#360](https://github.com/dowdiness/loom/pull/360), [#361](https://github.com/dowdiness/loom/pull/361)
 
 ### incr / Incremental TEA
 
@@ -375,7 +347,6 @@ incr_tea では 7GUIs stress test を追加した。Counter、Temperature Conver
 
 同時に `on_change` や pointer offset まわりの小さな API も整えた。前日の inactive-root activation policy に続き、単体 demo ではなく複数 UI パターンを並べて「Rabbita とは別の incremental UI substrate として成立するか」を見る段階に入った。次は残る TEA follow-up、特に local pointer coordinate まわりの整理が候補になる。
 
-主なPR / Issue: incr [#291](https://github.com/dowdiness/incr/pull/291), [#268](https://github.com/dowdiness/incr/pull/268), [#286](https://github.com/dowdiness/incr/pull/286), [#287](https://github.com/dowdiness/incr/pull/287), [#288](https://github.com/dowdiness/incr/pull/288), [#289](https://github.com/dowdiness/incr/pull/289), [#290](https://github.com/dowdiness/incr/pull/290)
 
 ### Rabbita / pointer events
 
@@ -389,13 +360,10 @@ js_engine では Set iteration の仕様バグを直した。`Set.prototype.forE
 
 並行して `Function.prototype.toString` が元 source を返せる PR が開かれている。parser / AST / runtime へ source text や span を通す大きめの変更で、review 後に original source から span を作る修正まで進んだ。こちらは main にはまだ入っていない。別 PR では docs の roadmap / design / decisions 配置を整理し、現在 architecture target や test262 snapshot を更新した。
 
-主なPR / Issue: js_engine [#373](https://github.com/dowdiness/js_engine/pull/373), [#374](https://github.com/dowdiness/js_engine/pull/374), [#375](https://github.com/dowdiness/js_engine/pull/375), [#310](https://github.com/dowdiness/js_engine/pull/310), [#357](https://github.com/dowdiness/js_engine/pull/357)
 
 ### 作業運用メモ
 
 今日の時点で Canopy 親リポジトリは `loom` と `rabbita` submodule pointer が dirty になっている。`loom` は `b26a304` まで進み、その中の `incr` submodule も `7a971ab` まで進んでいる。`rabbita` は pointer event branch の `54b3188` まで進んでいるが、親側で取り込むかどうかはまだ未整理。
-
-今日の大きな流れは、Canopy 本体では analysis layer を最小実装まで進め、周辺では MarkdownIR export / rewrite 保証、incr_tea UI stress surface、Rabbita pointer 入力、js_engine Set 仕様適合と docs 整理が並行して進んだ、という感じだった。
 
 ## 2026/6/19
 
@@ -407,7 +375,6 @@ Markdown 見出しを構造編集の対象にする SDEG（Structure-Directed Ed
 - SDEG NodeId side table の設計スケッチを test として置いた（[#717](https://github.com/dowdiness/canopy/pull/717)）。各 block の NodeId を横断的に引ける補助表の構想になる。
 - heading edit path の E2E validation を加え（[#718](https://github.com/dowdiness/canopy/pull/718)）、SDEG Phase 0 での発見を Phase 1 計画へ持ち越す docs も更新した（[#719](https://github.com/dowdiness/canopy/pull/719)）。
 
-主なPR / Issue: canopy [#716](https://github.com/dowdiness/canopy/pull/716), [#717](https://github.com/dowdiness/canopy/pull/717), [#718](https://github.com/dowdiness/canopy/pull/718), [#719](https://github.com/dowdiness/canopy/pull/719)
 
 ### js_engine
 
@@ -415,7 +382,6 @@ Markdown 見出しを構造編集の対象にする SDEG（Structure-Directed Ed
 - token に `end_offset` field を追加し、parser が source を再スキャンする必要をなくした（[#403](https://github.com/dowdiness/js_engine/pull/403)）。これまでは parser がトークン終端位置を知るために source 内を再度走査していたが、lexer 時点で UTF-16 コードユニット単位の end_offset を記録するようにした。
 - runtime atomicsのtest coverage（[#402](https://github.com/dowdiness/js_engine/pull/402)）とtest262 toolingのリグレッションテスト（[#401](https://github.com/dowdiness/js_engine/pull/401)）を追加した。
 
-主なPR / Issue: js_engine [#405](https://github.com/dowdiness/js_engine/pull/405), [#403](https://github.com/dowdiness/js_engine/pull/403), [#402](https://github.com/dowdiness/js_engine/pull/402), [#401](https://github.com/dowdiness/js_engine/pull/401)
 
 ## 2026/6/20
 
@@ -428,7 +394,6 @@ Markdownリストの構造編集向けの基盤を一気に進めた。
 - Markdown list move blocker を hardening した（[#726](https://github.com/dowdiness/canopy/pull/726)）。異なる階層や種類のリスト間移動など、安全にできないケースをきちんと弾くためのもの。
 - same-list Markdown item moves を有効化し（[#731](https://github.com/dowdiness/canopy/pull/731)）、リスト項目 payload の消費も追加した（[#730](https://github.com/dowdiness/canopy/pull/730)）。
 
-主なPR / Issue: canopy [#722](https://github.com/dowdiness/canopy/pull/722), [#723](https://github.com/dowdiness/canopy/pull/723), [#726](https://github.com/dowdiness/canopy/pull/726), [#730](https://github.com/dowdiness/canopy/pull/730), [#731](https://github.com/dowdiness/canopy/pull/731)
 
 ### js_engine / test262適合率向上
 
@@ -443,7 +408,6 @@ Markdownリストの構造編集向けの基盤を一気に進めた。
 - **匿名built-in関数のname/length/property order**（[#410](https://github.com/dowdiness/js_engine/pull/410)）と**singleton %GeneratorPrototype%**（[#407](https://github.com/dowdiness/js_engine/pull/407)）。
 - test262: await-dictionary（`Promise.allKeyed`/`allSettledKeyed`）をskip（[#377](https://github.com/dowdiness/js_engine/pull/377)）。
 
-主なPR / Issue: js_engine [#408](https://github.com/dowdiness/js_engine/pull/408), [#419](https://github.com/dowdiness/js_engine/pull/419), [#413](https://github.com/dowdiness/js_engine/pull/413), [#412](https://github.com/dowdiness/js_engine/pull/412), [#411](https://github.com/dowdiness/js_engine/pull/411), [#420](https://github.com/dowdiness/js_engine/pull/420), [#410](https://github.com/dowdiness/js_engine/pull/410), [#407](https://github.com/dowdiness/js_engine/pull/407)
 
 ## 2026/6/21
 
@@ -453,7 +417,6 @@ Markdownリストの構造編集向けの基盤を一気に進めた。
 - package map の文書化（[#736](https://github.com/dowdiness/canopy/pull/736)）を行い、全 Canopy パッケージの依存関係と名称を整理した。
 - これを受け moon.mod.json→moon.mod 移行第一弾として Rabbita UI lib cluster（[#737](https://github.com/dowdiness/canopy/pull/737)）と lib/visualizer（[#738](https://github.com/dowdiness/canopy/pull/738)）を変換した。moon.mod（TOML 形式）へ移行することで MoonBit workspace membership を使った依存解決が可能になり、`NEW_MOON_MOD=0` デフォルト化へ近づく。
 
-主なPR / Issue: canopy [#736](https://github.com/dowdiness/canopy/pull/736), [#737](https://github.com/dowdiness/canopy/pull/737), [#738](https://github.com/dowdiness/canopy/pull/738)
 
 ### js_engine / lexer・spec fixes・perf
 
@@ -463,7 +426,10 @@ Markdownリストの構造編集向けの基盤を一気に進めた。
 - **analysis-family growth convention docs**（[#332](https://github.com/dowdiness/js_engine/pull/332)）。静的解析ファイル構成ルールを文書化した。
 - **timer queue を priority_queue へ移行**（[#433](https://github.com/dowdiness/js_engine/pull/433)）。これまでの `Array[TimerTask] + sort_by + remove(0)`（O(n² log n)）を `@priority_queue.PriorityQueue[TimerTask]`（O(n log n)）へ置き換え、200 タイマー drain が 4.19ms→1.95ms（2.15× 高速化）。キャンセルは遅延削除方式にした。
 
-主なPR / Issue: js_engine [#422](https://github.com/dowdiness/js_engine/pull/422), [#431](https://github.com/dowdiness/js_engine/pull/431), [#428](https://github.com/dowdiness/js_engine/pull/428), [#332](https://github.com/dowdiness/js_engine/pull/332), [#433](https://github.com/dowdiness/js_engine/pull/433)
+
+## 6月第4週: SDEG 成熟と test262（6/22〜6/26）
+
+moon.mod移行を完了し、SDEGのlifecycleとbenchmark CIを整えた。js_engineのtest262適合率もこの週から大きく伸び始めた。
 
 ## 2026/6/22
 
@@ -479,7 +445,6 @@ Markdownリストの構造編集向けの基盤を一気に進めた。
 
 並行して、loom submoduleのquickcheck 0.14 Arrow API compat対応や、AGENTS.mdのsubmodule guidance更新も行った。
 
-主なPR / Issue: canopy [#740](https://github.com/dowdiness/canopy/pull/740), [#335](https://github.com/dowdiness/canopy/pull/335)
 
 ## 2026/6/23
 
@@ -491,7 +456,6 @@ Markdownリストの構造編集向けの基盤を一気に進めた。
 - **HTML blocks §4.6**: loom submodule を bump し、Markdown HTML block を projection block children に含める対応を入れた。block mode で HTML block が `text:null`/`editable:false` として扱われ表示から消えるバグがあった。`HtmlBlock` に適切 token span を populate することで修正した。
 - 残っているsubmodule（svg-dsl、rle、order-tree、graphviz）のmoon.mod移行完了に伴うbumpが[#742](https://github.com/dowdiness/canopy/pull/742)として進行中。
 
-主なPR / Issue: canopy [#742](https://github.com/dowdiness/canopy/pull/742)
 
 ## 2026/6/24
 
@@ -506,7 +470,6 @@ Markdown SDEG heading side table を、単なる「見出し ID 対応表」か�
 
 この日 SDEG 作業は、見出しやリスト項目 move そのものより「構造編集対象を追跡する表が、壊れた入力や一時的消失にどう耐えるか」を詰める作業だった。
 
-主なPR / Issue: canopy [#746](https://github.com/dowdiness/canopy/pull/746), [#750](https://github.com/dowdiness/canopy/pull/750), [#754](https://github.com/dowdiness/canopy/pull/754), [#755](https://github.com/dowdiness/canopy/pull/755), [#763](https://github.com/dowdiness/canopy/pull/763)
 
 ### Canopy / benchmark CIとprojection map
 
@@ -514,13 +477,11 @@ benchmark regression workflow を PR gate へ近づけた。submodule gitlink �
 
 投影構造側では RoseNode map と constructor API を追加した（[#761](https://github.com/dowdiness/canopy/pull/761)）。後続 ProjNode map へ向け、tree projection を外から扱う足場が増えた。
 
-主なPR / Issue: canopy [#761](https://github.com/dowdiness/canopy/pull/761), [#762](https://github.com/dowdiness/canopy/pull/762)
 
 ### loom / MarkdownIR
 
 Canopy が参照する loom では Markdown IR 実装ファイル分割（[#472](https://github.com/dowdiness/loom/pull/472)）と raw kind / Tabs handling 修正（[#473](https://github.com/dowdiness/loom/pull/473)）が進んだ。Markdown SDEG 側で raw / recovered node を安定して扱う下支えになる。
 
-主なPR / Issue: loom [#472](https://github.com/dowdiness/loom/pull/472), [#473](https://github.com/dowdiness/loom/pull/473)
 
 ### js_engine
 
@@ -532,7 +493,6 @@ js_engineではtest262適合率向上の流れが続いた。
 - `SetIteratorPrototype.next`のbrand checkとdone flagを修正した（[#441](https://github.com/dowdiness/js_engine/pull/441)）。
 - `[[OwnPropertyKeys]]`列挙をcanonical opへ統一した（[#442](https://github.com/dowdiness/js_engine/pull/442)）。
 
-主なPR / Issue: js_engine [#438](https://github.com/dowdiness/js_engine/pull/438), [#440](https://github.com/dowdiness/js_engine/pull/440), [#441](https://github.com/dowdiness/js_engine/pull/441), [#442](https://github.com/dowdiness/js_engine/pull/442)
 
 ## 2026/6/25
 
@@ -542,7 +502,6 @@ Markdown SDEG heading snapshot validity を明示した（[#766](https://github.
 
 さらにレビュー対応として「Markdown SDEG snapshot validity を wire する」PR 作業も進んだ（[#767](https://github.com/dowdiness/canopy/pull/767) 相当、commit `f4effe5`）。agent 履歴上は `lang/markdown/proj` と `lang/markdown/companion` targeted test、`moon fmt`、`moon info`、workspace `moon check` まで通っている。一方 `Editor Response Benchmark` が `skipping` として残り、repo 運用上「skipped は green ではない」ため merge は止めた。CI 上 skip を明示的に扱う必要がはっきりした。
 
-主なPR / Issue: canopy [#766](https://github.com/dowdiness/canopy/pull/766), [#767](https://github.com/dowdiness/canopy/pull/767)
 
 ### Canopy / ProjNode mapとCI cleanup
 
@@ -550,7 +509,6 @@ RoseNode map に続き ProjNode map を追加した（[#765](https://github.com/
 
 CI 側では Playwright image 更新や dependabot による Vite / Vitest / React DOM / actions checkout 更新が入った。手元 Canopy worktree では benchmark workflow コメント整理、vendored check filter から `alga` を外す調整、`loom` submodule pointer を `6d7778b` へ進める差分が残っている。`loom` 側内容は Markdown raw kind と Tabs handling 修正までを含む。
 
-主なPR / Issue: canopy [#765](https://github.com/dowdiness/canopy/pull/765), [#727](https://github.com/dowdiness/canopy/pull/727), [#547](https://github.com/dowdiness/canopy/pull/547), [#549](https://github.com/dowdiness/canopy/pull/549), [#550](https://github.com/dowdiness/canopy/pull/550)
 
 ### js_engine
 
@@ -560,7 +518,6 @@ js_engineではMap / Set / Promise / Proxy周辺の仕様適合を進めた。
 - test262のper-mode regression diffを見るための`test262_failing_diff.js`を追加した（[#446](https://github.com/dowdiness/js_engine/pull/446)）。
 - branch上では、Map / Setのexpando assignment、Promise instance constructor keys、computed Map / Set writes、array own descriptorでMap / Set writesを止める修正が続いた。agent履歴ではPR [#449](https://github.com/dowdiness/js_engine/pull/449)として、Map / Set subclass chainにarray prototypeが挟まるリグレッションを追加し、`moon check`、targeted regression、`moon test`、`moon info`、`moon fmt`、`moon check --deny-warn`、release testまで通している。
 
-主なPR / Issue: js_engine [#445](https://github.com/dowdiness/js_engine/pull/445), [#446](https://github.com/dowdiness/js_engine/pull/446), [#449](https://github.com/dowdiness/js_engine/pull/449)
 
 ## 2026/6/26
 
@@ -576,7 +533,6 @@ vendored error-suppression list 整理が完了した。6/22 moon.mod 移行後�
 
 benchmark regression CI も高速化した（#777）。Canopy subpackage と loom example benchmark を -p flags に追加し、cache key を v3→v4 へ更新、moon-update と moon bench 実行順序も工夫した。
 
-主なPR / Issue: canopy [#781](https://github.com/dowdiness/canopy/pull/781), [#782](https://github.com/dowdiness/canopy/pull/782), [#783](https://github.com/dowdiness/canopy/pull/783), [#773](https://github.com/dowdiness/canopy/pull/773), [#777](https://github.com/dowdiness/canopy/pull/777), [#778](https://github.com/dowdiness/canopy/pull/778), [#779](https://github.com/dowdiness/canopy/pull/779), [#780](https://github.com/dowdiness/canopy/pull/780)
 
 ### Loom / arrow lambda + Pratt reuse
 
@@ -584,7 +540,6 @@ Loom では arrow lambda 構文 P2 fix が中心だった。ブロック body、
 
 retroactive Pratt reuse groundwork（#475）が入った。Pratt parser 状態を backtracking 間で再利用する下準備になる。deep nested-lambda benchmark workload B 比較性も回復した（#476）。
 
-主なPR / Issue: loom [#475](https://github.com/dowdiness/loom/pull/475), [#476](https://github.com/dowdiness/loom/pull/476)
 
 ### js_engine / NFE binding + async fixes + test262整備
 
@@ -594,13 +549,9 @@ async関数のエッジケースも修正した（#468）：parameter TDZ、non-
 
 CI面ではcopilot toolchain cacheとTest262 feature-gap比較ツールを追加し（#460）、baseline ratchetとcalibration automationも整えた。
 
-主なPR / Issue: js_engine [#463](https://github.com/dowdiness/js_engine/pull/463), [#468](https://github.com/dowdiness/js_engine/pull/468), [#466](https://github.com/dowdiness/js_engine/pull/466), [#467](https://github.com/dowdiness/js_engine/pull/467), [#471](https://github.com/dowdiness/js_engine/pull/471), [#462](https://github.com/dowdiness/js_engine/pull/462), [#461](https://github.com/dowdiness/js_engine/pull/461), [#460](https://github.com/dowdiness/js_engine/pull/460), [#470](https://github.com/dowdiness/js_engine/pull/470)
+## 6月第5週: loomgen・block-editor・JSON editor（6/27〜6/30）
 
-### 作業運用メモ
-
-6/26 は Canopy では JSON role span editor decoration 連携が一区切りになった。vendored suppression 整理も一通り完了し、benchmark CI も高速化した。Loom では P2 arrow lambda fix が中心で、js_engine では Cluster 11 完了と async/Array fix が相次いだ。
-
-日付をまたいだ傾向として、6 月最終週は「SDEG validity 境界」「role span 実用化」「test262 Cluster 締め」が並行して進んでいる。
+loomgenの追加、incrのMemo→Derived完全移行、block-editorとJSON tree editorの立ち上げが、月末の4日間に集中した。
 
 ## 2026/6/27
 
@@ -612,7 +563,6 @@ drag-drop 本体では並行ドラッグ収束性を quickcheck で検証する 
 
 loom submoduleを`454b460`へ更新し、loom側の`build_tree_buffered_with`統合を取り込んだ（[#796](https://github.com/dowdiness/canopy/pull/796)）。§7 aggregator-trimの監査完了もdocsに記録した（[#276](https://github.com/dowdiness/canopy/pull/276)）。
 
-主なPR / Issue: canopy [#793](https://github.com/dowdiness/canopy/pull/793), [#794](https://github.com/dowdiness/canopy/pull/794), [#796](https://github.com/dowdiness/canopy/pull/796), [#798](https://github.com/dowdiness/canopy/pull/798), [#800](https://github.com/dowdiness/canopy/pull/800), [#276](https://github.com/dowdiness/canopy/pull/276)
 
 ### incr / Memo→Derived facade移行が本格化
 
@@ -630,7 +580,6 @@ Function / Generator / AsyncFunctionの動的コンストラクタにあった4�
 
 loomgen とは別に 3 つの `build_tree` 亜種（トークン生成・再利用処理・node 構築 callback だけが違う）を 5 callback を取る `build_tree_buffered_with` ひとつへ DRY した（[#494](https://github.com/dowdiness/loom/pull/494)）。293 行が 85 行程度まで減った。
 
-主なPR / Issue: incr [#313](https://github.com/dowdiness/incr/pull/313), [#314](https://github.com/dowdiness/incr/pull/314), [#315](https://github.com/dowdiness/incr/pull/315), [#316](https://github.com/dowdiness/incr/pull/316), [#317](https://github.com/dowdiness/incr/pull/317), [#318](https://github.com/dowdiness/incr/pull/318), [#320](https://github.com/dowdiness/incr/pull/320), [#322](https://github.com/dowdiness/incr/pull/322), [#323](https://github.com/dowdiness/incr/pull/323) / js_engine [#476](https://github.com/dowdiness/js_engine/pull/476), [#477](https://github.com/dowdiness/js_engine/pull/477), [#478](https://github.com/dowdiness/js_engine/pull/478), [#479](https://github.com/dowdiness/js_engine/pull/479), [#480](https://github.com/dowdiness/js_engine/pull/480), [#481](https://github.com/dowdiness/js_engine/pull/481), [#482](https://github.com/dowdiness/js_engine/pull/482) / loom [#492](https://github.com/dowdiness/loom/pull/492), [#493](https://github.com/dowdiness/loom/pull/493), [#494](https://github.com/dowdiness/loom/pull/494), [#496](https://github.com/dowdiness/loom/pull/496), [#505](https://github.com/dowdiness/loom/pull/505), [#510](https://github.com/dowdiness/loom/pull/510), [#511](https://github.com/dowdiness/loom/pull/511)
 
 ## 2026/6/28
 
@@ -642,7 +591,6 @@ block-editor drag-drop では抜けていた `Inside` drop ゾーンを追加し
 
 同日 JSON tree editor が一気に実用段階へ進んだ。node 種別ごと描画（展開/折りたたみ状態が patch 後も保持、[#810](https://github.com/dowdiness/canopy/pull/810)）、キー・値インライン編集と add/delete/wrap/unwrap ボタン（[#811](https://github.com/dowdiness/canopy/pull/811)）、JSON.parse/stringify 往復 Format ボタン（[#812](https://github.com/dowdiness/canopy/pull/812)）、直近 100 件 patch ログ/履歴パネル（[#813](https://github.com/dowdiness/canopy/pull/813)）の 4 本が続けざまに入り、test 数も 16→24 まで増えた。
 
-主なPR / Issue: canopy [#799](https://github.com/dowdiness/canopy/pull/799), [#802](https://github.com/dowdiness/canopy/pull/802), [#806](https://github.com/dowdiness/canopy/pull/806), [#810](https://github.com/dowdiness/canopy/pull/810), [#811](https://github.com/dowdiness/canopy/pull/811), [#812](https://github.com/dowdiness/canopy/pull/812), [#813](https://github.com/dowdiness/canopy/pull/813)
 
 ### incr / Memo→Derived移行が完了
 
@@ -656,7 +604,6 @@ loomgen アノテーション語彙が急速に増えた。複数 trivia variant
 
 event-graph-walkerを`Document::parent`が使えるバージョンへbumpし（[#518](https://github.com/dowdiness/loom/pull/518)、canopy側の同日#806が消費した）、pre-push fmt checkのスコープをvendored submoduleの巻き添えを避けるよう絞った（[#527](https://github.com/dowdiness/loom/pull/527)）。
 
-主なPR / Issue: incr [#326](https://github.com/dowdiness/incr/pull/326), [#327](https://github.com/dowdiness/incr/pull/327), [#329](https://github.com/dowdiness/incr/pull/329), [#331](https://github.com/dowdiness/incr/pull/331), [#332](https://github.com/dowdiness/incr/pull/332), [#333](https://github.com/dowdiness/incr/pull/333), [#334](https://github.com/dowdiness/incr/pull/334) / loom [#513](https://github.com/dowdiness/loom/pull/513), [#515](https://github.com/dowdiness/loom/pull/515), [#517](https://github.com/dowdiness/loom/pull/517), [#518](https://github.com/dowdiness/loom/pull/518), [#519](https://github.com/dowdiness/loom/pull/519), [#525](https://github.com/dowdiness/loom/pull/525), [#527](https://github.com/dowdiness/loom/pull/527), [#528](https://github.com/dowdiness/loom/pull/528), [#533](https://github.com/dowdiness/loom/pull/533)
 
 ## 2026/6/29
 
@@ -678,7 +625,6 @@ loomgen grammar IR 側が成熟した。`#loom.rule("EBNF")` アノテーショ�
 
 loomgen とは別に Lambda example では `free_vars` を既存 tagless-final fold（`TermSym`）の新解釈として実装し（[#536](https://github.com/dowdiness/loom/pull/536)）、新走査を書かずに済ませた。if 式・lambda 式 CST ラッパー node と `*Proj` 構造体を追加し（[#542](https://github.com/dowdiness/loom/pull/542)）、両 printer（`to_source`、`to_layout`）を `interpret` カタモルフィズム経由へ統一した（[#544](https://github.com/dowdiness/loom/pull/544)）。`resolve_walk` wildcard 節にあった網羅性穴も塞いだ（[#545](https://github.com/dowdiness/loom/pull/545)）。
 
-主なPR / Issue: canopy [#814](https://github.com/dowdiness/canopy/pull/814), [#816](https://github.com/dowdiness/canopy/pull/816), [#819](https://github.com/dowdiness/canopy/pull/819), [#797](https://github.com/dowdiness/canopy/pull/797) / incr [#336](https://github.com/dowdiness/incr/pull/336), [#337](https://github.com/dowdiness/incr/pull/337), [#338](https://github.com/dowdiness/incr/pull/338) / loom [#534](https://github.com/dowdiness/loom/pull/534), [#535](https://github.com/dowdiness/loom/pull/535), [#536](https://github.com/dowdiness/loom/pull/536), [#542](https://github.com/dowdiness/loom/pull/542), [#544](https://github.com/dowdiness/loom/pull/544), [#545](https://github.com/dowdiness/loom/pull/545)
 
 ## 2026/6/30
 
@@ -694,4 +640,296 @@ incr_tea_7guis Playwright DOM test を CI に載せ、cross-root locality 検証
 
 loomgen リグレッション test ハーネス（7 whitebox test）と `--seed` 自動検出を追加し、MoonBit ツールチェーン ICE を避けるため check/test を `--target native` に固定した（[#546](https://github.com/dowdiness/loom/pull/546)）。`roles_match` を 10 節から 5 節へ絞り、CWD 依存だった fixture パスも直した（[#548](https://github.com/dowdiness/loom/pull/548)）。
 
-主なPR / Issue: canopy [#820](https://github.com/dowdiness/canopy/pull/820) / incr [#339](https://github.com/dowdiness/incr/pull/339), [#340](https://github.com/dowdiness/incr/pull/340) / loom [#546](https://github.com/dowdiness/loom/pull/546), [#548](https://github.com/dowdiness/loom/pull/548)
+## PR索引
+
+週ごとに折りたたんだ PR / Issue 一覧。GitHub 上の詳細への索引。
+
+<details>
+<summary>6月第1週（6/1〜6/7）</summary>
+
+#### 2026/6/1
+
+**loom / js_engine / 運用**
+
+canopy [#445](https://github.com/dowdiness/canopy/pull/445), [#437](https://github.com/dowdiness/canopy/pull/437), [#447](https://github.com/dowdiness/canopy/pull/447) / loom [#206](https://github.com/dowdiness/loom/pull/206) / js_engine [#186](https://github.com/dowdiness/js_engine/pull/186)
+
+#### 2026/6/2
+
+**CI / 運用**
+
+canopy [#451](https://github.com/dowdiness/canopy/pull/451), [#452](https://github.com/dowdiness/canopy/pull/452), [#453](https://github.com/dowdiness/canopy/pull/453), [#462](https://github.com/dowdiness/canopy/pull/462), [#465](https://github.com/dowdiness/canopy/pull/465), [#469](https://github.com/dowdiness/canopy/pull/469)
+
+#### 2026/6/3
+
+**MoonDsp / incr**
+
+canopy [#445](https://github.com/dowdiness/canopy/pull/445), [#461](https://github.com/dowdiness/canopy/pull/461), [#479](https://github.com/dowdiness/canopy/pull/479)
+
+#### 2026/6/4
+
+**MoonDsp / js_engine**
+
+canopy [#489](https://github.com/dowdiness/canopy/pull/489), [#508](https://github.com/dowdiness/canopy/pull/508), [#511](https://github.com/dowdiness/canopy/pull/511)
+
+#### 2026/6/5
+
+**incr / MoonDsp / js_engine**
+
+canopy [#517](https://github.com/dowdiness/canopy/pull/517), [#523](https://github.com/dowdiness/canopy/pull/523), [#524](https://github.com/dowdiness/canopy/pull/524), [#525](https://github.com/dowdiness/canopy/pull/525), [#526](https://github.com/dowdiness/canopy/pull/526), [#528](https://github.com/dowdiness/canopy/pull/528)
+
+#### 2026/6/6
+
+**周辺リポジトリ**
+
+canopy [#529](https://github.com/dowdiness/canopy/pull/529), [#532](https://github.com/dowdiness/canopy/pull/532), [#534](https://github.com/dowdiness/canopy/pull/534), [#539](https://github.com/dowdiness/canopy/pull/539), [#541](https://github.com/dowdiness/canopy/pull/541), [#544](https://github.com/dowdiness/canopy/pull/544)
+
+#### 2026/6/7
+
+**Canvas / loom**
+
+canopy [#553](https://github.com/dowdiness/canopy/pull/553), [#554](https://github.com/dowdiness/canopy/pull/554), [#558](https://github.com/dowdiness/canopy/pull/558), [#560](https://github.com/dowdiness/canopy/pull/560), [#562](https://github.com/dowdiness/canopy/pull/562)
+
+</details>
+
+<details>
+<summary>6月第2週（6/8〜6/14）</summary>
+
+#### 2026/6/8
+
+**loom / incr / js_engine**
+
+canopy [#569](https://github.com/dowdiness/canopy/pull/569), [#570](https://github.com/dowdiness/canopy/pull/570), [#571](https://github.com/dowdiness/canopy/pull/571), [#576](https://github.com/dowdiness/canopy/pull/576)
+
+#### 2026/6/9
+
+**loom / MoonDsp**
+
+canopy [#571](https://github.com/dowdiness/canopy/pull/571), [#575](https://github.com/dowdiness/canopy/pull/575), [#577](https://github.com/dowdiness/canopy/pull/577)
+
+#### 2026/6/10
+
+**MoonDsp / loom / Canopy / js_engine**
+
+incr [#209](https://github.com/dowdiness/incr/pull/209), [#211](https://github.com/dowdiness/incr/pull/211), [#238](https://github.com/dowdiness/incr/pull/238), [#243](https://github.com/dowdiness/incr/pull/243), [#244](https://github.com/dowdiness/incr/pull/244) / canopy [#611](https://github.com/dowdiness/canopy/pull/611), [#615](https://github.com/dowdiness/canopy/pull/615)
+
+#### 2026/6/11
+
+**js_engine / 運用**
+
+loom [#279](https://github.com/dowdiness/loom/pull/279), [#196](https://github.com/dowdiness/loom/pull/196) / canopy [#587](https://github.com/dowdiness/canopy/pull/587), [#588](https://github.com/dowdiness/canopy/pull/588) / js_engine [#344](https://github.com/dowdiness/js_engine/pull/344), [#349](https://github.com/dowdiness/js_engine/pull/349)
+
+#### 2026/6/12
+
+**周辺リポジトリ**
+
+canopy [#587](https://github.com/dowdiness/canopy/pull/587), [#588](https://github.com/dowdiness/canopy/pull/588), [#589](https://github.com/dowdiness/canopy/pull/589), [#590](https://github.com/dowdiness/canopy/pull/590), [#597](https://github.com/dowdiness/canopy/pull/597), [#599](https://github.com/dowdiness/canopy/pull/599), [#610](https://github.com/dowdiness/canopy/pull/610)
+
+#### 2026/6/13
+
+**loom / js_engine**
+
+canopy [#602](https://github.com/dowdiness/canopy/pull/602), [#604](https://github.com/dowdiness/canopy/pull/604), [#609](https://github.com/dowdiness/canopy/pull/609), [#610](https://github.com/dowdiness/canopy/pull/610), [#611](https://github.com/dowdiness/canopy/pull/611), [#615](https://github.com/dowdiness/canopy/pull/615), [#619](https://github.com/dowdiness/canopy/pull/619)
+
+#### 2026/6/14
+
+**Canvas / loom / incr / MoonDsp / js_engine**
+
+canopy [#637](https://github.com/dowdiness/canopy/pull/637), [#638](https://github.com/dowdiness/canopy/pull/638), [#640](https://github.com/dowdiness/canopy/pull/640), [#641](https://github.com/dowdiness/canopy/pull/641), [#644](https://github.com/dowdiness/canopy/pull/644), [#647](https://github.com/dowdiness/canopy/pull/647), [#648](https://github.com/dowdiness/canopy/pull/648), [#655](https://github.com/dowdiness/canopy/pull/655), [#639](https://github.com/dowdiness/canopy/pull/639), [#643](https://github.com/dowdiness/canopy/pull/643)
+
+</details>
+
+<details>
+<summary>6月第3週（6/15〜6/21）</summary>
+
+#### 2026/6/15
+
+**周辺リポジトリ**
+
+canopy [#660](https://github.com/dowdiness/canopy/pull/660), [#663](https://github.com/dowdiness/canopy/pull/663), [#671](https://github.com/dowdiness/canopy/pull/671), [#673](https://github.com/dowdiness/canopy/pull/673), [#664](https://github.com/dowdiness/canopy/pull/664), [#677](https://github.com/dowdiness/canopy/pull/677), [#666](https://github.com/dowdiness/canopy/pull/666), [#670](https://github.com/dowdiness/canopy/pull/670), [#669](https://github.com/dowdiness/canopy/pull/669), [#668](https://github.com/dowdiness/canopy/pull/668) / loom [#342](https://github.com/dowdiness/loom/pull/342), [#346](https://github.com/dowdiness/loom/pull/346) / incr [#273](https://github.com/dowdiness/incr/pull/273) / js_engine [#356](https://github.com/dowdiness/js_engine/pull/356)
+
+#### 2026/6/16
+
+**周辺リポジトリ**
+
+canopy [#674](https://github.com/dowdiness/canopy/pull/674), [#682](https://github.com/dowdiness/canopy/pull/682), [#683](https://github.com/dowdiness/canopy/pull/683), [#684](https://github.com/dowdiness/canopy/pull/684), [#685](https://github.com/dowdiness/canopy/pull/685), issue [#659](https://github.com/dowdiness/canopy/pull/659) / loom [#346](https://github.com/dowdiness/loom/pull/346) / incr [#277](https://github.com/dowdiness/incr/pull/277), [#279](https://github.com/dowdiness/incr/pull/279) / js_engine [#365](https://github.com/dowdiness/js_engine/pull/365), [#366](https://github.com/dowdiness/js_engine/pull/366)
+
+#### 2026/6/17
+
+**Canopy / Lambda編集の健全性**
+
+canopy [#688](https://github.com/dowdiness/canopy/pull/688), [#689](https://github.com/dowdiness/canopy/pull/689), [#691](https://github.com/dowdiness/canopy/pull/691), [#696](https://github.com/dowdiness/canopy/pull/696)
+
+**Canopy / Grove Level 1 identity hint**
+
+canopy [#690](https://github.com/dowdiness/canopy/pull/690), [#697](https://github.com/dowdiness/canopy/pull/697), [#698](https://github.com/dowdiness/canopy/pull/698)
+
+**Canopy / analysis query layer設計**
+
+canopy [#687](https://github.com/dowdiness/canopy/pull/687)
+
+**Canopy / Ideal**
+
+canopy [#686](https://github.com/dowdiness/canopy/pull/686)
+
+**loom**
+
+loom [#348](https://github.com/dowdiness/loom/pull/348), [#350](https://github.com/dowdiness/loom/pull/350), [#351](https://github.com/dowdiness/loom/pull/351), [#352](https://github.com/dowdiness/loom/pull/352), [#353](https://github.com/dowdiness/loom/pull/353), [#354](https://github.com/dowdiness/loom/pull/354), [#355](https://github.com/dowdiness/loom/pull/355), [#356](https://github.com/dowdiness/loom/pull/356), [#357](https://github.com/dowdiness/loom/pull/357), [#358](https://github.com/dowdiness/loom/pull/358)
+
+**incr**
+
+incr [#281](https://github.com/dowdiness/incr/pull/281), [#282](https://github.com/dowdiness/incr/pull/282), [#284](https://github.com/dowdiness/incr/pull/284), [#285](https://github.com/dowdiness/incr/pull/285)
+
+**js_engine**
+
+js_engine [#367](https://github.com/dowdiness/js_engine/pull/367), [#368](https://github.com/dowdiness/js_engine/pull/368), [#369](https://github.com/dowdiness/js_engine/pull/369), [#370](https://github.com/dowdiness/js_engine/pull/370), [#371](https://github.com/dowdiness/js_engine/pull/371), [#372](https://github.com/dowdiness/js_engine/pull/372)
+
+#### 2026/6/18
+
+**Canopy / analysis query layer実装**
+
+canopy [#699](https://github.com/dowdiness/canopy/pull/699), [#692](https://github.com/dowdiness/canopy/pull/692), [#693](https://github.com/dowdiness/canopy/pull/693), [#694](https://github.com/dowdiness/canopy/pull/694), [#695](https://github.com/dowdiness/canopy/pull/695)
+
+**loom / MarkdownIR**
+
+loom [#359](https://github.com/dowdiness/loom/pull/359), [#360](https://github.com/dowdiness/loom/pull/360), [#361](https://github.com/dowdiness/loom/pull/361)
+
+**incr / Incremental TEA**
+
+incr [#291](https://github.com/dowdiness/incr/pull/291), [#268](https://github.com/dowdiness/incr/pull/268), [#286](https://github.com/dowdiness/incr/pull/286), [#287](https://github.com/dowdiness/incr/pull/287), [#288](https://github.com/dowdiness/incr/pull/288), [#289](https://github.com/dowdiness/incr/pull/289), [#290](https://github.com/dowdiness/incr/pull/290)
+
+**js_engine**
+
+js_engine [#373](https://github.com/dowdiness/js_engine/pull/373), [#374](https://github.com/dowdiness/js_engine/pull/374), [#375](https://github.com/dowdiness/js_engine/pull/375), [#310](https://github.com/dowdiness/js_engine/pull/310), [#357](https://github.com/dowdiness/js_engine/pull/357)
+
+#### 2026/6/19
+
+**Canopy / Markdown SDEG heading**
+
+canopy [#716](https://github.com/dowdiness/canopy/pull/716), [#717](https://github.com/dowdiness/canopy/pull/717), [#718](https://github.com/dowdiness/canopy/pull/718), [#719](https://github.com/dowdiness/canopy/pull/719)
+
+**js_engine**
+
+js_engine [#405](https://github.com/dowdiness/js_engine/pull/405), [#403](https://github.com/dowdiness/js_engine/pull/403), [#402](https://github.com/dowdiness/js_engine/pull/402), [#401](https://github.com/dowdiness/js_engine/pull/401)
+
+#### 2026/6/20
+
+**Canopy / Markdown list SDEG**
+
+canopy [#722](https://github.com/dowdiness/canopy/pull/722), [#723](https://github.com/dowdiness/canopy/pull/723), [#726](https://github.com/dowdiness/canopy/pull/726), [#730](https://github.com/dowdiness/canopy/pull/730), [#731](https://github.com/dowdiness/canopy/pull/731)
+
+**js_engine / test262適合率向上**
+
+js_engine [#408](https://github.com/dowdiness/js_engine/pull/408), [#419](https://github.com/dowdiness/js_engine/pull/419), [#413](https://github.com/dowdiness/js_engine/pull/413), [#412](https://github.com/dowdiness/js_engine/pull/412), [#411](https://github.com/dowdiness/js_engine/pull/411), [#420](https://github.com/dowdiness/js_engine/pull/420), [#410](https://github.com/dowdiness/js_engine/pull/410), [#407](https://github.com/dowdiness/js_engine/pull/407)
+
+#### 2026/6/21
+
+**Canopy / Markdown list + moon.mod移行開始**
+
+canopy [#736](https://github.com/dowdiness/canopy/pull/736), [#737](https://github.com/dowdiness/canopy/pull/737), [#738](https://github.com/dowdiness/canopy/pull/738)
+
+**js_engine / lexer・spec fixes・perf**
+
+js_engine [#422](https://github.com/dowdiness/js_engine/pull/422), [#431](https://github.com/dowdiness/js_engine/pull/431), [#428](https://github.com/dowdiness/js_engine/pull/428), [#332](https://github.com/dowdiness/js_engine/pull/332), [#433](https://github.com/dowdiness/js_engine/pull/433)
+
+</details>
+
+<details>
+<summary>6月第4週（6/22〜6/26）</summary>
+
+#### 2026/6/22
+
+**Canopy / moon.mod移行完了**
+
+canopy [#740](https://github.com/dowdiness/canopy/pull/740), [#335](https://github.com/dowdiness/canopy/pull/335)
+
+#### 2026/6/23
+
+**Canopy / submodule bumpとHTML block修正**
+
+canopy [#742](https://github.com/dowdiness/canopy/pull/742)
+
+#### 2026/6/24
+
+**Canopy / Markdown SDEG lifecycle**
+
+canopy [#746](https://github.com/dowdiness/canopy/pull/746), [#750](https://github.com/dowdiness/canopy/pull/750), [#754](https://github.com/dowdiness/canopy/pull/754), [#755](https://github.com/dowdiness/canopy/pull/755), [#763](https://github.com/dowdiness/canopy/pull/763)
+
+**Canopy / benchmark CIとprojection map**
+
+canopy [#761](https://github.com/dowdiness/canopy/pull/761), [#762](https://github.com/dowdiness/canopy/pull/762)
+
+**loom / MarkdownIR**
+
+loom [#472](https://github.com/dowdiness/loom/pull/472), [#473](https://github.com/dowdiness/loom/pull/473)
+
+**js_engine**
+
+js_engine [#438](https://github.com/dowdiness/js_engine/pull/438), [#440](https://github.com/dowdiness/js_engine/pull/440), [#441](https://github.com/dowdiness/js_engine/pull/441), [#442](https://github.com/dowdiness/js_engine/pull/442)
+
+#### 2026/6/25
+
+**Canopy / SDEG snapshot validity**
+
+canopy [#766](https://github.com/dowdiness/canopy/pull/766), [#767](https://github.com/dowdiness/canopy/pull/767)
+
+**Canopy / ProjNode mapとCI cleanup**
+
+canopy [#765](https://github.com/dowdiness/canopy/pull/765), [#727](https://github.com/dowdiness/canopy/pull/727), [#547](https://github.com/dowdiness/canopy/pull/547), [#549](https://github.com/dowdiness/canopy/pull/549), [#550](https://github.com/dowdiness/canopy/pull/550)
+
+**js_engine**
+
+js_engine [#445](https://github.com/dowdiness/js_engine/pull/445), [#446](https://github.com/dowdiness/js_engine/pull/446), [#449](https://github.com/dowdiness/js_engine/pull/449)
+
+#### 2026/6/26
+
+**Canopy / JSON role spans + CI cleanup**
+
+canopy [#781](https://github.com/dowdiness/canopy/pull/781), [#782](https://github.com/dowdiness/canopy/pull/782), [#783](https://github.com/dowdiness/canopy/pull/783), [#773](https://github.com/dowdiness/canopy/pull/773), [#777](https://github.com/dowdiness/canopy/pull/777), [#778](https://github.com/dowdiness/canopy/pull/778), [#779](https://github.com/dowdiness/canopy/pull/779), [#780](https://github.com/dowdiness/canopy/pull/780)
+
+**Loom / arrow lambda + Pratt reuse**
+
+loom [#475](https://github.com/dowdiness/loom/pull/475), [#476](https://github.com/dowdiness/loom/pull/476)
+
+**js_engine / NFE binding + async fixes + test262整備**
+
+js_engine [#463](https://github.com/dowdiness/js_engine/pull/463), [#468](https://github.com/dowdiness/js_engine/pull/468), [#466](https://github.com/dowdiness/js_engine/pull/466), [#467](https://github.com/dowdiness/js_engine/pull/467), [#471](https://github.com/dowdiness/js_engine/pull/471), [#462](https://github.com/dowdiness/js_engine/pull/462), [#461](https://github.com/dowdiness/js_engine/pull/461), [#460](https://github.com/dowdiness/js_engine/pull/460), [#470](https://github.com/dowdiness/js_engine/pull/470)
+
+</details>
+
+<details>
+<summary>6月第5週（6/27〜6/30）</summary>
+
+#### 2026/6/27
+
+**Canopy / block-editor drag-dropとcore primitives**
+
+canopy [#793](https://github.com/dowdiness/canopy/pull/793), [#794](https://github.com/dowdiness/canopy/pull/794), [#796](https://github.com/dowdiness/canopy/pull/796), [#798](https://github.com/dowdiness/canopy/pull/798), [#800](https://github.com/dowdiness/canopy/pull/800), [#276](https://github.com/dowdiness/canopy/pull/276)
+
+**loom / loomgenの誕生**
+
+incr [#313](https://github.com/dowdiness/incr/pull/313), [#314](https://github.com/dowdiness/incr/pull/314), [#315](https://github.com/dowdiness/incr/pull/315), [#316](https://github.com/dowdiness/incr/pull/316), [#317](https://github.com/dowdiness/incr/pull/317), [#318](https://github.com/dowdiness/incr/pull/318), [#320](https://github.com/dowdiness/incr/pull/320), [#322](https://github.com/dowdiness/incr/pull/322), [#323](https://github.com/dowdiness/incr/pull/323) / js_engine [#476](https://github.com/dowdiness/js_engine/pull/476), [#477](https://github.com/dowdiness/js_engine/pull/477), [#478](https://github.com/dowdiness/js_engine/pull/478), [#479](https://github.com/dowdiness/js_engine/pull/479), [#480](https://github.com/dowdiness/js_engine/pull/480), [#481](https://github.com/dowdiness/js_engine/pull/481), [#482](https://github.com/dowdiness/js_engine/pull/482) / loom [#492](https://github.com/dowdiness/loom/pull/492), [#493](https://github.com/dowdiness/loom/pull/493), [#494](https://github.com/dowdiness/loom/pull/494), [#496](https://github.com/dowdiness/loom/pull/496), [#505](https://github.com/dowdiness/loom/pull/505), [#510](https://github.com/dowdiness/loom/pull/510), [#511](https://github.com/dowdiness/loom/pull/511)
+
+#### 2026/6/28
+
+**Canopy / typed error modelとJSON tree editor**
+
+canopy [#799](https://github.com/dowdiness/canopy/pull/799), [#802](https://github.com/dowdiness/canopy/pull/802), [#806](https://github.com/dowdiness/canopy/pull/806), [#810](https://github.com/dowdiness/canopy/pull/810), [#811](https://github.com/dowdiness/canopy/pull/811), [#812](https://github.com/dowdiness/canopy/pull/812), [#813](https://github.com/dowdiness/canopy/pull/813)
+
+**loom / loomgenのアノテーション語彙が拡張**
+
+incr [#326](https://github.com/dowdiness/incr/pull/326), [#327](https://github.com/dowdiness/incr/pull/327), [#329](https://github.com/dowdiness/incr/pull/329), [#331](https://github.com/dowdiness/incr/pull/331), [#332](https://github.com/dowdiness/incr/pull/332), [#333](https://github.com/dowdiness/incr/pull/333), [#334](https://github.com/dowdiness/incr/pull/334) / loom [#513](https://github.com/dowdiness/loom/pull/513), [#515](https://github.com/dowdiness/loom/pull/515), [#517](https://github.com/dowdiness/loom/pull/517), [#518](https://github.com/dowdiness/loom/pull/518), [#519](https://github.com/dowdiness/loom/pull/519), [#525](https://github.com/dowdiness/loom/pull/525), [#527](https://github.com/dowdiness/loom/pull/527), [#528](https://github.com/dowdiness/loom/pull/528), [#533](https://github.com/dowdiness/loom/pull/533)
+
+#### 2026/6/29
+
+**loom**
+
+canopy [#814](https://github.com/dowdiness/canopy/pull/814), [#816](https://github.com/dowdiness/canopy/pull/816), [#819](https://github.com/dowdiness/canopy/pull/819), [#797](https://github.com/dowdiness/canopy/pull/797) / incr [#336](https://github.com/dowdiness/incr/pull/336), [#337](https://github.com/dowdiness/incr/pull/337), [#338](https://github.com/dowdiness/incr/pull/338) / loom [#534](https://github.com/dowdiness/loom/pull/534), [#535](https://github.com/dowdiness/loom/pull/535), [#536](https://github.com/dowdiness/loom/pull/536), [#542](https://github.com/dowdiness/loom/pull/542), [#544](https://github.com/dowdiness/loom/pull/544), [#545](https://github.com/dowdiness/loom/pull/545)
+
+#### 2026/6/30
+
+**loom**
+
+canopy [#820](https://github.com/dowdiness/canopy/pull/820) / incr [#339](https://github.com/dowdiness/incr/pull/339), [#340](https://github.com/dowdiness/incr/pull/340) / loom [#546](https://github.com/dowdiness/loom/pull/546), [#548](https://github.com/dowdiness/loom/pull/548)
+
+</details>
+

@@ -3,28 +3,18 @@ title: Canopy開発日誌-4月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-06-23T03:38:00+09:00
-modified: 2026-07-16T13:10:00+09:00
+modified: 2026-07-16T16:15:00+09:00
 ---
 
 # Canopy開発日誌-4月
 
-2026年4月のCanopy開発ログ。4月はeditor protocolの統一、pretty-printer ViewNode bridge、Markdown block editor、generic B-tree、Confidence lattice、drag-and-drop、Web E2E、loom Parser[T]統一、moon.work workspace導入など、Canopyの土台を次の段階へ引き上げた月である。
+2026年4月のCanopy開発ログ（日次記録）。月の要約は[[Canopy開発日誌-4月-まとめ|4月-まとめ]]。
 
 > ソースコードを構造（IR）として編集する MoonBit 製エディタ。概要は[[Canopyとは]]。
 
 ## 今月の大きな流れ
 
-- **EditorProtocol**: Ideal editorとprosemirror exampleをEditorProtocol経由に統一した。CM6Adapter/PMAdapterを追加し、editorのadapter層を整理した。
-- **Pretty-printer bridge**: Wadler-Lindig pretty-printerの出力をViewNodeへ変換し、HTML syntax highlightingと統合した。
-- **Markdown block editor**: Markdown用block editor、7つのMarkdown edit ops、three-mode web editor、block-input textarea overlay、MarkdownPreview semantic HTML adapterを実装した。
-- **Container**: 文書をブロック単位で扱う編集コンテナ。Phase 2（text sync）、Phase 3（block doc sync）、document-level undo groupingを実装した。
-- **Generic B-tree**: `lib/btree`を汎用B-tree libraryとして切り出し、order-treeと統合した。range delete、splice promotion chain repairを実装した。
-- **Semantic layer**: 推論結果の確信度を扱う`lib/semantic`を追加した。Confidence lattice（確信度の階層構造）とsymbolic annotatorを実装した。
-- **Language decoupling**: `LanguageCapabilities[T]`でSyncEditorからlambda-specific typesを切り離し、generic tree opを実現した。
-- **Drag-and-drop**: Ideal editorとblock editorでdrag-and-drop foundation、semantic Before/After drop、grip-only drag、outline DnDを実装した。
-- **Web E2E**: Lambda/JSON editorのE2EテストをCIへ追加した。
-- **loom Parser[T]統一**: ReactiveParserを廃止し、unified `@loom.Parser[T]`へ移行した。
-- **moon.work**: MoonBit workspace機構を導入し、依存方向ルールをCIで検証する仕組みを整えた。
+月全体の流れは[[Canopy開発日誌-4月-まとめ|4月-まとめ]]にまとめた。以下は週次・日次の作業記録。第1週から EditorProtocol 統一と Markdown block editor の立ち上げが始まる。
 
 ## 4月第1週: EditorProtocol、pretty-printer、Markdown block editor
 
@@ -209,7 +199,3 @@ MoonBit workspace（moon.work）を導入した。canopy + lib/text-change + lib
 ### Canopy / lambda typecheck pipeline evolution
 
 loomのtypecheck range wedge fixをbumpした。lambda typecheck pipeline evolution planをdocsに追加した。
-
-## 作業運用メモ
-
-4月はCanopyが「Lambda中心のエディタ」から「複数言語・複数editor viewを扱える汎用構造編集フレームワーク」へ近づいた月である。EditorProtocol、LanguageCapabilities[T]、FFI分割、moon.workの導入がその象徴である。同時にblock editor、Markdown editor、B-tree、semantic layerなど新しい柱も増え、5月以降の大規模な機能展開の土台が整った。
