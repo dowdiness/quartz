@@ -3,36 +3,36 @@ title: Canopy開発日誌-3月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-06-23T03:36:00+09:00
-modified: 2026-06-23T11:42:17+09:00
+modified: 2026-07-16T13:10:00+09:00
 ---
 
 # Canopy開発日誌-3月
 
 2026年3月のCanopy開発ログ。3月はCanopyのリポジトリ名確定、parser→loomの分離、Rabbita/Ideal editorの急速な成長、構造編集アクション、CRDTの性能改善、framework抽出、block editor、JSON editorまで、幅広い領域で大きな進捗があった。
 
-> Canopyは、ソースコードを文字列ではなく構造（IR）として扱うエディタです。文字列を正として保ちつつ、そこから導出したプログラムの意味単位を直接操作することで、安全な構造編集やAI・複数人との協調作業がしやすくなります。
+> ソースコードを構造（IR）として編集する MoonBit 製エディタ。概要は[[Canopyとは]]。
 
 ## 今月の大きな流れ
 
 - **parser → loom**: 2月までCanopy内にあったparserを`dowdiness/loom`として独立させ、APIを移行した。
-- **SyncEditor確立**: ParsedEditorからSyncEditorへ統一。編集・undo/redo・同期・presenceを一つのeditor abstractionで扱うようになった。
-- **名前解決とgraphviz**: Lambdaの名前解決をSyncEditorに組み込み、ToDot/FromDot traitでgraph可視化と連携。
-- **Rabbita/Ideal editor**: Rabbitaベースのprojectional editorを立ち上げ、性能問題を潰し、mobile layout、design tokens、tree pane navigation、Ideal editorのUI基盤を作った。
-- **構造編集アクション**: 16の構造編集アクションを実装。
+- **SyncEditor確立**: ParsedEditorからSyncEditorへ統一。編集・undo/redo・同期・presenceを一つのeditor abstractionで扱えるようにした。
+- **名前解決とgraphviz**: Lambdaの名前解決をSyncEditorに組み込み、ToDot/FromDot traitでgraph可視化と連携した。
+- **Rabbita/Ideal editor**: Rabbitaベースのprojectional editorを立ち上げ、性能問題を解消し、mobile layout、design tokens、tree pane navigation、Ideal editorのUI基盤を整えた。
+- **構造編集アクション**: 16の構造編集アクションを実装した。
 - **CRDT性能**: FugueTree/traverse_treeのiterative化、order-tree導入、event-graph-walkerの高速化（two-count retreatで17.7×）など。
-- **WebSocket協調編集**: transport layer、relay server、sync recovery protocol、ephemeral store v2を実装。
+- **WebSocket協調編集**: transport layer、relay server、sync recovery protocol、ephemeral store v2を実装した。
 - **Framework抽出**: `ProjNode[T]`のgeneric化、`TreeNode`/`Renderable` traitの導入、framework/coreパッケージの切り出し。
 - **新しいeditor**: block editor、JSON editor、AST Zipper、Container Phase 1、pretty-printerの導入。
 
 ## 3月第1週: parser→loom分離、SyncEditor、名前解決
 
-月初はparserサブモジュールを`dowdiness/loom`として独立させ、Canopy側を新APIに移行する作業が中心。loomは後に独立リポジトリとして発展するparser/AST基盤で、この週がその分離の出発点になった。その後、ParsedEditorをSyncEditorに置き換え、編集・undo・同期・presenceを一つのeditor abstractionで扱える土台を作った。週末にはLambdaの名前解決とgraphviz可視化を追加し、構造編集の前段階が揃った。
+月初はparserサブモジュールを`dowdiness/loom`として独立させ、Canopy側を新APIへ移行する作業が中心だった。loomはのちに独立リポジトリとして発展するparser/AST基盤であり、この週が分離の出発点となった。続いてParsedEditorをSyncEditorに置き換え、編集・undo・同期・presenceを一つのeditor abstractionで扱える土台を整えた。週末にはLambdaの名前解決とgraphviz可視化を追加し、構造編集の前段階が揃った。
 
 ## 2026/3/2
 
 ### Canopy / parser → loom 移行開始
 
-parserサブモジュールのURLとディレクトリ名をloomへ変更。`dowdiness/parser` APIから`dowdiness/loom` APIへの移行を開始した。
+parserサブモジュールのURLとディレクトリ名をloomへ変更した。`dowdiness/parser` APIから`dowdiness/loom` APIへの移行を開始した。
 
 主なコミット: rename parser submodule directory to loom, update parser submodule URL after repo rename to loom, migrate from dowdiness/parser to dowdiness/loom API
 
@@ -40,7 +40,7 @@ parserサブモジュールのURLとディレクトリ名をloomへ変更。`dow
 
 ### Canopy / SyncEditor登場
 
-ParsedEditorを廃止し、SyncEditorを導入した。SyncEditorはtext編集、tree編集、undo/redo、sourceMap/registry管理を一元化するeditor abstraction。同時にImperativeParserのdirty-flag方式から、ReactiveParser（Signal/Memo pipeline）へ移行した。
+ParsedEditorを廃止し、SyncEditorを導入した。SyncEditorはtext編集、tree編集、undo/redo、sourceMap/registry管理を一元化するeditor abstractionである。あわせてImperativeParserのdirty-flag方式から、ReactiveParser（Signal/Memo pipeline）へ移行した。
 
 Edit Bridge Phase 1として、`compute_edit`をloomのTextDelta APIに置き換えた。
 
@@ -58,13 +58,13 @@ Edit Bridge Phase 1として、`compute_edit`をloomのTextDelta APIに置き換
 
 ## 3月第2週: Rabbita性能、source_file_grammar、flat grammar
 
-Rabbitaベースのprojectional editorを本格化。tree editorのsubtree再利用（elide/hydrate）で性能を回復し、projectional editorとして実用的な速度を取り戻した。同時に`source_file_grammar`によるO(1)增量編集、flat grammar統合、projection incremental updatesの設計を進め、後の大規模な構造編集に耐えるパーサー・投影層を作り始めた。
+Rabbitaベースのprojectional editorを本格化した。tree editorのsubtree再利用（elide/hydrate）で性能を回復し、projectional editorとして実用的な速度を取り戻した。同時に`source_file_grammar`によるO(1)增量編集、flat grammar統合、projection incremental updatesの設計を進め、大規模な構造編集に耐えるパーサー・投影層の構築を始めた。
 
 ## 2026/3/10
 
 ### Canopy / Rabbita Cloudflare Pages化
 
-Rabbita editorをCloudflare Pagesにデプロイする準備。Wrangler config追加、tree edit bridgeのCRDT roundtrip対応。
+Rabbita editorをCloudflare Pagesへデプロイする準備を進めた。Wrangler configの追加、tree edit bridgeのCRDT roundtrip対応を行った。
 
 主なコミット: Make Rabbita Cloudflare Pages ready, Add Wrangler config for Rabbita deploy, Add tree edit bridge for CRDT roundtrip
 
@@ -72,13 +72,13 @@ Rabbita editorをCloudflare Pagesにデプロイする準備。Wrangler config�
 
 ### Canopy / Rabbita性能回復
 
-Rabbita editorの性能が著しく落ちていた問題に対処。subtreeのelide/hydrate、unchanged subtreeのreuse、deferred selection state、incremental text edit、parser memoからのprojection derivationなどを導入し、Rabbita projection editorのrefresh workを削減。perf harnessも追加した。
+Rabbita editorの性能が著しく低下していた問題に対処した。subtreeのelide/hydrate、unchanged subtreeのreuse、deferred selection state、incremental text edit、parser memoからのprojection derivationなどを導入し、Rabbita projection editorのrefresh workを削減した。perf harnessも追加した。
 
 主なPR / Issue: canopy [#20](https://github.com/dowdiness/canopy/pull/20), [#21](https://github.com/dowdiness/canopy/pull/21)
 
 ### Canopy / examples整理
 
-web appとdemo-reactを`examples/`ディレクトリへ移動。
+web appとdemo-reactを`examples/`ディレクトリへ移動した。
 
 ## 2026/3/14
 
@@ -94,23 +94,23 @@ web appとdemo-reactを`examples/`ディレクトリへ移動。
 
 ### Canopy / flat grammar統合とprojection incremental updates
 
-flat grammar統合（[#32](https://github.com/dowdiness/canopy/pull/32)）。text_change adapter削除、shared text change module抽出、CellMeta supertraitの導入。projection incremental updatesの計画を立案し、FlatProj設計を確定。
+flat grammar統合（[#32](https://github.com/dowdiness/canopy/pull/32)）を進めた。text_change adapterの削除、shared text change moduleの抽出、CellMeta supertraitの導入を行い、projection incremental updatesの計画を立案してFlatProj設計を確定した。
 
 主なPR / Issue: canopy [#32](https://github.com/dowdiness/canopy/pull/32)
 
 ## 3月第3週: ProseMirror/CodeMirror、協調編集、CRDT性能
 
-Projectional editorにCodeMirror 6 / ProseMirrorを統合し、テキストエディタとの橋渡しを強化。協調編集面ではWebSocket transport、relay server、ephemeral store v2、sync recovery protocolを実装し、複数人編集の基盤が大きく進んだ。CRDT側ではFugueTreeのiterative traverse、order-tree導入、event-graph-walkerの高速化で、大規模文書でも使える性能を目指した。
+Projectional editorにCodeMirror 6 / ProseMirrorを統合し、テキストエディタとの橋渡しを強化した。協調編集面ではWebSocket transport、relay server、ephemeral store v2、sync recovery protocolを実装し、複数人編集の基盤が大きく進んだ。CRDT側ではFugueTreeのiterative traverse、order-tree導入、event-graph-walkerの高速化により、大規模文書でも使える性能を目指した。
 
 ## 2026/3/18
 
 ### Canopy / リポジトリ名をcrdtからcanopyへ
 
-プロジェクト名を`crdt`から`canopy`に変更。README rewrite、architecture docs修正、各種パス・パッケージ名の更新。同日、FlatProj最適化（[#36](https://github.com/dowdiness/canopy/pull/36)）、RLE sync（[#35](https://github.com/dowdiness/canopy/pull/35)）、RLE Phase 0（[#34](https://github.com/dowdiness/canopy/pull/34)）がmergeされた。
+プロジェクト名を`crdt`から`canopy`に変更した。README rewrite、architecture docs修正、各種パス・パッケージ名の更新を行った。同日、FlatProj最適化（[#36](https://github.com/dowdiness/canopy/pull/36)）、RLE sync（[#35](https://github.com/dowdiness/canopy/pull/35)）、RLE Phase 0（[#34](https://github.com/dowdiness/canopy/pull/34)）がmergeされた。
 
 ### Canopy / ProseMirror + CodeMirror 6統合
 
-ProseMirrorベースのprojectional editorを実装。CrdtBridge、leaf edit routing、reconciler、CM6 NodeViews、PM schema、ProjNode→PM変換、static EditorViewを追加。同日にCodeMirror 6 code editorへ置き換える変更も並行して進んだ。
+ProseMirrorベースのprojectional editorを実装した。CrdtBridge、leaf edit routing、reconciler、CM6 NodeViews、PM schema、ProjNode→PM変換、static EditorViewを追加した。同日、CodeMirror 6 code editorへの置き換えも並行して進めた。
 
 主なPR / Issue: canopy [#34](https://github.com/dowdiness/canopy/pull/34), [#35](https://github.com/dowdiness/canopy/pull/35), [#36](https://github.com/dowdiness/canopy/pull/36)
 
@@ -159,15 +159,13 @@ ProseMirrorベースのprojectional editorを実装。CrdtBridge、leaf edit rou
 
 ### Canopy / graph library (alga) とWebSocket hardened
 
-- DirectedGraph traitとalgorithmsを持つgraph libraryを追加し、`dowdiness/alga`として切り出した。
-- WebSocket協調編集にerror recovery、offline queue、persistenceを追加。
-- `compute_text_edit`をhandler chain with middlewareに分解。
+- DirectedGraph traitとalgorithmsを持つgraph libraryを追加し、`dowdiness/alga`として切り出した。WebSocket協調編集にはerror recovery、offline queue、persistenceを追加した。`compute_text_edit`はhandler chain with middlewareへ分解した。
 
 主なコミット: add graph library with DirectedGraph trait, harden WebSocket collaboration with error recovery, decompose compute_text_edit into handler chain
 
 ## 3月第4週: Framework抽出、block editor、JSON editor
 
-Genericなeditor frameworkを切り出し、CanopyをLambda専用から複数言語に対応できる構造編集フレームワークへ近づけた。block editor、JSON editor、AST Zipper、Container Phase 1、pretty-printerを立ち上げ、1ヶ月の前半で作った基盤を使って新しいeditor形態を次々と増やした一週間だった。
+Genericなeditor frameworkを切り出し、CanopyをLambda専用から複数言語に対応できる構造編集フレームワークへ近づけた。block editor、JSON editor、AST Zipper、Container Phase 1、pretty-printerを立ち上げ、前半で整えた基盤をもとに新しいeditor形態を次々と増やした一週間だった。
 
 ## 2026/3/24
 
@@ -223,12 +221,6 @@ Genericなeditor frameworkを切り出し、CanopyをLambda専用から複数言
 
 主なPR / Issue: canopy [#103](https://github.com/dowdiness/canopy/pull/103), [#104](https://github.com/dowdiness/canopy/pull/104), [#105](https://github.com/dowdiness/canopy/pull/105)
 
-## 2026/4/1
-
-### Canopy / Pretty-printer
-
-Wadler-Lindig pretty-printer engineをannotation support付きで実装し、`get_ast_pretty`へ統合（[#106](https://github.com/dowdiness/canopy/pull/106)）。
-
 ## 作業運用メモ
 
-3月はCanopyの"理想エディタ"となるIdeal editor、Rabbita、構造編集アクション、協調編集基盤が一気に育った月。同時に後の独立リポジトリ化を見越したframework抽出と、CRDT/パーサーの性能改善も並行して進んだ。4月はこの勢いを引き継ぎ、さらにUI/UXと言語実装が深まっていく。
+3月はCanopyの"理想エディタ"となるIdeal editor、Rabbita、構造編集アクション、協調編集基盤が一気に育った月である。同時に、のちの独立リポジトリ化を見据えたframework抽出と、CRDT/パーサーの性能改善も並行して進んだ。4月はこの勢いを引き継ぎ、UI/UXと言語実装がさらに深まっていく。

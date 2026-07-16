@@ -9,7 +9,7 @@ aliases: [Canopy in May 2026 — Highlights]
 
 # Canopy in May 2026 — Highlights
 
-A two-minute summary of a month of work. For the day-by-day version, see the [[Canopy開発日誌-5月|Japanese original]] — the source for this one reads more like a raw work journal than a polished log, and that carries over here a little.
+A two-minute summary of a month of work. For the day-by-day version, see the [[Canopy開発日誌-5月|Japanese original]].
 
 **Canopy** is a structure editor written in [MoonBit](https://www.moonbitlang.com/): it treats source code as structure (IR) rather than strings, with text kept as the source of truth. Concurrent editing is built on a CRDT implementing the [eg-walker paper](https://arxiv.org/abs/2409.14252). Around it sit a few sibling projects: **Loom** (incremental parsing), **incr** (incremental computation), **moondsp** (a MoonBit DSP/music DSL experiment), and **js_engine** (a JS interpreter validated against test262).
 

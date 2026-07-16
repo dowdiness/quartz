@@ -3,18 +3,18 @@ title: Canopy開発日誌-3月-まとめ
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-07-16T10:35:00+09:00
-modified: 2026-07-16T10:35:00+09:00
+modified: 2026-07-16T13:10:00+09:00
 ---
 
 # Canopy開発日誌-3月-まとめ
 
 2分で読める月次まとめ。日々の詳細は[[Canopy開発日誌-3月|通常版の日誌]]を、英語版は[[Canopy-March-2026-Highlights|Highlights (English)]]を参照。
 
-> Canopyは、ソースコードを文字列ではなく構造（IR）として扱うエディタです。文字列を正として保ちつつ、そこから導出したプログラムの意味単位を直接操作することで、安全な構造編集やAI・複数人との協調作業がしやすくなります。詳しくは[[Canopyとは]]。
+> ソースコードを構造（IR）として編集する MoonBit 製エディタ。概要は[[Canopyとは]]。
 
 ## 1. parserがloomになる
 
-12月からCanopy内にあったparserが、独立リポジトリ`dowdiness/loom`として切り出された。CanopyはこのタイミングでloomのAPIへ移行している。これが、後に複数のライブラリへと分岐していく最初の一歩になった。
+12月からCanopy内にあったparserが、独立リポジトリ`dowdiness/loom`として切り出された。CanopyはこのタイミングでloomのAPIへ移行している。複数のライブラリへ分岐していく最初の一歩だった。
 
 ## 2. SyncEditorが編集を統一
 
@@ -22,7 +22,7 @@ modified: 2026-07-16T10:35:00+09:00
 
 ## 3. RabbitaとIdeal editorが急成長
 
-Rabbitaベースのprojectional editorに、この月ようやく本物のUI基盤ができた。性能問題を潰し、mobile layout・design tokens・tree pane navigationが入った。16の構造編集アクションも実装され、テキストではなくプログラムの構造を直接動かすための「動詞」が初めて出揃った。
+Rabbitaベースのprojectional editorに、この月ようやく本物のUI基盤ができた。性能問題を潰し、mobile layout・design tokens・tree pane navigationが入った。16の構造編集アクションも実装され、テキストではなくプログラムの構造を直接動かすための「動詞」が初めて揃った。
 
 ## 4. CRDTの性能改善
 
@@ -38,7 +38,7 @@ transport layer、relay server、sync recovery protocol、ephemeral store v2が�
 
 ---
 
-3月は、その後1年を通して引き継がれるほぼすべての流れの起点になった月だった――独立ライブラリとしてのloom、汎用的なprojection framework、Lambdaにとどまらないblockベースのエディタ群。
+3月は、その後1年を通して引き継がれるほぼすべての流れの起点になった月だった。独立ライブラリとしてのloom、汎用的なprojection framework、Lambdaにとどまらないblockベースのエディタ群。
 
 - GitHub: [dowdiness/canopy](https://github.com/dowdiness/canopy) · [dowdiness/loom](https://github.com/dowdiness/loom) · [mooncakes.io/user/dowdiness](https://mooncakes.io/user/dowdiness)
 - 全文: [[Canopy開発日誌-3月|3月の日誌]]

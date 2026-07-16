@@ -3,30 +3,30 @@ title: Canopy開発日誌-7月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-01-04T20:50:52+09:00
-modified: 2026-07-16T08:19:29+09:00
+modified: 2026-07-16T13:10:00+09:00
 ---
 
 # Canopy開発日誌-7月
 
-2026年7月のCanopy開発ログ。細かいPR単位の列挙よりも、作業の流れが追いやすいように要点だけを残す。
+2026年7月のCanopy開発ログ。細かいPRの羅列ではなく、作業の流れが追いやすいよう要点だけを残した。
 
-> Canopyは、ソースコードを文字列ではなく構造（IR）として扱うエディタです。文字列を正として保ちつつ、そこから導出したプログラムの意味単位を直接操作することで、安全な構造編集やAI・複数人との協調作業がしやすくなります。
+> ソースコードを構造（IR）として編集する MoonBit 製エディタ。概要は[[Canopyとは]]。
 
 全体方針: [MoonDsp / Canopy ecosystem vision](https://github.com/dowdiness/canopy/blob/main/docs/research/2026-06-01-moondsp-canopy-ecosystem-vision.md)
 
 ## 今月の大きな流れ
 
-7月前半は、incrの破壊的なAPI境界整理（0.13.0→0.14.0）と、それに追従するloom・Canopyのpin更新が下敷きになった。中盤にloomgenが「手書きコード生成器」を自ら退場させ（`emit_grammar.mbt`削除）、interpretベースの文法解釈に一本化されたのが大きな節目。そして後半、CanopyにJSXという新しい言語ターゲットが生まれ、そこから「generative UI（GenUI）」という新しい実験――ストリーミングで届くLLMの出力を、構造的に妥当なJSXとして逐次パースし、差分reconcileでDOMへ反映する――が急速に立ち上がった。
+7月前半は、incrの破壊的API整理（0.13.0→0.14.0）と、それに追従するloom・Canopyのpin更新が基盤となった。中盤には、loomgenが手書きコード生成器（`emit_grammar.mbt`の削除）を自ら退け、interpretベースの文法解釈へ一本化するという大きな転換があった。後半にはCanopyにJSXという新言語ターゲットが加わり、そこから「generative UI（GenUI）」という実験が急速に立ち上がった。GenUIは、ストリーミングで届くLLM出力を構造的に妥当なJSXとして逐次パースし、差分reconcileでDOMへ反映する仕組みである。
 
-- **incr API境界整理**: 0.13.0（互換API surfaceの一括削除）と0.14.0（ghost handle削除・InternTableのinterior-mutation修正・ReadErrorチャネル化）の2つの破壊的リリースが7月前半に続いた。`Expr[T]`という遅延評価の数式レイヤーも生えた。
-- **incr_tea独立**: TEAフレームワークが`examples/incr_tea`から独立ワークスペース`dowdiness/incr_tea`へ切り出された。incr本体の安定性保証とは別に、実験場として位置づけ直された。
-- **Input::force_set reentrancy**: MoonDspでの実デバッグ（`AcceptedDerived`）から見つかった、reactive compute中の`force_set`が再入伝播を起こす問題。ADR執筆→ガード実装→事後レビューでの訂正→ガード範囲の意図的な非拡張、という一連の流れが7/8-7/10に集中した。
-- **loomgenとGrammarIR**: EBNF演算子（`~` `!` `@until` `{Sep}` `Token~>` `@error_node` `@native`）が次々に追加され、7/10には手書きコード生成パス`emit_grammar.mbt`そのものを削除、interpretベースの文法解釈へ一本化された。後半はMarkdown向けのline-mode/line-patternレクサ生成に重心が移った。
+- **incr API境界整理**: 0.13.0（互換API surfaceの一括削除）と0.14.0（ghost handle削除・InternTableのinterior-mutation修正・ReadErrorチャネル化）という2つの破壊的リリースが7月前半に続いた。遅延評価の数式レイヤー`Expr[T]`も追加された。
+- **incr_tea独立**: TEAフレームワークを`examples/incr_tea`から独立ワークスペース`dowdiness/incr_tea`へ切り出した。incr本体の安定性保証とは切り離し、実験場として位置づけ直した。
+- **Input::force_set reentrancy**: MoonDspでの実デバッグ（`AcceptedDerived`）で見つかった、reactive compute中の`force_set`による再入伝播の問題。ADR執筆→ガード実装→事後レビューでの訂正→ガード範囲の意図的な非拡張という一連の流れが7/8–7/10に集中した。
+- **loomgenとGrammarIR**: EBNF演算子（`~` `!` `@until` `{Sep}` `Token~>` `@error_node` `@native`）が次々と追加され、7/10には手書きコード生成パス`emit_grammar.mbt`自体を削除してinterpretベースへ一本化した。後半はMarkdown向けのline-mode/line-patternレクサ生成に重心が移った。
 - **js_engine**: for-await-of/非同期iteratorプロトコルの実装と100%達成、RegExp lookbehind、`cache-for-X` builtin install contractへのstdlib全面移行、埋め込み向けhost-object API、class private field/method/static block、そして月内2回目のリリース（v0.6.0）まで進んだ。
-- **CanopyのJSXとGenUI**: 7/11にJSXの読み取り専用projectionが生まれ（Lambda/JSON/Markdownに続く4番目の言語ターゲット）、そこから数日でストリーミングJSXセッション、重複sibling識別子のreconcile修正、決定論的な非同期ドライバ、ブラウザ障害回復スライスと続き、7/15には「実プロバイダを繋ぐ実験」の設計書（kill date: 2026/7/29）が出た。
-- **Canopyのその他**: 型付きEditError modelを3言語の編集層に展開、Ideal orchestrationをライブラリパッケージへ抽出、Lambdaの名前解決を`@scope`へ一本化、定数畳み込みミドルウェアを追加した同日に撤回するという設計判断も。
+- **CanopyのJSXとGenUI**: 7/11にJSXの読み取り専用projectionが生まれ（Lambda/JSON/Markdownに続く4番目の言語ターゲット）、数日のうちにストリーミングJSXセッション、重複sibling識別子のreconcile修正、決定論的な非同期ドライバ、ブラウザ障害回復スライスが続き、7/15には「実プロバイダを繋ぐ実験」の設計書（kill date: 2026/7/29）が出た。
+- **Canopyのその他**: 型付きEditError modelを3言語の編集層へ展開、Ideal orchestrationをライブラリパッケージへ抽出、Lambdaの名前解決を`@scope`へ一本化。定数畳み込みミドルウェアを追加した同日に撤回するという設計判断もあった。
 - **MoonDsp**: 目立った活動は少ないが、7/8の`AcceptedDerived`実装がincrのforce_set調査の引き金になった。
-- **作業運用**: 6月に続き、Git log・agent session・project memoryの突き合わせで記録する運用が続いている。
+- **作業運用**: 6月に続き、Git log・agent session・project memoryの突き合わせで記録する運用を続けている。
 
 ## 2026/7/1
 
@@ -34,21 +34,21 @@ modified: 2026-07-16T08:19:29+09:00
 
 Idealまわりの「レシピ化」リファクタが4件まとまった。
 
-- **`cx()` joinヘルパー**: ボタン・タブで繰り返す条件付きCSSクラス結合を切り出し、button/tabのレシピへ適用（[#822](https://github.com/dowdiness/canopy/pull/822)）。
+- **`cx()` joinヘルパー**: ボタン・タブで繰り返していた条件付きCSSクラス結合を切り出し、button/tabのレシピへ適用（[#822](https://github.com/dowdiness/canopy/pull/822)）。
 - **`ui/panel.mbt`**: パネルのクロムを`PanelVariant{Default,Inspector}`として抽出（[#825](https://github.com/dowdiness/canopy/pull/825)）。
 - **`ui/menu_item.mbt`**: action overlayの項目トーンを`MenuItemTone{Normal,Danger}`として抽出（[#827](https://github.com/dowdiness/canopy/pull/827)）。
 - `rename_binding_by_id`内の手書き宣言探索も共有ヘルパーへ整理（[#821](https://github.com/dowdiness/canopy/pull/821)）。
 
-incrがv0.12.0へ上がったのに合わせ、CanopyもSignal→Input、map_eq→mapへの追従移行を行った（[#826](https://github.com/dowdiness/canopy/pull/826)）。6月末に完了したincr側のMemo→Derived移行とSignal削除の、Canopy側の受け皿になる。
+incrがv0.12.0へ上がったのに合わせ、CanopyもSignal→Input、map_eq→mapへの追従移行を行った（[#826](https://github.com/dowdiness/canopy/pull/826)）。6月末に完了したincr側のMemo→Derived移行とSignal削除の、Canopy側の受け皿となる。
 
 ### loom / loomgenの入力形式拡張
 
-loomgenに`.loomgrammar`という単独ファイル形式を追加した（[#547](https://github.com/dowdiness/loom/pull/547)）。これまでの`#loom.rule`アノテーションと同じ規則本体記法を、MoonBitソースに埋め込まず独立ファイルとして書けるようにしたもので、アノテーション出力とバイト単位で一致することをdifferential testで確認している。
+loomgenに`.loomgrammar`という単独ファイル形式を追加した（[#547](https://github.com/dowdiness/loom/pull/547)）。これまでの`#loom.rule`アノテーションと同じ規則本体記法を、MoonBitソースに埋め込まず独立ファイルとして書けるようにした。アノテーション出力とバイト単位で一致することをdifferential testで確認している。
 
 そのほかloomgen周りの細かい修正:
 
 - アノテーション引数が不正なときに「アノテーションが見つからない」と誤報告していたバグを修正（[#550](https://github.com/dowdiness/loom/pull/550)）
-- ホスト側コードへ再突入するための`Native(RuleName)`というIR脱出ハッチノードを追加。HTMLのタグスタック照合のような文脈依存処理を生成された文法から呼び出せるように（[#551](https://github.com/dowdiness/loom/pull/551)）
+- ホスト側コードへ再突入するための`Native(RuleName)`というIR脱出ハッチノードを追加。HTMLのタグスタック照合のような文脈依存処理を、生成された文法から呼び出せるようにした（[#551](https://github.com/dowdiness/loom/pull/551)）
 - lexer_skeleton.g.mbtのモードディスパッチ骨格生成器（[#553](https://github.com/dowdiness/loom/pull/553)）とCIツールチェーンのフォーマット差異修正（[#552](https://github.com/dowdiness/loom/pull/552)）
 
 主なPR / Issue: canopy [#821](https://github.com/dowdiness/canopy/pull/821), [#822](https://github.com/dowdiness/canopy/pull/822), [#825](https://github.com/dowdiness/canopy/pull/825), [#826](https://github.com/dowdiness/canopy/pull/826), [#827](https://github.com/dowdiness/canopy/pull/827) / loom [#547](https://github.com/dowdiness/loom/pull/547), [#550](https://github.com/dowdiness/loom/pull/550), [#551](https://github.com/dowdiness/loom/pull/551), [#552](https://github.com/dowdiness/loom/pull/552), [#553](https://github.com/dowdiness/loom/pull/553)
@@ -63,7 +63,7 @@ loomgenに`.loomgrammar`という単独ファイル形式を追加した（[#547
 
 前日のCI障害の原因はloom側のpinのずれにもあり、incr 0.11.0→0.12.0への追従とdeny-warnエラー修正を2段構えで行った（[#566](https://github.com/dowdiness/loom/pull/566), [#568](https://github.com/dowdiness/loom/pull/568)）。`.loomgrammar`のヘッダー先読みにあった括弧深さのバグ（かっこの中の`IDENT '='`を次の規則のヘッダーと誤認する）も、複数エージェントによるレビューで見つけて直した（[#555](https://github.com/dowdiness/loom/pull/555)）。
 
-lambda exampleが、loomgen `--spec`出力の最初の実コンパイル消費者になった（[#558](https://github.com/dowdiness/loom/pull/558)）。調査の結果、この件の当初の設計は誤った前提（結合enumがすでにloomgenの出力そのものであることに気づいていなかった）に基づいていたことが分かり、配線するだけで済んだ。lambdaのトークンenum重複も削除した（[#567](https://github.com/dowdiness/loom/pull/567)）。
+lambda exampleが、loomgen `--spec`出力の最初の実コンパイル消費者になった（[#558](https://github.com/dowdiness/loom/pull/558)）。調査の結果、当初の設計は誤った前提（結合enumがすでにloomgenの出力そのものであることに気づいていなかった）に基づいていたことが分かり、配線するだけで済んだ。lambdaのトークンenum重複も削除した（[#567](https://github.com/dowdiness/loom/pull/567)）。
 
 主なPR / Issue: canopy [#832](https://github.com/dowdiness/canopy/pull/832), [#833](https://github.com/dowdiness/canopy/pull/833) / loom [#555](https://github.com/dowdiness/loom/pull/555), [#558](https://github.com/dowdiness/loom/pull/558), [#566](https://github.com/dowdiness/loom/pull/566), [#567](https://github.com/dowdiness/loom/pull/567), [#568](https://github.com/dowdiness/loom/pull/568)
 
@@ -77,7 +77,7 @@ Lambdaの名前解決を`@scope`へ一本化した（[#839](https://github.com/d
 
 ### Canopy / 定数畳み込みミドルウェアの追加と撤回
 
-同じ日に、興味深い設計判断があった。`EditMiddleware`パイプラインに`FoldConstants`ミドルウェアを追加し、`Bop(_, Int(a), Int(b))`のようなノードへの`CommitEdit`を横取りして`1+2`を`3`へ畳み込む機能を入れた（[#842](https://github.com/dowdiness/canopy/pull/842)）。ところが数時間後、これを撤回した（[#843](https://github.com/dowdiness/canopy/pull/843)）。理由は、`EditMiddleware`はguard（検証・アクセス制御・監査ログ）のためのものであり、AST変換のためのものではない、という原則に立ち返ったこと。破壊的な簡約をミドルウェアで行うと、CRDT履歴上のユーザーの元の式（`1 + 2`と書いた意図そのもの）が失われてしまう。この問題はすでにe-graph最適化器と評価annotationによって非破壊的に解決されている（ホバーで畳み込み結果が見える。ソーステキストは変わらない）。TODO §8にこの設計上の結論を書き残した。
+同じ日に、興味深い設計判断があった。`EditMiddleware`パイプラインに`FoldConstants`ミドルウェアを追加し、`Bop(_, Int(a), Int(b))`のようなノードへの`CommitEdit`を横取りして`1+2`を`3`へ畳み込む機能を入れた（[#842](https://github.com/dowdiness/canopy/pull/842)）。ところが数時間後、これを撤回した（[#843](https://github.com/dowdiness/canopy/pull/843)）。理由は、`EditMiddleware`はguard（検証・アクセス制御・監査ログ）のためのものであり、AST変換のためのものではない、という原則に立ち返ったこと。破壊的な簡約をミドルウェアで行うと、CRDT履歴上のユーザーの元の式（`1 + 2`と書いた意図そのもの）が失われてしまう。この問題はすでにe-graph最適化器と評価annotationで非破壊的に解決されている（ホバーで畳み込み結果が見える。ソーステキストは変わらない）。TODO §8にこの設計上の結論を書き残した。
 
 ### Canopy / その他
 
@@ -89,7 +89,7 @@ Lambdaの名前解決を`@scope`へ一本化した（[#839](https://github.com/d
 
 incrの互換API surfaceを一括削除する0.13.0破壊的リリースの実行計画が固まった（[#341](https://github.com/dowdiness/incr/pull/341), [#342](https://github.com/dowdiness/incr/pull/342)）。ワークスペース境界とpinの整合をチェックする仕組み（[#347](https://github.com/dowdiness/incr/pull/347), [#348](https://github.com/dowdiness/incr/pull/348)）も入った。
 
-そして、TEAフレームワークを`examples/incr_tea`から独立ワークスペースモジュール`dowdiness/incr_tea`へ切り出した（[#349](https://github.com/dowdiness/incr/pull/349)）。incr本体のfacadeだけをimportする形で34ファイルを移動し、識別ADR（[#350](https://github.com/dowdiness/incr/pull/350)）では、incr_teaはあくまで実験的なもので、公開もされておらず0.13.0の安定性保証の対象でもなく、Rabbitaの置き換えでもないと明記した。目的は、実際のUIワークロードでincrの公開facadeに圧をかけ続けること。
+TEAフレームワークを`examples/incr_tea`から独立ワークスペースモジュール`dowdiness/incr_tea`へ切り出した（[#349](https://github.com/dowdiness/incr/pull/349)）。incr本体のfacadeだけをimportする形で34ファイルを移動し、識別ADR（[#350](https://github.com/dowdiness/incr/pull/350)）では、incr_teaはあくまで実験的なもので、公開もされておらず0.13.0の安定性保証の対象でもなく、Rabbitaの置き換えでもないと明記した。目的は、実際のUIワークロードでincrの公開facadeに圧をかけ続けること。
 
 ### js_engine
 
@@ -117,7 +117,7 @@ issue #345の決定に基づき、互換API surfaceを段階的な非推奨化�
 
 ### js_engine / regex性能とnative build修正、lookbehind実装
 
-`regex_search`の位置ループで発生していたタイムアウトを、候補位置スキャンの最適化で解消した（[#485](https://github.com/dowdiness/js_engine/pull/485)）。静的に絞り込める先頭文字（リテラル・文字クラス・最小回数>0の量指定子）を持つパターンでは、`advance_to_candidate`が一気に先へ進めるようになり、110万位置の非マッチスキャンが実質1回の走査に短縮された。`moon build --target native`が`moon clean`後に壊れる問題も直し（[#486](https://github.com/dowdiness/js_engine/pull/486)）、decodeURI/decodeURIComponentのDontEnum属性とURIError検証を追加した（[#492](https://github.com/dowdiness/js_engine/pull/492)）。そして、RegExpのlookbehind assertion `(?<=...)`/`(?<!...)`をパーサー・マッチャー・キャプチャまで含めてフル実装した（[#493](https://github.com/dowdiness/js_engine/pull/493)、test262 20/20）。
+`regex_search`の位置ループで発生していたタイムアウトを、候補位置スキャンの最適化で解消した（[#485](https://github.com/dowdiness/js_engine/pull/485)）。静的に絞り込める先頭文字（リテラル・文字クラス・最小回数>0の量指定子）を持つパターンでは、`advance_to_candidate`が一気に先へ進めるようになり、110万位置の非マッチスキャンが実質1回の走査に短縮された。`moon build --target native`が`moon clean`後に壊れる問題も直し（[#486](https://github.com/dowdiness/js_engine/pull/486)）、decodeURI/decodeURIComponentのDontEnum属性とURIError検証を追加した（[#492](https://github.com/dowdiness/js_engine/pull/492)）。RegExpのlookbehind assertion `(?<=...)`/`(?<!...)`をパーサー・マッチャー・キャプチャまで含めてフル実装した（[#493](https://github.com/dowdiness/js_engine/pull/493)、test262 20/20）。
 
 ### loom / lex mode APIとdocs検証の強化
 
@@ -133,7 +133,7 @@ issue #345の決定に基づき、互換API surfaceを段階的な非推奨化�
 
 前週の0.13.0に続き、「公開API境界の整理」を掲げた0.14.0リリースがこの日にまとまった。Phase 0として`Input::new`等に`#deprecated`を付け、`Scope::watch(derived)`でwatch作成・scope登録・初回読みを1回にまとめてGCの穴（初回読み前に`Runtime::gc()`すると上流グラフが掃かれてしまう）を塞いだ（[#353](https://github.com/dowdiness/incr/pull/353)）。Phase 1では、使われていないghost handle型（`InputId[T]`等）を削除し（[#354](https://github.com/dowdiness/incr/pull/354)）、その直後に見つかったinterior-mutationの穴――`InternTable`の可視性を`pub`に絞っても構造体リテラルの構築は防げるがフィールドの読み出しでは可変な`Array`がそのまま渡ってしまい、外から`table.values.push(...)`できてしまう――をMoonBitのフィールド単位`priv`で塞いだ（[#355](https://github.com/dowdiness/incr/pull/355)）。Phase 2では`get_result`の戻り値を`Result[T, CycleError]`から`Result[T, ReadError]`へ変え、破棄済みinputへのアクセスが`Err(Disposed(id))`になるようにした（[#357](https://github.com/dowdiness/incr/pull/357)）。これらをまとめてv0.14.0としてリリースした（[#358](https://github.com/dowdiness/incr/pull/358)、7件の破壊的変更）。
 
-リリース直後、`Expr[T]`という遅延評価の数式コンビネータ層（Track E）が入った（[#359](https://github.com/dowdiness/incr/pull/359)）。`(price.expr() * quantity.expr()).derived(label="subtotal")`のように演算子オーバーロードで式を組み立てられる。6月末のMemo→Derived移行以来ずっと残っていたissue #123を閉じた。
+リリース直後、遅延評価の数式コンビネータ層`Expr[T]`（Track E）が入った（[#359](https://github.com/dowdiness/incr/pull/359)）。`(price.expr() * quantity.expr()).derived(label="subtotal")`のように演算子オーバーロードで式を組み立てられる。6月末のMemo→Derived移行以来ずっと残っていたissue #123を閉じた。
 
 ### js_engine / 非同期イテレーションプロトコル実装
 
@@ -157,7 +157,7 @@ issue #345の決定に基づき、互換API surfaceを段階的な非推奨化�
 
 前日の続きが日付をまたいで収束した、比較的静かな一日。js_engineのsync `yield*`委譲修正が最後の30件を回収し、test262が**80/80（100%）**に到達した（[#502](https://github.com/dowdiness/js_engine/pull/502)）。`get_optional_method`がデータプロパティしか見ておらずアクセサgetterを呼び出していなかったのが原因で、test262のpoisoned-getterパターンを踏んでいた。
 
-loomでは、docs中のバッククォート `@pkg.Symbol` 表記をコミット済み`.mbti`と突き合わせて検証する`check-docs-symbols.py`を追加し（[#633](https://github.com/dowdiness/loom/pull/633)）、strict-LL（1）方式（orderd choiceではない）を採る決定を再確認する過程で、`A?`のようなnullableな選択肢が非空FIRSTを持つ場合のガード漏れ――生成される`Any → Fail`フォールバックが、文法上のε許容ケースを黙って実行時パースエラーへ変えてしまう――を見つけて直した（[#638](https://github.com/dowdiness/loom/pull/638)）。`#loom.ident` / `#loom.literal` / `#loom.trivia`にデフォルトのlexパターンを与え、よくあるトークン役割では明示的な`#loom.pattern(...)`を省略できるようにした（[#641](https://github.com/dowdiness/loom/pull/641)）。
+loomでは、docs中のバッククォート `@pkg.Symbol` 表記をコミット済み`.mbti`と突き合わせて検証する`check-docs-symbols.py`を追加し（[#633](https://github.com/dowdiness/loom/pull/633)）、strict-LL（1）方式（ordered choiceではない）を採る決定を再確認する過程で、`A?`のようなnullableな選択肢が非空FIRSTを持つ場合のガード漏れ――生成される`Any → Fail`フォールバックが、文法上のε許容ケースを黙って実行時パースエラーへ変えてしまう――を見つけて直した（[#638](https://github.com/dowdiness/loom/pull/638)）。`#loom.ident` / `#loom.literal` / `#loom.trivia`にデフォルトのlexパターンを与え、よくあるトークン役割では明示的な`#loom.pattern(...)`を省略できるようにした（[#641](https://github.com/dowdiness/loom/pull/641)）。
 
 主なPR / Issue: incr [#359](https://github.com/dowdiness/incr/pull/359) / js_engine [#502](https://github.com/dowdiness/js_engine/pull/502) / loom [#633](https://github.com/dowdiness/loom/pull/633), [#634](https://github.com/dowdiness/loom/pull/634), [#638](https://github.com/dowdiness/loom/pull/638), [#639](https://github.com/dowdiness/loom/pull/639), [#641](https://github.com/dowdiness/loom/pull/641)
 
@@ -197,7 +197,7 @@ lambda exampleを手書き文法から移行するための前提として、Pra
 
 ### loom
 
-Markdownのインライン構文（強調のデリミタスタックアルゴリズム、文書全体にまたがるlink reference definition、対応の取れた括弧を要するlinkの宛先）は、`derive(Eq, Debug)`な`Pred`が持てない可変なホスト状態を必要とするため、loomgenでは生成せず`@native`のまま残す、という恒久的な決定をADRに記した（[#643](https://github.com/dowdiness/loom/pull/643)）。これは「まだ手が回っていない」保留ではなく、明示的な「生成しない」決定だとADRは念を押している。理由は6月に`Custom(fn)`をIRから締め出した判断（#541）と同根で、強調のデリミタスタック処理も、文書全体を先に読んでから解決するlink reference definitionも、`GrammarIr`が「データだけ」であるという不変条件の中には収まらない。覆すとしたら、2つ目の言語が独立して同種のデリミタマッチングを必要とするようになるか、可変状態を持たずに`derive(Eq, Debug)`を保てる新しいプリミティブが設計されたときだけ、と再検討条件も明記されている。loomgenのターゲットはCommonMark**ブロック**部分集合のみで、インラインは対象外というのが最終的な線引きになる。`examples/moonbit`という新しいMoonBit言語のスケルトンパーサーが、block/if式（[#654](https://github.com/dowdiness/loom/pull/654)）、match式（[#655](https://github.com/dowdiness/loom/pull/655)）、MoonBit公式の優先順位表に沿ったPratt演算子式（[#656](https://github.com/dowdiness/loom/pull/656)）へと育った。`@native(name)`（手書きのホストparse関数を不透明な参照として文法に組み込む、[#659](https://github.com/dowdiness/loom/pull/659)）、`GoalTokenSource`（パーサーが指定した位置を指定した字句ゴールで再トークン化するオーバーレイ、[#660](https://github.com/dowdiness/loom/pull/660)）も入った。GoalTokenSourceは明示的にjs_engineの差分再パースパイプライン向けに書かれたもので、loomが将来JSも文法ホストの対象にする最初の具体的な証拠になる。`@native`が最後のChoice節にあるときはelse節として振る舞う仕様も追加した（[#661](https://github.com/dowdiness/loom/pull/661)）。
+Markdownのインライン構文（強調のデリミタスタックアルゴリズム、文書全体にまたがるlink reference definition、対応の取れた括弧を要するlinkの宛先）は、`derive(Eq, Debug)`な`Pred`が持てない可変なホスト状態を必要とするため、loomgenでは生成せず`@native`のまま残す、という恒久的な決定をADRに記した（[#643](https://github.com/dowdiness/loom/pull/643)）。これは「まだ手が回っていない」保留ではなく、明示的な「生成しない」決定だとADRは強調している。理由は6月に`Custom(fn)`をIRから締め出した判断（#541）と同根で、強調のデリミタスタック処理も、文書全体を先に読んでから解決するlink reference definitionも、`GrammarIr`が「データだけ」であるという不変条件の中には収まらない。覆すとしたら、2つ目の言語が独立して同種のデリミタマッチングを必要とするようになるか、可変状態を持たずに`derive(Eq, Debug)`を保てる新しいプリミティブが設計されたときだけ、と再検討条件も明記されている。loomgenのターゲットはCommonMark**ブロック**部分集合のみで、インラインは対象外とするのが最終的な線引き。`examples/moonbit`という新しいMoonBit言語のスケルトンパーサーが、block/if式（[#654](https://github.com/dowdiness/loom/pull/654)）、match式（[#655](https://github.com/dowdiness/loom/pull/655)）、MoonBit公式の優先順位表に沿ったPratt演算子式（[#656](https://github.com/dowdiness/loom/pull/656)）へと育った。`@native(name)`（手書きのホストparse関数を不透明な参照として文法に組み込む、[#659](https://github.com/dowdiness/loom/pull/659)）、`GoalTokenSource`（パーサーが指定した位置を指定した字句ゴールで再トークン化するオーバーレイ、[#660](https://github.com/dowdiness/loom/pull/660)）も入った。GoalTokenSourceは明示的にjs_engineの差分再パースパイプライン向けに書かれたもので、loomが将来JSも文法ホストの対象にする最初の具体的な証拠になる。`@native`が最後のChoice節にあるときはelse節として振る舞う仕様も追加した（[#661](https://github.com/dowdiness/loom/pull/661)）。
 
 主なPR / Issue: canopy [#871](https://github.com/dowdiness/canopy/pull/871) / incr [#373](https://github.com/dowdiness/incr/pull/373), [#374](https://github.com/dowdiness/incr/pull/374), [#378](https://github.com/dowdiness/incr/pull/378), [#379](https://github.com/dowdiness/incr/pull/379), [#380](https://github.com/dowdiness/incr/pull/380), [#381](https://github.com/dowdiness/incr/pull/381), [#382](https://github.com/dowdiness/incr/pull/382), [#383](https://github.com/dowdiness/incr/pull/383), [#384](https://github.com/dowdiness/incr/pull/384) / js_engine [#503](https://github.com/dowdiness/js_engine/pull/503), [#508](https://github.com/dowdiness/js_engine/pull/508), [#509](https://github.com/dowdiness/js_engine/pull/509) / loom [#643](https://github.com/dowdiness/loom/pull/643), [#649](https://github.com/dowdiness/loom/pull/649), [#651](https://github.com/dowdiness/loom/pull/651), [#653](https://github.com/dowdiness/loom/pull/653), [#654](https://github.com/dowdiness/loom/pull/654), [#655](https://github.com/dowdiness/loom/pull/655), [#656](https://github.com/dowdiness/loom/pull/656), [#659](https://github.com/dowdiness/loom/pull/659), [#660](https://github.com/dowdiness/loom/pull/660), [#661](https://github.com/dowdiness/loom/pull/661)
 
@@ -215,7 +215,7 @@ builtinのconstructor/prototypeインストールをatomicかつrealm間で一�
 
 EBNFの表現力が着々と広がった一日でもある: HTMLのlexerがscript/styleの内容を単なる`Text`としてタグ付けしていた（parser側の`RawTextLeaf`分岐が死んでいた）問題をmode-awareなstep lexerで直し（[#662](https://github.com/dowdiness/loom/pull/662)）、宣言的なエラー回復のための`@error_node(Kind, Token)`構文（[#663](https://github.com/dowdiness/loom/pull/663)）、オプショナルなスキップトークンを消費してから必須トークンを要求する`Token~>`（ExpectSkip、[#666](https://github.com/dowdiness/loom/pull/666)）、差分再利用に向く区切り付きリストの`{Sep}`（separated-list、[#667](https://github.com/dowdiness/loom/pull/667)）を追加した。
 
-しかし**この日いちばん大きな出来事は、手書きのコード生成パスそのものを丸ごと削除したこと**（[#672](https://github.com/dowdiness/loom/pull/672)）。ベンチマークの結果、tree-walkingする`@grammar.interpret`が、フルパースでは生成コードよりわずかに遅い（約1.25倍）ものの、差分再パースではむしろ速い（浅いケースで0.95倍、深いケースで0.91倍）ことが分かり、生成コードパスと同等の性能に達したと判断された。`emit_grammar.mbt`の766行を削除し、`mbt_ast.mbt`を581行から90行まで削り、8個の未使用型・10個の未使用variant・死んだPretty実装を除去した。これは、loomgenが自身の存在理由の一部（「速いから生成コードを使う」）を検証で否定し、interpretベースへ一本化した節目になる。
+しかし**この日いちばん大きな出来事は、手書きのコード生成パスそのものを丸ごと削除したこと**（[#672](https://github.com/dowdiness/loom/pull/672)）。ベンチマークの結果、tree-walkingする`@grammar.interpret`が、フルパースでは生成コードよりわずかに遅い（約1.25倍）ものの、差分再パースではむしろ速い（浅いケースで0.95倍、深いケースで0.91倍）ことが分かり、生成コードパスと同等の性能に達したと判断された。`emit_grammar.mbt`の766行を削除し、`mbt_ast.mbt`を581行から90行まで削り、8個の未使用型・10個の未使用variant・死んだPretty実装を除去した。loomgenが自身の存在理由の一部（「速いから生成コードを使う」）を検証で否定し、interpretベースへ一本化した節目になる。
 
 もう一つ、incrの新しいforce_setガード（[#373](https://github.com/dowdiness/incr/pull/373)）が実際にバグを捕まえた例があった。Lambdaのtypecheckパイプラインが`Derived::recompute_inner`実行中に`Input::set`を呼んでガードに引っかかり、propagation完了後のon_change境界へ同期処理を移す形で直した（[#675](https://github.com/dowdiness/loom/pull/675)）。
 
@@ -225,19 +225,19 @@ EBNFの表現力が着々と広がった一日でもある: HTMLのlexerがscrip
 
 ### Canopy / JSXという4番目の言語ターゲット
 
-CanopyにJSXという新しい言語ターゲットが生まれた。Lambda/JSON/Markdownに続く4番目になる。JSX計画のPhase 1を締め、loomの新しいstreaming-prefix JSX文法を取り込んだ（[#876](https://github.com/dowdiness/canopy/pull/876)）。そして、`lang/jsx/proj`として、CSTから`ProjNode[JsxNode]`への読み取り専用projectionを実装した（[#877](https://github.com/dowdiness/canopy/pull/877)）。既存の「言語追加手順書」通りに、`@core.build_projection_memos`や`ProjNode::leaf`/`branch`、`SourceMap::set_token_span`をそのまま再利用し、手組みの再構成ロジックを足さずに済んだ。Phase 2で要求されている「存在証明」テスト――単調に伸びていくJSXの断片（トークンの途中で切れたものも含む）を`@loom.Parser`へ流し込み、タグ名が確定した時点で`NodeId`が安定することを確認する――も入れた。Codexによる実装後レビューが実バグを発見しており、未クローズの要素で自身の開始タグの`>`を閉じタグの`>`と誤認識して`close_bracket`を記録していた問題を、3件のリグレッションテストとともに直した。まだ編集用のcompanionパッケージはなく、双方向編集はPhase 3へ持ち越しになっている。
+CanopyにJSXという新しい言語ターゲットが生まれた。Lambda/JSON/Markdownに続く4番目になる。JSX計画のPhase 1を締め、loomの新しいstreaming-prefix JSX文法を取り込んだ（[#876](https://github.com/dowdiness/canopy/pull/876)）。`lang/jsx/proj`として、CSTから`ProjNode[JsxNode]`への読み取り専用projectionを実装した（[#877](https://github.com/dowdiness/canopy/pull/877)）。既存の「言語追加手順書」通りに、`@core.build_projection_memos`や`ProjNode::leaf`/`branch`、`SourceMap::set_token_span`をそのまま再利用し、手組みの再構成ロジックを足さずに済んだ。Phase 2で要求されている「存在証明」テスト――単調に伸びていくJSXの断片（トークンの途中で切れたものも含む）を`@loom.Parser`へ流し込み、タグ名が確定した時点で`NodeId`が安定することを確認する――も入れた。Codexによる実装後レビューが実バグを発見しており、未クローズの要素で自身の開始タグの`>`を閉じタグの`>`と誤認識して`close_bracket`を記録していた問題を、3件のリグレッションテストとともに直した。まだ編集用のcompanionパッケージはなく、双方向編集はPhase 3へ持ち越しになっている。
 
 ### js_engine / cache-for-Xの完了、host object API、private field
 
 cache-for-X移行がPromise（[#515](https://github.com/dowdiness/js_engine/pull/515)）とboxed primitives（String/Number/Boolean/Symbol、[#516](https://github.com/dowdiness/js_engine/pull/516)）で完了し、6つあった`install_realm_pinned_builtin_constructor_*`亜種を1つの関数と`pub(all) enum BuiltinCtorPrototypeInstall`へ統合した（[#520](https://github.com/dowdiness/js_engine/pull/520)）。realm-proto walk/StdlibHooks/get_*_proto+prototype chainという3つの独立したbuiltinプロパティ検索機構の統合は、いまはあえて見送り、境界を図で明文化するにとどめた（[#521](https://github.com/dowdiness/js_engine/pull/521)）。
 
-続けて、埋め込み利用者向けの**host-object API**を実装した(JSからは見えない不透明な`HostSlotKey`のget/set/delete/has、メソッド・アクセサ・凍結データ・host slotを1回で組み立てる`make_host_object`ファクトリ、embeddingの手引きまで、[#522](https://github.com/dowdiness/js_engine/pull/522), [#523](https://github.com/dowdiness/js_engine/pull/523), [#524](https://github.com/dowdiness/js_engine/pull/524)）。JSON.stringifyのProxy trapがstringify走査中に発火しない問題も直し（test262 55.2%→75.9%、[#526](https://github.com/dowdiness/js_engine/pull/526)）、そして**class private field・private method・static blockをES2022仕様通り実装**した（[#527](https://github.com/dowdiness/js_engine/pull/527)、2394テスト）。`obj.#x = val`という代入だけは翌日への持ち越しになった。
+続けて、埋め込み利用者向けの**host-object API**を実装した（JSからは見えない不透明な`HostSlotKey`のget/set/delete/has、メソッド・アクセサ・凍結データ・host slotを1回で組み立てる`make_host_object`ファクトリ、embeddingの手引きまで、[#522](https://github.com/dowdiness/js_engine/pull/522), [#523](https://github.com/dowdiness/js_engine/pull/523), [#524](https://github.com/dowdiness/js_engine/pull/524)）。JSON.stringifyのProxy trapがstringify走査中に発火しない問題も直し（test262 55.2%→75.9%、[#526](https://github.com/dowdiness/js_engine/pull/526)）、**class private field・private method・static blockをES2022仕様通り実装**した（[#527](https://github.com/dowdiness/js_engine/pull/527)、2394テスト）。`obj.#x = val`という代入だけは翌日への持ち越しになった。
 
 ### loom / GrammarIRプロパティテストとJSXの文法側
 
 GrammarIRのプロパティテストが成熟し、複数規則+`Ref`対応と参照インタプリタによる相互検証（[#679](https://github.com/dowdiness/loom/pull/679)）、反例最小化のための`Shrink`実装（[#682](https://github.com/dowdiness/loom/pull/682)）、23個の`Expr` variant全体への再帰的`Shrink`と診断メッセージの一致検証（[#684](https://github.com/dowdiness/loom/pull/684)、この過程で参照実装と実インタプリタのエラー文言の不一致を発見）が入った。
 
-そして、**CanopyのJSX計画に対応するloom側の文法**として、streaming-prefix JSX文法exampleを実装した（[#680](https://github.com/dowdiness/loom/pull/680)）。モード切り替え式のlexer（Children/TagBody/JsExprRaw（depth））、文字列リテラルを意識した波括弧深さ追跡、HTMLの回復方針（診断はノード生成を妨げない、`skip_until_progress`を使う）を踏襲した再帰下降パーサーで、73/73テストが通った。作る過程でHTMLの`parse_html_root`が`RootNode`を二重に包んでいたバグも見つけて直した（[#686](https://github.com/dowdiness/loom/pull/686)）。
+**CanopyのJSX計画に対応するloom側の文法**として、streaming-prefix JSX文法exampleを実装した（[#680](https://github.com/dowdiness/loom/pull/680)）。モード切り替え式のlexer（Children/TagBody/JsExprRaw（depth））、文字列リテラルを意識した波括弧深さ追跡、HTMLの回復方針（診断はノード生成を妨げない、`skip_until_progress`を使う）を踏まえた再帰下降パーサーで、73/73テストが通った。実装の過程でHTMLの`parse_html_root`が`RootNode`を二重に包んでいたバグも見つけて直した（[#686](https://github.com/dowdiness/loom/pull/686)）。
 
 そのほかloomgen周りの小さな進展: `#loom.recovery("sync")`アノテーションでHTML/JSX/Lambdaの手書き`is_sync_point`を生成コードへ移行（[#690](https://github.com/dowdiness/loom/pull/690), [#692](https://github.com/dowdiness/loom/pull/692)）、`@fragment`参照ごとの`pub let frag_<name>`宣言自動生成（[#693](https://github.com/dowdiness/loom/pull/693)）、JSONの`syntax_kind.mbt`をloomgen生成へ移す作業（[#696](https://github.com/dowdiness/loom/pull/696)）、ブロックレベルのトークンを行単位で生成する`#loom.line_pattern`（長らく開いていた#561を閉じ、後のMarkdown向けレクサ生成の布石になる、[#698](https://github.com/dowdiness/loom/pull/698)）。
 
@@ -249,9 +249,9 @@ GrammarIRのプロパティテストが成熟し、複数規則+`Ref`対応と�
 
 ## 2026/7/12
 
-前日仕上げたclass private fieldに、代入だけ残っていた`obj.#x = val`を実装した（`PrivateMemberAssign`ノード追加、[#532](https://github.com/dowdiness/js_engine/pull/532)）。
+前日仕上げたclass private fieldに、残っていた`obj.#x = val`の代入を実装した（`PrivateMemberAssign`ノード追加、[#532](https://github.com/dowdiness/js_engine/pull/532)）。
 
-そしてCanopyに、JSXの上に立つ**「generative UI（GenUI）」という新しい実験**が姿を見せ始めた。GenUIデモの安定化として3つのバグを直した（[#885](https://github.com/dowdiness/canopy/pull/885)）。`reset_jsx_state`がmoon.pkgのexportには残っているのにMoonBit側の定義が消えておりリンカが黙って落としていた問題、ストリーミング中の途中経過（`<div><p>text</p>\n<`のような断片）が空タグの`Element`回復ノードを生み、それが`document.createElement('')`のクラッシュにつながっていた問題（空タグのコンテナは透過的な回復殻として扱い、子要素を親へ昇格させる形で解決）、そしてプレビュー領域に強制していたCSSの枠線・パディングを外し、入力側の`class`属性だけで見た目が決まるようにした問題。
+Canopyに、JSXの上に立つ**「generative UI（GenUI）」という新しい実験**が姿を見せ始めた。GenUIデモの安定化として3つのバグを直した（[#885](https://github.com/dowdiness/canopy/pull/885)）。`reset_jsx_state`がmoon.pkgのexportには残っているのにMoonBit側の定義が消えておりリンカが黙って落としていた問題、ストリーミング中の途中経過（`<div><p>text</p>\n<`のような断片）が空タグの`Element`回復ノードを生み、それが`document.createElement('')`のクラッシュにつながっていた問題（空タグのコンテナは透過的な回復殻として扱い、子要素を親へ昇格させる形で解決）、プレビュー領域に強制していたCSSの枠線・パディングを外し、入力側の`class`属性だけで見た目が決まるようにした問題。
 
 このデモを支えるため、JSXのFFIセッションに所有権の契約を導入した（[#887](https://github.com/dowdiness/canopy/pull/887)）。それまでモジュールレベルのグローバル1つに依存していたのを、セッションごとにパーサー・projection memo・DOM registry・revision counter・診断・破棄処理を持つ形へ変えた。
 
@@ -285,29 +285,27 @@ reconcileの核心的なバグも直した（[#892](https://github.com/dowdiness
 
 ### incr / 保持コストのベンチマークと「直さない」という決定
 
-Duplixに着想を得た保持コスト（retention cost）のベンチマーク一式を追加した（[#398](https://github.com/dowdiness/incr/pull/398)）。放置された購読者・破棄し忘れたeagerセル・動的サブグラフの churn といった「後片付けを忘れたときのコスト」を28本のベンチマークで定量化した。数字が具体的で、たとえば同一rootでのpush経路は1,000件で24.3µs、10,000件で757.5µsまで伸びる一方、破棄・GC制御を入れると75-84倍安くなる。重要なのは、いくつかの問題を「まだ直っていない」と明記して締めたこと――一部の制御は完全にはフラットにならず、10,000件のケースは1,000件に比べて超線形になる。これに続くdocsで、以前の実行計画にあった「3つのresolver亜種が併存している」という前提が古く、実際は7/2の[#839](https://github.com/dowdiness/canopy/pull/839)（Lambda名前解決の`@scope`統合）ですでに解消済みだったことを見つけて訂正した（[#400](https://github.com/dowdiness/incr/pull/400)）。
+Duplixに着想を得た保持コスト（retention cost）のベンチマーク一式を追加した（[#398](https://github.com/dowdiness/incr/pull/398)）。放置された購読者・破棄し忘れたeagerセル・動的サブグラフのchurnといった「後片付けを忘れたときのコスト」を28本のベンチマークで定量化した。数字が具体的で、たとえば同一rootでのpush経路は1,000件で24.3µs、10,000件で757.5µsまで伸びる一方、破棄・GC制御を入れると75–84倍安くなる。重要なのは、いくつかの問題を「まだ直っていない」と明記して締めたこと――一部の制御は完全にはフラットにならず、10,000件のケースは1,000件に比べて超線形になる。これに続くdocsで、以前の実行計画にあった「3つのresolver亜種が併存している」という前提が古く、実際は7/2の[#839](https://github.com/dowdiness/canopy/pull/839)（Lambda名前解決の`@scope`統合）ですでに解消済みだったことを見つけて訂正した（[#400](https://github.com/dowdiness/incr/pull/400)）。
 
 ### loom / speculativeからlookaheadへ
 
-グラマー-as-dataのlambda回復が、生成された共有sync述語を使うようになり、パラメータの型注釈が壊れているときの診断とCST構造の対応が回復した（[#714](https://github.com/dowdiness/loom/pull/714)）。Markdownの純粋な先読み（checkpoint/restoreのペア）を`ParserContext::speculative`へ移行し（[#715](https://github.com/dowdiness/loom/pull/715)）、その直後に`speculative`という名前自体を`lookahead`へ変更した（[#717](https://github.com/dowdiness/loom/pull/717)）。地味なリネームだが、これは翌々日の「structural prefix dispatch」に向けたAPI明確化の布石になる。ベンチマークの棚卸しも行い、105行あったbaseline-onlyの行をevent-graph-walkerの廃止分と確認し、実行結果は5件のしきい値超過をすべて計測ノイズと判定した（[#713](https://github.com/dowdiness/loom/pull/713)）。
+グラマー-as-dataのlambda回復が、生成された共有sync述語を使うようになり、パラメータの型注釈が壊れているときの診断とCST構造の対応が回復した（[#714](https://github.com/dowdiness/loom/pull/714)）。Markdownの純粋な先読み（checkpoint/restoreのペア）を`ParserContext::speculative`へ移行し（[#715](https://github.com/dowdiness/loom/pull/715)）、その直後に`speculative`という名前自体を`lookahead`へ変更した（[#717](https://github.com/dowdiness/loom/pull/717)）。地味なリネームだが、翌々日の「structural prefix dispatch」に向けたAPI明確化の布石になる。ベンチマークの棚卸しも行い、105行あったbaseline-onlyの行をevent-graph-walkerの廃止分と確認し、実行結果は5件のしきい値超過をすべて計測ノイズと判定した（[#713](https://github.com/dowdiness/loom/pull/713)）。
 
 主なPR / Issue: incr [#398](https://github.com/dowdiness/incr/pull/398), [#400](https://github.com/dowdiness/incr/pull/400) / loom [#710](https://github.com/dowdiness/loom/pull/710), [#713](https://github.com/dowdiness/loom/pull/713), [#714](https://github.com/dowdiness/loom/pull/714), [#715](https://github.com/dowdiness/loom/pull/715), [#717](https://github.com/dowdiness/loom/pull/717)
 
 ## 2026/7/15
 
-### Canopy / GenUIの現在地とkill date付きの次の実験
+### Canopy / GenUIの現在地と kill date 付きの次の実験
 
-GenUIのブラウザ障害回復スライスを完成させた（[#893](https://github.com/dowdiness/canopy/pull/893)、Playwright 14/14）。検証・dry-run・DOM適用・回復・「厳密に1回だけコミットされる」ことの証跡までを扱う。ただし、実プロバイダ（Gemini等）との接続はまだ含まれていないと明記されている――ここまではあくまで足場。決定論的な非同期ドライバも追加し（[#894](https://github.com/dowdiness/canopy/pull/894)）、Promise/Abortの経路でchunk・final・プロバイダ失敗・キャンセル・遅延到着を処理し、プロバイダの直接rejectionでは該当する世代だけを確実に終端させつつ、すでに終了した世代からの遅れてきた結果は無視する。
+GenUI のブラウザ障害回復スライスを完成させた（[#893](https://github.com/dowdiness/canopy/pull/893)、Playwright 14/14）。検証・dry-run・DOM 適用・回復・「厳密に 1 回だけコミットされる」ことの証跡までを扱う。実プロバイダ（Gemini 等）との接続はまだ含まれていない。決定論的な非同期ドライバも追加し（[#894](https://github.com/dowdiness/canopy/pull/894)）、chunk・キャンセル・遅延到着を処理する。
 
-そして、実プロバイダを実際に繋ぐための、削除可能な実験の設計書が出た（[#897](https://github.com/dowdiness/canopy/pull/897)）。「プロバイダ/ネットワーク実装も資格情報の使用も、まだ何も認可しない」と明記された設計のみのドキュメントで、出発点は「構文的に妥当なcommitはvalueの証拠にならない」という一文にある。プロバイダはno-opや無意味なパネル、タスクを満たさない妥当なテーブルを返すこともでき、いまのレンダラーは検証済みの`table`/`filter`/`summary`ノードを空の宣言的マーカーへ落とすだけで、実際に動くJSON/CSV Explorerはそれとは別の固定ホストUIとして存在している。この状態のままプロバイダを繋いでも、測れるのは「候補の形」であって「誰かが実際に使えるUI」ではない、という問題意識が全体を貫いている。
-
-そのため、実プロバイダの前に「セッション所有の、1つだけの機能的projection」を証明することを前提条件に据えた。検証済みcandidateは構造だけを選び、信頼されたホストcontextがデータと操作状態を供給し、既存セッションのdry-run/commit/recovery境界がその可視Explorerを唯一のDOM所有者として持つ。検討して退けた代替案も明記されている――マーカーtreeと別のExplorerを同期させる案は、DOMツリーを2つ更新する分散トランザクションになり、focus/listener/custom-element効果をDOMスナップショットで巻き戻せないため却下。候補プログラムを描画せずスコアリングするだけの案は「人が使えるか」を証明できずkeep/delete判断を骨抜きにするため却下。ブラウザから直接Gemini APIを呼ぶ案は、APIキーをheaderへ移してもブラウザに露出する以上secretにならないため却下。汎用プロバイダインターフェースの設計も、1つのアダプタだけではrenderer非依存の不変条件を確立できないとして却下されている。バックエンドはGemini Developer APIの`gemini-3.5-flash`を固定し、ストリーミングではなく一括のスキーマ制約付きJSON生成、ローカル限定のsame-originプロキシ経由とすることまで具体的に定めている。3つの固定fixtureとブラインドな有用性評価、コスト/レイテンシの上限を課したうえで、**2026/7/29という明確な継続/削除の判断日**を設け、証拠が不十分ならDELETEをデフォルトとする、と念を押している。ここまでの流れを振り返ると、GenUIの正体は「ストリーミングで届くLLMの出力を、構造的に妥当性検証されたJSXとして逐次パースし、差分reconcileでDOMへ反映する」という実験であり、この時点ではまだプロバイダなしの合成データだけで組み立てられている。
+実プロバイダを繋ぐための削除可能な実験の設計書も出た（[#897](https://github.com/dowdiness/canopy/pull/897)）。出発点は「構文的に妥当な commit は value の証拠にならない」という問題意識で、**2026/7/29** を継続/削除の判断日（kill date）とし、証拠不十分なら DELETE をデフォルトとする。却下した代替案・実験スコープ・前提条件の詳細は [[Canopy-GenUI実験-2026年7月|GenUI 実験の設計メモ]] にまとめた。
 
 これとは別に、Idealのapp層をモジュール化するリファクタも入った（[#895](https://github.com/dowdiness/canopy/pull/895)）。明示的なroot reactive stateとaction-overlayパッケージの抽出に加え、共有JS FFI基盤を新しいリポジトリ`dowdiness/js_ffi`として切り出し、`lib/dom-boundary`をCanopy本体から独立させた。
 
 ### js_engine / v0.6.0リリース
 
-コマンドのトークナイズ処理を、Test262 runnerとベンチマークツールで別々に実装されていた`shlex_split`もどきから、1つの共有`tokenize_command`ヘルパーへ統一した（[#539](https://github.com/dowdiness/js_engine/pull/539)）。より大きな一手として、同じJSレルムを繰り返しの`eval`/`call_json`呼び出しにまたがって保持し続ける、永続的なroot-package `Engine`を追加した（[#540](https://github.com/dowdiness/js_engine/pull/540)、#242を閉じる）。これまでの一回限りの`run*`facadeでは呼び出しのたびにインタプリタを作り直す必要があったが、embedderはこれで状態を保ったまま呼び出しを重ねられるようになった。JSON境界は厳密に保ち（可変なグローバル`JSON`もgetterも許さない）、明示的なmicrotask/timerのcheckpoint制御も持つ。そして、これらをまとめて**v0.6.0**としてリリースした（[#541](https://github.com/dowdiness/js_engine/pull/541)）。6/27の[#476](https://github.com/dowdiness/js_engine/pull/476)からここまでの全変更を含む。
+コマンドのトークナイズ処理を、Test262 runnerとベンチマークツールで別々に実装されていた`shlex_split`もどきから、1つの共有`tokenize_command`ヘルパーへ統一した（[#539](https://github.com/dowdiness/js_engine/pull/539)）。より大きな一手として、同じJSレルムを繰り返しの`eval`/`call_json`呼び出しにまたがって保持し続ける、永続的なroot-package `Engine`を追加した（[#540](https://github.com/dowdiness/js_engine/pull/540)、#242を閉じる）。これまでの一回限りの`run*`facadeでは呼び出しのたびにインタプリタを作り直す必要があったが、embedderはこれで状態を保ったまま呼び出しを重ねられるようになった。JSON境界は厳密に保ち（可変なグローバル`JSON`もgetterも許さない）、明示的なmicrotask/timerのcheckpoint制御も持つ。これらをまとめて**v0.6.0**としてリリースした（[#541](https://github.com/dowdiness/js_engine/pull/541)）。6/27の[#476](https://github.com/dowdiness/js_engine/pull/476)からここまでの全変更を含む。
 
 ### incr
 
@@ -315,10 +313,10 @@ incr_teaの親子合成・意味的アイデンティティ・世代交代・リ
 
 ### loom
 
-「structural prefix dispatch」の準備として、Markdownの候補コンテキストに応じたブロック再パーサー選択を整理した（[#718](https://github.com/dowdiness/loom/pull/718)）。これは#484のネイティブcode-span実装そのものではなく、その前段の準備。前日の`speculative`→`lookahead`リネームの成果を実際に使う形で、prefixを持つ構造ブロック（fence/quote）を所有root/blockquote/list-itemへ正しくルーティングし、CommonMarkの段落中断規則（インデントされたコードブロックには空行が必要、prefix付きのfence/quoteはcontainerの所有権を保つ）も直した。
+「structural prefix dispatch」の準備として、Markdownの候補コンテキストに応じたブロック再パーサー選択を整理した（[#718](https://github.com/dowdiness/loom/pull/718)）。#484のネイティブcode-span実装そのものではなく、その前段の準備。前日の`speculative`→`lookahead`リネームの成果を実際に使う形で、prefixを持つ構造ブロック（fence/quote）を所有root/blockquote/list-itemへ正しくルーティングし、CommonMarkの段落中断規則（インデントされたコードブロックには空行が必要、prefix付きのfence/quoteはcontainerの所有権を保つ）も直した。
 
 主なPR / Issue: canopy [#893](https://github.com/dowdiness/canopy/pull/893), [#894](https://github.com/dowdiness/canopy/pull/894), [#895](https://github.com/dowdiness/canopy/pull/895), [#897](https://github.com/dowdiness/canopy/pull/897) / incr [#401](https://github.com/dowdiness/incr/pull/401), [#402](https://github.com/dowdiness/incr/pull/402), [#403](https://github.com/dowdiness/incr/pull/403), [#404](https://github.com/dowdiness/incr/pull/404) / js_engine [#539](https://github.com/dowdiness/js_engine/pull/539), [#540](https://github.com/dowdiness/js_engine/pull/540), [#541](https://github.com/dowdiness/js_engine/pull/541) / loom [#718](https://github.com/dowdiness/loom/pull/718)
 
 ### 作業運用メモ
 
-7月前半を振り返ると、incrの2度の破壊的リリース（0.13.0/0.14.0）がloomとCanopyのpin更新を連鎖させ、loomgenは自らの手書きコード生成パスを削って身軽になり、その空いた足場の上でCanopyのJSXとGenUIという新しい実験が急速に立ち上がった。GenUIは2026/7/29という明確なkill dateを持つ実験として設計されており、この日を境にCanopyが本当にLLM出力を直接構造編集の対象にする方向へ進むのか、それとも足場だけ残して畳まれるのかが見えてくる。
+7月前半を振り返ると、incrの2度の破壊的リリース（0.13.0/0.14.0）がloomとCanopyのpin更新を連鎖させ、loomgenは手書きコード生成パスを削って身軽になった。その足場の上でCanopyのJSXとGenUIという新実験が急速に立ち上がった。GenUIは2026/7/29という明確なkill dateを持つ実験として設計されており、この日を境にCanopyがLLM出力を直接構造編集の対象にする方向へ進むのか、足場だけ残して畳まれるのかが見えてくる。

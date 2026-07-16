@@ -3,18 +3,18 @@ title: Canopy開発日誌-6月-まとめ
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-07-16T10:50:00+09:00
-modified: 2026-07-16T10:50:00+09:00
+modified: 2026-07-16T13:10:00+09:00
 ---
 
 # Canopy開発日誌-6月-まとめ
 
 2分で読める月次まとめ。日々の詳細は[[Canopy開発日誌-6月|通常版の日誌]]を、英語版は[[Canopy-June-2026-Highlights|Highlights (English)]]を参照。
 
-> Canopyは、ソースコードを文字列ではなく構造（IR）として扱うエディタです。文字列を正として保ちつつ、そこから導出したプログラムの意味単位を直接操作することで、安全な構造編集やAI・複数人との協調作業がしやすくなります。詳しくは[[Canopyとは]]。
+> ソースコードを構造（IR）として編集する MoonBit 製エディタ。概要は[[Canopyとは]]。
 
 ## 1. 構造編集で意味が静かに変わることがなくなった
 
-Lambda編集が一つの節目を迎えた。rename・move・duplicate・extract-to-letが、module直下だけでなくblock内のbindingでも動くようになり、しかもすべての編集が「編集後テキストを再パースして意図したASTになるか」で検証されるようになった。ここに至るには、bindingをlambdaパラメータの前へ動かすと参照先が静かに変わってしまうケースを捕まえるscope graphベースのshadowingチェックが必要だった。名前ではなくbinder identityで計算するalpha-safe beta reductionの実験も始まった。
+Lambda編集が一つの節目を迎えた。rename・move・duplicate・extract-to-letが、module直下だけでなくblock内のbindingでも動くようになり、すべての編集が「編集後テキストを再パースして意図したASTになるか」で検証されるようになった。ここに至るには、bindingをlambdaパラメータの前へ動かすと参照先が静かに変わってしまうケースを捕まえる、scope graphベースのshadowingチェックが必要だった。名前ではなくbinder identityで計算するalpha-safe beta reductionの実験も始まった。
 
 ## 2. 編集してもNodeIdが残る
 
@@ -22,7 +22,7 @@ Lambda編集が一つの節目を迎えた。rename・move・duplicate・extract
 
 ## 3. Markdownが2番目の構造編集対象言語に
 
-見出しやリスト項目に、壊れたparseや一時的な消失をまたいで安定したidentityを持たせた（parse validityでgateされたretention/retiredのライフサイクル）。同一リスト内でのitem moveも、安全でない移動をきちんと弾いたうえで動くようになった。SDEG（Structure-Directed Edit Grammar）というidentity側表を使うアプローチは、他の言語へも一般化していく土台になる。
+見出しやリスト項目に、壊れたparseや一時的な消失をまたいでも安定したidentityを持たせた（parse validityでgateされたretention/retiredのライフサイクル）。同一リスト内でのitem moveも、安全でない移動をきちんと弾いたうえで動くようになった。SDEG（Structure-Directed Edit Grammar）というidentity側表を使うアプローチは、他の言語へも一般化していく土台になる。
 
 ## 4. 外部解析ツールを、CRDTを壊さずに取り込む
 
@@ -34,7 +34,7 @@ MoonBit製のJSインタプリタがv0.3.0をリリースし、体系的なtest2
 
 ## 6. ビルドが「大人」になった
 
-Canopyが所有する全マニフェストがmoon.mod.jsonからmoon.mod（TOML）へ移行し、13 submoduleがworkspace memberになった。長らく残っていた依存解決の回避策が解消された。ベンチマークのリグレッション検知もPR gateに近づき、「skipはgreenではない」という明確なルールも定まった。
+Canopyが所有する全マニフェストがmoon.mod.jsonからmoon.mod（TOML）へ移行し、13 submoduleがworkspace memberになった。長らく残っていた依存解決の回避策も解消された。ベンチマークのリグレッション検知がPR gateに近づき、「skipはgreenではない」という明確なルールも定まった。
 
 ## 7. 月末、loomgenの誕生とincrのMemo削除、新しいCanopyエディタ2本
 

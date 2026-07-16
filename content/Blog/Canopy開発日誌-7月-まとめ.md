@@ -3,14 +3,14 @@ title: Canopy開発日誌-7月-まとめ
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-07-16T10:55:00+09:00
-modified: 2026-07-16T10:26:03+09:00
+modified: 2026-07-16T13:10:00+09:00
 ---
 
 # Canopy開発日誌-7月-まとめ
 
 2分で読める月次まとめ。日々の詳細は[[Canopy開発日誌-7月|通常版の日誌]]を、英語版は[[Canopy-July-2026-Highlights|Highlights (English)]]を参照。
 
-> Canopyは、ソースコードを文字列ではなく構造（IR）として扱うエディタです。文字列を正として保ちつつ、そこから導出したプログラムの意味単位を直接操作することで、安全な構造編集やAI・複数人との協調作業がしやすくなります。詳しくは[[Canopyとは]]。
+> ソースコードを構造（IR）として編集する MoonBit 製エディタ。概要は[[Canopyとは]]。
 
 ## 1. incrが破壊的リリースを2連発
 
@@ -28,13 +28,13 @@ loomのコード生成ツールloomgenは、月の前半に新しいEBNF演算�
 
 Lambda・JSON・Markdownと同じやり方で、CSTから`ProjNode`への読み取り専用projectionがJSX向けに実装された。既存の仕組みをそのまま再利用しており、新しい統合を手組みする必要はなかった。
 
-## 5. generative UIが現れ、そして「終了日」を持つ
+## 5. generative UIが現れ、判断日 7/29 を持つ
 
-JSXが入ってから数日のうちに、CanopyはLLM風の出力を構造的に検証されたJSXへストリーミングでパースし、DOMへreconcileするところまで進んだ。ステートフルなセッションモデル、重複sibling識別子の修正、決定論的な非同期ドライバ、ブラウザ障害回復スライスが次々に入った。この月でいちばん興味深い文書は、これを「完成」と呼ぶのを拒む文書――構文的に妥当な結果は誰かが使えることの証拠にならない、と明言したうえで、実プロバイダを実際に繋ぐための厳密にスコープされた実験設計であり、**2026年7月29日という明確な継続/削除の判断日**を持つ。
+JSX 投入後数日で、LLM 出力を検証済み JSX としてストリーミングパースし DOM へ reconcile する GenUI 実験が立ち上がった。ただし **構文が正しいだけでは「使える UI」の証拠にならない**——これが実験設計の出発点だ。実プロバイダ接続の前に「セッション所有の 1 つの機能的 projection」を証明する方針で、**2026/7/29** を継続/削除の判断日（kill date）とした。証拠が不十分なら DELETE がデフォルト。詳細は[[Canopy-GenUI実験-2026年7月|GenUI 実験の設計メモ]]。
 
 ## 6. js_engineがv0.6.0をリリース
 
-`for await`/非同期iterationがtest262適合率100%に到達し、RegExpのlookbehind assertionが入り、Map・Set・Array・Promise・boxed primitivesを含む全stdlib builtinが単一のatomicなインストール契約へ移行し、埋め込み利用者向けのhost-object APIが実装され、class private field/method/static blockが仕様通り実装された――これらをまとめてv0.6.0としてリリースした。
+`for await`/非同期iterationがtest262適合率100%に到達し、RegExpのlookbehind assertionが入り、Map・Set・Array・Promise・boxed primitivesを含む全stdlib builtinが単一のatomicなインストール契約へ移行し、埋め込み利用者向けのhost-object APIが実装され、class private field/method/static blockが仕様通り実装された。これらをまとめてv0.6.0としてリリースした。
 
 ---
 

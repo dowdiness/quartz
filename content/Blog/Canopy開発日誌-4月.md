@@ -3,46 +3,46 @@ title: Canopy開発日誌-4月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-06-23T03:38:00+09:00
-modified: 2026-06-23T11:44:11+09:00
+modified: 2026-07-16T13:10:00+09:00
 ---
 
 # Canopy開発日誌-4月
 
-2026年4月のCanopy開発ログ。4月はeditor protocolの統一、pretty-printer ViewNode bridge、Markdown block editor、generic B-tree、Confidence lattice、drag-and-drop、Web E2E、loom Parser[T]統一、moon.work workspace導入など、Canopyの土台を次の段階へ引き上げる月になった。
+2026年4月のCanopy開発ログ。4月はeditor protocolの統一、pretty-printer ViewNode bridge、Markdown block editor、generic B-tree、Confidence lattice、drag-and-drop、Web E2E、loom Parser[T]統一、moon.work workspace導入など、Canopyの土台を次の段階へ引き上げた月である。
 
-> Canopyは、ソースコードを文字列ではなく構造（IR）として扱うエディタです。文字列を正として保ちつつ、そこから導出したプログラムの意味単位を直接操作することで、安全な構造編集やAI・複数人との協調作業がしやすくなります。
+> ソースコードを構造（IR）として編集する MoonBit 製エディタ。概要は[[Canopyとは]]。
 
 ## 今月の大きな流れ
 
-- **EditorProtocol**: Ideal editorとprosemirror exampleをEditorProtocol経由に統一。CM6Adapter/PMAdapterを追加し、editorのadapter層を整理した。
-- **Pretty-printer bridge**: Wadler-Lindig pretty-printerの出力をViewNodeへ変換し、HTML syntax highlightingと統合。
-- **Markdown block editor**: Markdown用のblock editor、7つのMarkdown edit ops、three-mode web editor、block-input textarea overlay、MarkdownPreview semantic HTML adapterを実装。
-- **Container**: 文書をブロック単位で扱う編集コンテナ。Phase 2（text sync）、Phase 3（block doc sync）、document-level undo groupingを実装。
-- **Generic B-tree**: `lib/btree`を汎用B-tree libraryとして切り出し、order-treeと統合。range delete、splice promotion chain repairを実装。
-- **Semantic layer**: 推論結果の確信度を扱う`lib/semantic`を追加。Confidence lattice（確信度の階層構造）とsymbolic annotatorを実装。
-- **Language decoupling**: `LanguageCapabilities[T]`でSyncEditorからlambda-specific typesを切り離し、generic tree opを実現。
-- **Drag-and-drop**: Ideal editorとblock editorでdrag-and-drop foundation、semantic Before/After drop、grip-only drag、outline DnDを実装。
-- **Web E2E**: Lambda/JSON editorのE2EテストをCIへ追加。
-- **loom Parser[T]統一**: ReactiveParserを廃止し、unified `@loom.Parser[T]`へ移行。
-- **moon.work**: MoonBit workspace機構を導入し、依存方向ルールをCIで検証。
+- **EditorProtocol**: Ideal editorとprosemirror exampleをEditorProtocol経由に統一した。CM6Adapter/PMAdapterを追加し、editorのadapter層を整理した。
+- **Pretty-printer bridge**: Wadler-Lindig pretty-printerの出力をViewNodeへ変換し、HTML syntax highlightingと統合した。
+- **Markdown block editor**: Markdown用block editor、7つのMarkdown edit ops、three-mode web editor、block-input textarea overlay、MarkdownPreview semantic HTML adapterを実装した。
+- **Container**: 文書をブロック単位で扱う編集コンテナ。Phase 2（text sync）、Phase 3（block doc sync）、document-level undo groupingを実装した。
+- **Generic B-tree**: `lib/btree`を汎用B-tree libraryとして切り出し、order-treeと統合した。range delete、splice promotion chain repairを実装した。
+- **Semantic layer**: 推論結果の確信度を扱う`lib/semantic`を追加した。Confidence lattice（確信度の階層構造）とsymbolic annotatorを実装した。
+- **Language decoupling**: `LanguageCapabilities[T]`でSyncEditorからlambda-specific typesを切り離し、generic tree opを実現した。
+- **Drag-and-drop**: Ideal editorとblock editorでdrag-and-drop foundation、semantic Before/After drop、grip-only drag、outline DnDを実装した。
+- **Web E2E**: Lambda/JSON editorのE2EテストをCIへ追加した。
+- **loom Parser[T]統一**: ReactiveParserを廃止し、unified `@loom.Parser[T]`へ移行した。
+- **moon.work**: MoonBit workspace機構を導入し、依存方向ルールをCIで検証する仕組みを整えた。
 
 ## 4月第1週: EditorProtocol、pretty-printer、Markdown block editor
 
-editorとviewの接続方式をEditorProtocolに統一し、ideal editor/prosemirror example/CodeMirror 6を同じprotocolで扱えるようにした。同時にpretty-printerの出力をViewNodeへ橋渡しし、HTML syntax highlightingを実現。Markdown向けのblock editorも立ち上げ、複数言語・複数viewの編集基盤を並列して拡張した一週間。
+editorとviewの接続方式をEditorProtocolに統一し、ideal editor/prosemirror example/CodeMirror 6を同じprotocolで扱えるようにした。同時にpretty-printerの出力をViewNodeへ橋渡しし、HTML syntax highlightingを実現した。Markdown向けblock editorも立ち上げ、複数言語・複数viewの編集基盤を並行して拡張した一週間だった。
 
 ## 2026/4/1
 
-### Canopy / EditorProtocolとinspector panel
+### Canopy / EditorProtocol、pretty-printer、inspector panel
 
-EditorProtocol Phase 3〜5を実装。CM6Adapter/PMAdapter追加、Ideal editor protocol migration、prosemirror example migration。Ideal editorにsource range、text preview、token spansを表示するinspector panelを追加（[#107](https://github.com/dowdiness/canopy/pull/107)）。
+EditorProtocol Phase 3〜5を実装した。CM6Adapter/PMAdapterの追加、Ideal editor protocol migration、prosemirror example migrationを行った。Ideal editorにsource range、text preview、token spansを表示するinspector panelも追加した（[#107](https://github.com/dowdiness/canopy/pull/107)）。3月末に着手した Wadler-Lindig pretty-printer engine も annotation support 付きで実装し、`get_ast_pretty` へ統合した（[#106](https://github.com/dowdiness/canopy/pull/106)）。
 
-主なPR / Issue: canopy [#107](https://github.com/dowdiness/canopy/pull/107)
+主なPR / Issue: canopy [#106](https://github.com/dowdiness/canopy/pull/106), [#107](https://github.com/dowdiness/canopy/pull/107)
 
 ## 2026/4/2
 
 ### Canopy / Pretty-printer ViewNode bridge
 
-pretty-printer outputをViewNodeへ変換するbridgeを実装。`get_pretty_view`、`compute_pretty_patches`、HTMLAdapter syntax highlighting、FFI exports追加。projectionをlanguage-agnosticにするrefactorも並行して進行（[#109](https://github.com/dowdiness/canopy/pull/109)）。
+pretty-printer outputをViewNodeへ変換するbridgeを実装した。`get_pretty_view`、`compute_pretty_patches`、HTMLAdapter syntax highlighting、FFI exportsを追加した。projectionをlanguage-agnosticにするrefactorも並行して進めた（[#109](https://github.com/dowdiness/canopy/pull/109)）。
 
 主なPR / Issue: canopy [#109](https://github.com/dowdiness/canopy/pull/109)
 
@@ -51,7 +51,7 @@ pretty-printer outputをViewNodeへ変換するbridgeを実装。`get_pretty_vie
 ### Canopy / Container Phase 2とecho/TinySegmenter
 
 - Container Phase 2（shared global LVs、text sync）を実装（[#112](https://github.com/dowdiness/canopy/pull/112)）。
-- echo: コミット履歴や作業ログから意味的に関連する情報を探すAI検索機能。TinySegmenter + bigram blended tokenizerを実装（[#110](https://github.com/dowdiness/canopy/pull/110)）。
+- echo: コミット履歴や作業ログから意味的に関連する情報を探すAI検索機能。TinySegmenter + bigram blended tokenizerを実装した（[#110](https://github.com/dowdiness/canopy/pull/110)）。
 
 主なPR / Issue: canopy [#110](https://github.com/dowdiness/canopy/pull/110), [#112](https://github.com/dowdiness/canopy/pull/112)
 
@@ -59,25 +59,25 @@ pretty-printer outputをViewNodeへ変換するbridgeを実装。`get_pretty_vie
 
 ### Canopy / Markdown edit opsとweb editor
 
-Markdown block editor向けに7つのMarkdownEditOp（SplitBlock、MergeBlocks等）を実装し、web editor pageとTypeScript bridgeを追加（[#113](https://github.com/dowdiness/canopy/pull/113), [#114](https://github.com/dowdiness/canopy/pull/114), [#115](https://github.com/dowdiness/canopy/pull/115)）。
+Markdown block editor向けに7つのMarkdownEditOp（SplitBlock、MergeBlocks等）を実装し、web editor pageとTypeScript bridgeを追加した（[#113](https://github.com/dowdiness/canopy/pull/113), [#114](https://github.com/dowdiness/canopy/pull/114), [#115](https://github.com/dowdiness/canopy/pull/115)）。
 
 主なPR / Issue: canopy [#113](https://github.com/dowdiness/canopy/pull/113), [#114](https://github.com/dowdiness/canopy/pull/114), [#115](https://github.com/dowdiness/canopy/pull/115)
 
 ## 4月第2週: block-input、zipper、B-tree、semantic layer
 
-Markdown block-inputのtextarea overlay、arrow key navigation、backspace mergeなど細かい挙動を整理し、block editorを実用的に磨いた。 rose tree zipper（`lib/zipper`）、generic B-tree library（`lib/btree`）、semantic layer（`lib/semantic`）という新しい汎用ライブラリを立ち上げ、MoonBit v0.9 migrationも完了させた。
+Markdown block-inputのtextarea overlay、arrow key navigation、backspace mergeなど細かい挙動を整理し、block editorを実用的に磨いた。rose tree zipper（`lib/zipper`）、generic B-tree library（`lib/btree`）、semantic layer（`lib/semantic`）という新しい汎用ライブラリを立ち上げ、MoonBit v0.9 migrationも完了させた。
 
 ## 2026/4/5
 
 ### Canopy / BlockInputとMarkdownPreview
 
-textarea overlay付きのBlockInput thin input layerと、MarkdownPreview semantic HTML adapterを追加（[#117](https://github.com/dowdiness/canopy/pull/117)）。
+textarea overlay付きのBlockInput thin input layerと、MarkdownPreview semantic HTML adapterを追加した（[#117](https://github.com/dowdiness/canopy/pull/117)）。
 
 ## 2026/4/6
 
 ### Canopy / Block editing fixとscope highlighting
 
-block editorのarrow key navigation、backspace merge、ZWSP placeholder、block ID uniquenessなどのbug fix。Ideal editorでtree viewにscope-colored binder highlightingを追加（[#122](https://github.com/dowdiness/canopy/pull/122)）。
+block editorのarrow key navigation、backspace merge、ZWSP placeholder、block ID uniquenessなどのbug fixを行った。Ideal editorではtree viewにscope-colored binder highlightingを追加した（[#122](https://github.com/dowdiness/canopy/pull/122)）。
 
 主なPR / Issue: canopy [#121](https://github.com/dowdiness/canopy/pull/121), [#123](https://github.com/dowdiness/canopy/pull/123), [#125](https://github.com/dowdiness/canopy/pull/125), [#126](https://github.com/dowdiness/canopy/pull/126), [#128](https://github.com/dowdiness/canopy/pull/128)
 
@@ -106,7 +106,7 @@ block editorのarrow key navigation、backspace merge、ZWSP placeholder、block
 
 ### Canopy / B-tree range delete extraction
 
-order-treeからB-tree range delete logicを`lib/btree`へ移行。BTreeElem trait統合、range delete whitebox tests追加（[#138](https://github.com/dowdiness/canopy/pull/138), [#139](https://github.com/dowdiness/canopy/pull/139), [#140](https://github.com/dowdiness/canopy/pull/140)）。
+order-treeからB-tree range delete logicを`lib/btree`へ移行した。BTreeElem trait統合、range delete whitebox testsを追加した（[#138](https://github.com/dowdiness/canopy/pull/138), [#139](https://github.com/dowdiness/canopy/pull/139), [#140](https://github.com/dowdiness/canopy/pull/140)）。
 
 主なPR / Issue: canopy [#138](https://github.com/dowdiness/canopy/pull/138), [#139](https://github.com/dowdiness/canopy/pull/139), [#140](https://github.com/dowdiness/canopy/pull/140)
 
@@ -114,13 +114,13 @@ order-treeからB-tree range delete logicを`lib/btree`へ移行。BTreeElem tra
 
 ### Canopy / B-tree defensive fix
 
-B-tree `delete_range`のunderfull boundary repair、property-based tests、API narrowing（walker internals非公開化）を追加。
+B-tree `delete_range`のunderfull boundary repair、property-based tests、API narrowing（walker internals非公開化）を追加した。
 
 主なPR / Issue: canopy [#141](https://github.com/dowdiness/canopy/pull/141)
 
 ## 4月第3週: Language decoupling、egraph optimizer、Web E2E、drag-and-drop
 
-SyncEditorをlambda-specific typesから切り離す`LanguageCapabilities[T]`を導入し、Canopyを汎用構造編集フレームワークへ近づけた。Lambda evaluatorにはegraph optimizer Tier 3を統合。品質面ではWeb E2EテストをCIへ追加。UI面ではideal editorとblock editor双方でdrag-and-drop foundation、semantic Before/After drop、grip-only dragを実装した。
+SyncEditorをlambda-specific typesから切り離す`LanguageCapabilities[T]`を導入し、Canopyを汎用構造編集フレームワークへ近づけた。Lambda evaluatorにはegraph optimizer Tier 3を統合した。品質面ではWeb E2EテストをCIへ追加し、UI面ではideal editorとblock editorの双方でdrag-and-drop foundation、semantic Before/After drop、grip-only dragを実装した。
 
 ## 2026/4/11
 
@@ -138,7 +138,7 @@ SyncEditorをlambda-specific typesから切り離す`LanguageCapabilities[T]`を
 
 ### Canopy / Drag-and-drop foundation
 
-Ideal editor向けdrag-and-drop foundationを実装（[#174](https://github.com/dowdiness/canopy/pull/174)）。 Confidence lattice lawsのformal verification（[#161](https://github.com/dowdiness/canopy/pull/161)）。
+Ideal editor向けdrag-and-drop foundationを実装した（[#174](https://github.com/dowdiness/canopy/pull/174)）。Confidence lattice lawsのformal verificationも追加した（[#161](https://github.com/dowdiness/canopy/pull/161)）。
 
 主なPR / Issue: canopy [#161](https://github.com/dowdiness/canopy/pull/161), [#172](https://github.com/dowdiness/canopy/pull/172), [#173](https://github.com/dowdiness/canopy/pull/173), [#174](https://github.com/dowdiness/canopy/pull/174)
 
@@ -146,7 +146,7 @@ Ideal editor向けdrag-and-drop foundationを実装（[#174](https://github.com/
 
 ### Canopy / Drag-and-drop exchange
 
-drag-drop exchange、grip-only drag、position detection、outline DnDを実装（[#176](https://github.com/dowdiness/canopy/pull/176)）。
+drag-drop exchange、grip-only drag、position detection、outline DnDを実装した（[#176](https://github.com/dowdiness/canopy/pull/176)）。
 
 ## 2026/4/15
 
@@ -169,7 +169,7 @@ drag-drop exchange、grip-only drag、position detection、outline DnDを実装�
 
 ## 4月第4週: Unified Parser、FFI split、moon.work
 
-loomのunified `@loom.Parser[T]`へ移行し、ReactiveParserを廃止。FFIをjson/markdown/lambdaごとにpackage分割して言語ごとの責務を明確にした。最後にMoonBit workspace機構であるmoon.workを導入し、CIでパッケージ間の依存方向ルールを検証する仕組みを整えた。
+loomのunified `@loom.Parser[T]`へ移行し、ReactiveParserを廃止した。FFIをjson/markdown/lambdaごとにpackage分割して言語ごとの責務を明確にした。最後にMoonBit workspace機構であるmoon.workを導入し、CIでパッケージ間の依存方向ルールを検証する仕組みを整えた。
 
 ## 2026/4/18
 
@@ -186,7 +186,7 @@ loomのunified `@loom.Parser[T]`へ移行し、ReactiveParserを廃止。FFIをj
 
 ### Canopy / loom Stage 5/6 bump
 
-loom Stage 5（remove ReactiveParser）とStage 6にbump。MemoMap sweep-on-rebuild、InternId-in-Relation testを取り込んだ。
+loom Stage 5（remove ReactiveParser）とStage 6にbumpした。MemoMap sweep-on-rebuild、InternId-in-Relation testを取り込んだ。
 
 主なPR / Issue: canopy [#202](https://github.com/dowdiness/canopy/pull/202), [#203](https://github.com/dowdiness/canopy/pull/203)
 
@@ -194,7 +194,7 @@ loom Stage 5（remove ReactiveParser）とStage 6にbump。MemoMap sweep-on-rebu
 
 ### Canopy / moon.work workspace導入
 
-MoonBit workspace（moon.work）を導入。canopy + lib/text-change + lib/zipperをworkspace化し、CIで依存方向ルールを検証。lib/editor-adapterをnpm package `@canopy/editor-adapter`へ変換（[#210](https://github.com/dowdiness/canopy/pull/210), [#211](https://github.com/dowdiness/canopy/pull/211), [#212](https://github.com/dowdiness/canopy/pull/212)）。
+MoonBit workspace（moon.work）を導入した。canopy + lib/text-change + lib/zipperをworkspace化し、CIで依存方向ルールを検証する。lib/editor-adapterをnpm package `@canopy/editor-adapter`へ変換した（[#210](https://github.com/dowdiness/canopy/pull/210), [#211](https://github.com/dowdiness/canopy/pull/211), [#212](https://github.com/dowdiness/canopy/pull/212)）。
 
 主なPR / Issue: canopy [#210](https://github.com/dowdiness/canopy/pull/210), [#211](https://github.com/dowdiness/canopy/pull/211), [#212](https://github.com/dowdiness/canopy/pull/212)
 
@@ -202,14 +202,14 @@ MoonBit workspace（moon.work）を導入。canopy + lib/text-change + lib/zippe
 
 ### Canopy / btree registry化
 
-`lib/btree`をmooncakes registry経由のrle@0.2.0に切り替え、独立packageとして整理。
+`lib/btree`をmooncakes registry経由のrle@0.2.0に切り替え、独立packageとして整理した。
 
 ## 2026/4/26
 
 ### Canopy / lambda typecheck pipeline evolution
 
-loomのtypecheck range wedge fixをbump。lambda typecheck pipeline evolution planをdocsに追加。
+loomのtypecheck range wedge fixをbumpした。lambda typecheck pipeline evolution planをdocsに追加した。
 
 ## 作業運用メモ
 
-4月はCanopyが「Lambda中心のエディタ」から「複数言語・複数editor viewを扱える汎用構造編集フレームワーク」へ近づいた月。EditorProtocol、LanguageCapabilities[T]、FFI分割、moon.workの導入がその象徴。同時にblock editor、Markdown editor、B-tree、semantic layerなど新しい柱も増え、5月以降の大規模な機能展開の土台が整った。
+4月はCanopyが「Lambda中心のエディタ」から「複数言語・複数editor viewを扱える汎用構造編集フレームワーク」へ近づいた月である。EditorProtocol、LanguageCapabilities[T]、FFI分割、moon.workの導入がその象徴である。同時にblock editor、Markdown editor、B-tree、semantic layerなど新しい柱も増え、5月以降の大規模な機能展開の土台が整った。
