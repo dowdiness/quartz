@@ -3,12 +3,12 @@ title: Canopy開発日誌-8月
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-08-04T22:54:40+09:00
-modified: 2026-08-10T18:10:47+09:00
+modified: 2026-08-19T15:30:00+09:00
 ---
 
 # Canopy開発日誌-8月
 
-2026年8月のCanopy開発ログ（日次記録）。月の要約は[[Canopy開発日誌-8月-まとめ|8月-まとめ]]（月初4日分、随時更新）。
+2026年8月のCanopy開発ログ（日次記録）。月の要約は[[Canopy開発日誌-8月-まとめ|8月-まとめ]]（随時更新）。
 
 > ソースコードを構造（IR）として編集する MoonBit 製エディタ。概要は[[Canopyとは]]。
 
@@ -16,7 +16,7 @@ modified: 2026-08-10T18:10:47+09:00
 
 ## 今月の大きな流れ
 
-進行中の月のため、以下は日付ごとの作業記録（8/10まで）。PR番号の一覧は文末の[PR索引](#pr索引)にある。7月の記録は[[Canopy開発日誌-7月|7月の日誌]]・[[Canopy開発日誌-7月-まとめ|7月-まとめ]]。
+進行中の月のため、以下は日付ごとの作業記録（8/19まで）。PR番号の一覧は文末の[PR索引](#pr索引)にある。7月の記録は[[Canopy開発日誌-7月|7月の日誌]]・[[Canopy開発日誌-7月-まとめ|7月-まとめ]]。
 
 ## 2026/8/1
 
@@ -174,6 +174,166 @@ v0.8.0の直後、literal computed getter readsのsuspend（#862）とliteral-co
 
 主なPR / Issue: canopy [#1218](https://github.com/dowdiness/canopy/pull/1218), [#1220](https://github.com/dowdiness/canopy/pull/1220), [#1222](https://github.com/dowdiness/canopy/pull/1222), [#1226](https://github.com/dowdiness/canopy/pull/1226), [#1227](https://github.com/dowdiness/canopy/pull/1227), [#1229](https://github.com/dowdiness/canopy/pull/1229) / js_engine [#862](https://github.com/dowdiness/js_engine/pull/862), [#865](https://github.com/dowdiness/js_engine/pull/865)
 
+## 2026/8/11
+
+### Canopy / Loomark編集の回帰テストと次期投影の設計
+
+v0.8.0リリース後の最初の平日、Loomarkは実測値の固定から始まった。`resolve_applied_edit`のfast pathとfallback pathに対する実測の回帰テスト（#1237）が追加され、決定並行編集とリモートundo/redoの収束カバレッジも同日に入っている。レイテンシはCI上で固定閾値で断ずかず観測値として記録する方針で、これは「速さを測定できる形にしておくが、ノイズでCIを壊さない」という判断だ。
+
+同じ日、Cut B′——projection publisherの責任とライフタイムの台帳——を閉じるという次期タスクの実行計画（#1236）が立てられている。8/9のportable projectionに続き、projectionの所有権モデルをさらに一段下へ降ろす準備が始まった形になる。
+
+### js_engine / プロパティ変更のactivation設計とbytecode suspendの開始
+
+js_engineはbytecode VMのプロパティ変更経路に焦点を移した日になった。property mutation activationの設計記録（#876）で方針を固めると、そのまま3つのsuspend変更が同日に並んだ。direct-own static setter assignment（#877）、static property update（#878）、exact-string computed property mutation（#879）の3つで、いずれもbytecode命令をruntime-owned activation coordinator経由に回し、sealed executor provenanceを持つown accessor setterだけをadmitする。RHSのidentity、abrupt completion、lifecycle cleanup、canonical fallbackは保たれる。
+
+8/9にmember callのadmissionでactivation graphを構築した流れが、8/11にはプロパティの「書き込み」経路へ広がっている。読み取りのgraphに続き、書き取りのgraphも同じ計画へ載せ始める日になった。
+
+主なPR / Issue: canopy [#1236](https://github.com/dowdiness/canopy/pull/1236), [#1237](https://github.com/dowdiness/canopy/pull/1237) / js_engine [#876](https://github.com/dowdiness/js_engine/pull/876), [#877](https://github.com/dowdiness/js_engine/pull/877), [#878](https://github.com/dowdiness/js_engine/pull/878), [#879](https://github.com/dowdiness/js_engine/pull/879)
+
+## 2026/8/12
+
+### Canopy / Canvas空間コアの抽出とEGW Gate A計画
+
+この日から、Canvasのリファクタリングが大きな弧を描き始める。まずspatial coreの抽出（#1240）で、pan・zoom・drag・viewport・座標変換を再利用可能な`modules/canvas-graph/spatial`へ切り出し、`@spatial.Viewport`をgraph_modelとCanvasの共通canonicalにした。翌日のgeometry boundaryの硬化（#1245）で`ScreenPoint`、`WorldPoint`、`Scale`をopaqueな有限型にし、不正なFFI/JSON入力を拒否するチェックが入る。2日で「空間の型」を据えてから「空間の境界」を締めるという順序だ。
+
+並行してEGW（event-graph-walker）Gate Aの実装計画とCausal Authority residency ADRが公開された（#1242）。position-query capabilityにUnicode scalar単位のCRDT identityが必要ないことを明示した文書で、以降のP1/P2/P3の計画の起点になる。Loomarkのconcurrent projection executionの定義（#1247）も同日で、source-stamped projectionの非同期決定を記録している。
+
+開発基盤ではjustとlefthookのツールチェーン（#1246）が導入され、Loomarkのstartup corpus benchmarkを再現可能にする変更（#1239）も入った。
+
+### js_engine / フレーム検証とactivation eligibility、Web Playground登場
+
+bytecode VMの静的検証が2つ同日に入った。indexed operandsのdispatch前検証（#880）で14種類の子関数・ローカルスロット・環境スロットのオペランドを`BytecodeFunction`テーブルに対して照合し、reachable frame shapesの検証（#882）でopcodeごとのスタック・引数リスト・for-inイテレータ状態の転送モデルを網羅した。さらにactivation eligibilityの分類（#894）で、guest-invocationの真偽値からexhaustive typed activation dispositionへ置き換え、verified function provenanceをprograms・nested functions・executor code・framesを通じて保持するようになった。
+
+もう一つ、この日の目玉はWeb Playground（#895）の登場だ。MoonBit foreign-library bridgeでdiagnostic実行をJavaScriptに公開し、Vite/TypeScriptのPlayground上にWorker分離のRun/Stop、diagnostics表示、ソース制限、fresh-worker recoveryを備えた。js_engineのbytecode VMがブラウザ上で直接試せる環境が、ここで初めてできた。
+
+主なPR / Issue: canopy [#1239](https://github.com/dowdiness/canopy/pull/1239), [#1240](https://github.com/dowdiness/canopy/pull/1240), [#1242](https://github.com/dowdiness/canopy/pull/1242), [#1245](https://github.com/dowdiness/canopy/pull/1245), [#1247](https://github.com/dowdiness/canopy/pull/1247) / js_engine [#880](https://github.com/dowdiness/js_engine/pull/880), [#882](https://github.com/dowdiness/js_engine/pull/882), [#894](https://github.com/dowdiness/js_engine/pull/894), [#895](https://github.com/dowdiness/js_engine/pull/895)
+
+## 2026/8/13
+
+### Canopy / IdealにIncr spatial canvas、開発ツールチェーンの整備
+
+Ideal EditorにインタラクティブなIncr spatial canvasのボトムパネルタブ（#1248）が追加された。`@spatial`を`@incr.CellId`位置で直接使用し、ローカルpan、anchor-preserving zoom、ノードdrag、選択、identity-preserving layout reconciliation、SVGレンダリングを、既存のGraphviz・IncrGraphと共存させている。8/12に抽出したspatial coreの最初の消費者が、同じリポジトリ内の別UI surfaceから生まれた形になる。
+
+開発ツールチェーンでは、Lefthook pre-commitのpath-awareルーティング（#1253）が入り、staged pathをリポジトリ・MoonBit・ツールリングの契約ごとに振り分けるようになった。MoonBitチェックは`modules/canopy`にモジュールスコープされ、format前にcheckが走る。
+
+### js_engine / bytecodeのアーキテクチャ整理とPlaygroundの磨き
+
+bytecode VMのアーキテクチャ整理が3つ同日に並んだ。environment slot accessのカプセル化（#898）で`Array[Binding]`の直接所有をopaqueな`EnvironmentSlot`ハンドルに置き換え、O(1)のローカル/キャプチャアクセスを保ちながらmutable binding-cell identityを保持。lexical setupのVM実行前準備（#901）で、immutableなlexical setup・function declaration・signature validation・activation capability factsを実行前に導出。supported destructuringのverified executable planへのlowering（#904）で、AST依存の`AssignPattern`をAST-freeの`AssignDestructure(DestructurePlan)`に置き換えた。
+
+PlaygroundはCodeMirror diagnostics、gutter整理、engine-aware completions、API hoverドキュメント、seeded ASCII dungeon workload（#902, #906）と、ブラウザで直接触る環境の磨き込みが進んだ。
+
+主なPR / Issue: canopy [#1246](https://github.com/dowdiness/canopy/pull/1246), [#1248](https://github.com/dowdiness/canopy/pull/1248), [#1253](https://github.com/dowdiness/canopy/pull/1253) / js_engine [#898](https://github.com/dowdiness/js_engine/pull/898), [#901](https://github.com/dowdiness/js_engine/pull/901), [#902](https://github.com/dowdiness/js_engine/pull/902), [#904](https://github.com/dowdiness/js_engine/pull/904), [#906](https://github.com/dowdiness/js_engine/pull/906)
+
+## 2026/8/14
+
+### Canopy / Rabbita pointer lifecycleとCanvas pointer分離
+
+Ideal Incr CanvasがRabbitaのtyped pointer-capture lifecycle（#1252）を使うよう修正され、Canopy所有のRabbitaフォークを`6f538c4`に固定した。canvas側ではpointer completionとinterruptionの区別（#1254）が入り、ブラウザのinterruptionが通常の`pointerup`完了セマンティクスを再利用しないよう`update_pointer_interrupt`を追加。Rabbita側ではtyped pointer eventsとfractional coordinatesの保持（#1255）で、`on_pointerdown`〜`on_pointercancel`が`PointerEvent`を直接届け、CSSOM座標取得が`Int`から`Double`へ移行した。
+
+リリースワークフローではchangelog rangeの明示化（#1251）で、stable release-version parsingを共有ポリシーに抽出し、`SOURCE_SHA`からの到達可能範囲を明示するようになった。
+
+### js_engine / bytecodeのAST所有権剥奪とCFG証明
+
+bytecode VMの重要なアーキテクチャ変更が2つ。finalized bytecode programsからのsource AST所有権の除去（#907）で、physical AST identityをtyped source-unit・owner・parent・child-index・consumer provenanceに置き換え、`Function.prototype.toString`用のparser source textは保持した。ASTを「意味のある出処の記録」に変え、「所有する構造」ではなくしたことで、bytecode programがsourceに依存しない独立した実行計画として閉じる。
+
+CFG edgeを跨ぐobservation coverageの証明（#908）は、function-localのstatement/expression observation contextをlowering時に記録し、reachable CFG edgeがmandatory observation barrier後のregionに入れなくなること検証する。logical・nullish・optional-chain・loop・for-in・nested-functionのパスを正として保持。
+
+### incr / Incr Next K0・K1.1のcommissionと実装
+
+incrでIncr Nextの動きが始まった。K0 product contract（#470）でK0の製品・カーネル契約を確定し、lifetime/transaction契約・`QueryContext`・clock/phase semanticsを定義。そのままK1.1 no-memo kernel（#472）の実装まで進み、opaque `View[V]`、expiring `QueryContext`、`Store`・`Region`・`Source`の最小セマンティック基盤が同日に動いた。K0の契約を確定した同じ日にK1.1のコードが動いている。
+
+主なPR / Issue: canopy [#1251](https://github.com/dowdiness/canopy/pull/1251), [#1252](https://github.com/dowdiness/canopy/pull/1252), [#1254](https://github.com/dowdiness/canopy/pull/1254), [#1255](https://github.com/dowdiness/canopy/pull/1255) / js_engine [#907](https://github.com/dowdiness/js_engine/pull/907), [#908](https://github.com/dowdiness/js_engine/pull/908) / incr [#470](https://github.com/dowdiness/incr/pull/470), [#471](https://github.com/dowdiness/incr/pull/471), [#472](https://github.com/dowdiness/incr/pull/472)
+
+## 2026/8/15
+
+### Canopy / Canvas入力のMoonBit移管とprojection ownership characterization
+
+Canvasのリファクタリングが「TypeScriptからMoonBit/Rabbitaへ入力の所有権を移す」段階に入った。root pointer ownershipの移管（#1258）で、workflow Canvas root pointerを1つのapp-private MoonBit/Rabbita `CanvasPointerSession`に統合し、TypeScript側のpointer state/capture ownershipを削除。pre-push時のsubmodule reachability強制（#1257）も同日で、`validate-pr-ready`のsubmoduleチェックを`scripts/check-submodule-reachability.nu`に抽出し、Lefthook pre-pushでブロックする。
+
+projection面ではsynchronous A-F ownershipのcharacterization（#1249）が入り、bounded A–F authority/projection tracingでaccepted authority stateとprojection stateを分離。Loomarkのprojection placement rejection（#1261）は、release-browser placement harnessでWorker・in-process・synchronousの3経路を比較し、「synchronous production placement以外に性能利得がない」ことを実測で示した。
+
+### js_engine / executor candidatesのprepareとroute
+
+bytecode VMにexecutor candidateの2段階が導入された。per-activation executor candidatesのroutingなしprepare（#912）で、compiler-private `CandidateProgram`/`CandidateFunction`ツリーを追加し、tree表現とverified bytecode candidateを対にした。次にverified candidatesのper-activation routing（#913）で、build-time virtual package policyでdefault stable Engineパスを変更せずに、mixed Tree-walker/Bytecode childrenのCandidateProgram materializationとroot/nested activationのroutingを実装した。
+
+### incr / K1.2 typed memo verificationとK1.3 cycle detection
+
+Incr Nextが怒涛の1日2マイルストーン。K1.2 typed memo verification（#474）で、Query-local typed memo所有権、same-epoch cache hit、last-successful forward trace、green verificationとselected red recomputationを実装。そのままK1.3 cycle detection（#476）に進み、independent Fresh cycle oracle、typed active invocation map、key-free active stack per `EvalSession`、`CycleWitness`のコピー、old-trace Cycle → `RecomputeRequired`、current-recompute Cycle → `ReadError::Cycle`を同日に実装した。
+
+主なPR / Issue: canopy [#1249](https://github.com/dowdiness/canopy/pull/1249), [#1257](https://github.com/dowdiness/canopy/pull/1257), [#1258](https://github.com/dowdiness/canopy/pull/1258), [#1261](https://github.com/dowdiness/canopy/pull/1261) / js_engine [#912](https://github.com/dowdiness/js_engine/pull/912), [#913](https://github.com/dowdiness/js_engine/pull/913) / incr [#473](https://github.com/dowdiness/incr/pull/473), [#474](https://github.com/dowdiness/incr/pull/474), [#475](https://github.com/dowdiness/incr/pull/475), [#476](https://github.com/dowdiness/incr/pull/476)
+
+## 2026/8/16
+
+### Canopy / Canvas authorityのMoonBit集中とLoomark性能測定
+
+Canvasのリファクタリングが加速した日。root wheel admissionのMoonBit移管（#1267）でwheel入力をRabbita pointer island内で同期的にデコードし、fractional root-relative座標を保持。edge selection authorityのMoonBit移管（#1268）でedge-selection state・edge clicks・reconciliation・pointer clearingをapp-private MoonBit/Rabbita stateへ。context-menu authorityのMoonBit移管（#1270）でnode catalog・typed targets/requests/actions・root-scoped hit testingをMoonBit/Rabbitaコードへ移動した。3日でpointer・wheel・edge selection・context-menuと、Canvasのインタラクション入力がほぼすべてTypeScriptからMoonBit/Rabbitaへ移ったことになる。
+
+Loomark性能測定ではpre-frame response bottleneckの特定（#1264）でChromium main-thread intervalのcalibrated測定を追加し、view materialization・VDOM/DOM mutation・layout・paintが応答遅延の原因ではないことを実証。post-commit persistence preparationのattributing（#1266）で2,000行ドキュメントのmiddle-edit delayをarchive captureとJSON preparationに帰因させた。
+
+EGW P1 typed admission transitionの計画（#1263）とP2 Document admission projectionの計画（#1269）も同日に公開され、EGWの段階的統合の道筋が文書化された。
+
+### js_engine / runtime操作のresumeラッシュ
+
+bytecode VMが「resume」——runtime経由で実行を再開する——変更の集中日に入った。coercing addition（#914）を皮切りに、property deletion（#915）、managed iterable spread（#916）、CopyDataProperties for object spread（#917）と、8/12にissueとして並べたbytecode resumeタスクが1日で4つ片付いた。それぞれruntime continuationが所有するmanaged activation seam経由で、stack-changeのないcompletion destinationを保つ。
+
+主なPR / Issue: canopy [#1260](https://github.com/dowdiness/canopy/pull/1260), [#1262](https://github.com/dowdiness/canopy/pull/1262), [#1263](https://github.com/dowdiness/canopy/pull/1263), [#1264](https://github.com/dowdiness/canopy/pull/1264), [#1266](https://github.com/dowdiness/canopy/pull/1266), [#1267](https://github.com/dowdiness/canopy/pull/1267), [#1268](https://github.com/dowdiness/canopy/pull/1268), [#1269](https://github.com/dowdiness/canopy/pull/1269), [#1270](https://github.com/dowdiness/canopy/pull/1270), [#1271](https://github.com/dowdiness/canopy/pull/1271) / js_engine [#914](https://github.com/dowdiness/js_engine/pull/914), [#915](https://github.com/dowdiness/js_engine/pull/915), [#916](https://github.com/dowdiness/js_engine/pull/916), [#917](https://github.com/dowdiness/js_engine/pull/917)
+
+## 2026/8/17
+
+### Canopy / Canvas edge描画のMoonBit派生とEGW P3 Text admission
+
+Canvas edgeのレンダリングが2段階でMoonBitへ移った。まずedge render projectionのMoonBit派生（#1272）で、port offsets・world-space anchors・horizontal cubic Bézier `path_d`・selection presentation・ARIA labels・pending connection pathsをFFI境界の前にMoonBit側で導出。次にedge layerのRabbitaレンダリング（#1274）で、TypeScript DOM reconciliationからapp-private Rabbita keyed SVG layerへ所有権を移動した。
+
+EGWはP3 Text admissionのcharacterization（#1273）から始まり、pending-limit policy boundaryの明確化（#1275）を経て、P3 Text admission cutoverの統合（#1276）まで1日で辿り着いた。`deps/event-graph-walker`をP3 merge commitへ進め、Canopy側のproduction code変更はゼロのsubmodule bump統合。P1→P2→P3と文書→実装の順で段階的に進めてきたEGW統合が、P3 cutoverで最初の実際のコード統合に到達した。
+
+### js_engine / with解決、forEach、Promise、減算、そしてFibonacci
+
+bytecode VMのresumeが広範囲に広がった。dynamic with binding resolution（#919）で`with_object`環境経由の名前解決をruntime-owned managed binding-resolution requestで閉じ、`Array.prototype.forEach`のmanaged runtime call（#920）でsparse-loop kごとのactivation yieldを実装。Promise reaction jobs（#921）は各reactionをprivate one-shot `ExecutorCallable`としてexisting generic `Microtask` carrierにenqueueし、handler selectionをdependent `resolve`/`reject` completionで駆動する。
+
+数値演算ではplain subtraction（#926）のruntime numeric coercion、`<=` comparison（#927）のECMAScript IsLessThan semantics中央集約。そしてFibonacci graduation evidence（#929）で、fully-Bytecode Fibonacci runtimeがelapsed timeは指数関数的に増加するがruntime RSSは平坦であることを実測し、local memory-pressure failureがVM activationではなくdiagnostic/test設定に起因することを特定した。
+
+### incr / K1.4 typed cutoff、K1.5 proof loss、K1.6 conformance
+
+Incr Nextが3日でK1の全マイルストーンを完了した。K1.4 typed cutoff and backdating（#478）でfixed private cutoff policy、`AlwaysChanged`/`Eq`/`CutoffEq`ポリシー、successful recomputation後のcutoff、backdatingを実装。K1.5 proof loss（#480）でtyped memoとそのreuse evidenceの破棄を、public clock・query definition・View・cutoff policy・source stateを変えずに実装。K1.6 product-quality conformance（#482）で21シナリオファミリ・7種のcutoff kindにわたるdeterministic Fresh/Incremental differential coverageを完成させた。
+
+主なPR / Issue: canopy [#1272](https://github.com/dowdiness/canopy/pull/1272), [#1273](https://github.com/dowdiness/canopy/pull/1273), [#1274](https://github.com/dowdiness/canopy/pull/1274), [#1275](https://github.com/dowdiness/canopy/pull/1275), [#1276](https://github.com/dowdiness/canopy/pull/1276) / js_engine [#919](https://github.com/dowdiness/js_engine/pull/919), [#920](https://github.com/dowdiness/js_engine/pull/920), [#921](https://github.com/dowdiness/js_engine/pull/921), [#926](https://github.com/dowdiness/js_engine/pull/926), [#927](https://github.com/dowdiness/js_engine/pull/927), [#929](https://github.com/dowdiness/js_engine/pull/929) / incr [#477](https://github.com/dowdiness/incr/pull/477), [#478](https://github.com/dowdiness/incr/pull/478), [#479](https://github.com/dowdiness/incr/pull/479), [#480](https://github.com/dowdiness/incr/pull/480), [#481](https://github.com/dowdiness/incr/pull/481), [#482](https://github.com/dowdiness/incr/pull/482)
+
+## 2026/8/18
+
+### Canopy / Canvas edgeのRabbita完全移行とEGW性能帰属
+
+Canvas edgeのRabbita移行が完了した。8/17にMoonBit派生・Rabbitaレンダリングと2段階で進めた作業に、edge keyboard activationとaccessible namingの整合（#1285）が加わり、Enter/Space/legacy Spacebarでのedge選択、edge以外のSpaceスクロール防止、ARIA命名の整合まで同日に揃った。
+
+EGW性能作業ではpost-admission version expansionのcharacterization（#1278）で、Text post-admission version expansionのnative-release H/M characterizationを行い、最初のinvalid-cache `TextState::version()` readがpaired-lane GC/order effectではなくresident history Hに帰属することを特定。remote admission phasesのattributing（#1283）でhistoryとmaterialized lengthを独立変化させたphase attributionを記録し、complete materialized-text snapshot lifecycle workがH=100kの支配的ボトルネックであることを同定した。Loomark P3 archive reopen measurements（#1282）では41操作のREADME archiveでWarren production reload p50/p95が830.9/9xx msから有意に改善したことを記録。
+
+### js_engine / 関係演算子のadmissionとresolved binding reference
+
+bytecode VMはplain relational operatorsのadmission（#932）で`<`、`>`、`>=`のECMAScript relational comparison semanticsへの修正と、既存`<=`パスとの共有runtime-owned managed relational operationの一般化を実施。resolved binding referenceのretain（#934）で、managed name operationがsuspended read-modify-write中に1つのresolved Referenceを保持できるようにした——`with`環境やProxy-backed scope objectでre-resolveが観測的に不正になる問題を回避するためだ。
+
+### loom / source-bound semantic documentとCommonMark適合の推進
+
+loomで大きな変更が動いた。source-bound semantic documentの確立（#914）で、`MarkdownDocument`のseamとcanonical `parse_document`エントリポイントを追加し、detached `MarkdownSemanticRead`、read-bound semantic nodesとselections、source-aware adaptersを導入した。
+
+CommonMark適合も5つ同日に進んだ。indented code（#916）でexamples 107–118の認識、fenced-code opening indentのstrip（#917）でexamples 131–133のvisual indent除去、backtick fence info内のbacktick拒否（#918）でexamples 138/145/347の処理、fenced info first wordとbackslash unescape（#919）でexamples 143/146のfirst-token言語指定とASCII-punctuation unescape、over-indented ATXのparagraph continuation（#920）でexample 70のlazy continuation処理。8/1のCommonMark「完成」から2週間以上経っても、まだ仕様書から新しい適合項目が出てきている。
+
+### incr / K1 kernelのpre-1.0 sibling product採択
+
+Incr Next K1 kernelのpre-1.0 sibling productとしての採択（#483）が入った。K1.1–K1.6をaccepted・mergedとして記録し、K1 completeを宣言。sibling-product ADRを追加し、K0 contractsをnormative recordとして永続化した。独立したモジュール（`dowdiness/incr_next`）として、既存`dowdiness/incr`とは別のプロダクトラインで行くという判断が確定した。
+
+主なPR / Issue: canopy [#1278](https://github.com/dowdiness/canopy/pull/1278), [#1280](https://github.com/dowdiness/canopy/pull/1280), [#1282](https://github.com/dowdiness/canopy/pull/1282), [#1283](https://github.com/dowdiness/canopy/pull/1283), [#1285](https://github.com/dowdiness/canopy/pull/1285) / js_engine [#932](https://github.com/dowdiness/js_engine/pull/932), [#934](https://github.com/dowdiness/js_engine/pull/934) / loom [#914](https://github.com/dowdiness/loom/pull/914), [#916](https://github.com/dowdiness/loom/pull/916), [#917](https://github.com/dowdiness/loom/pull/917), [#918](https://github.com/dowdiness/loom/pull/918), [#919](https://github.com/dowdiness/loom/pull/919), [#920](https://github.com/dowdiness/loom/pull/920) / incr [#483](https://github.com/dowdiness/incr/pull/483)
+
+## 2026/8/19
+
+### Canopy / skyline packerとCanvas arrange選択
+
+`dowdiness/skyline`というgeneric Bottom-Left integer packerが新增設された（#1286）。Canopy固有の型を一切含まない独立パッケージで、`dowdiness/canvas-layout/skyline`がworld geometryをquantizeしてcompact packを既存`MoveNodes`へlowerする。hand-built canvasのcontext menuに「Arrange compactly」として公開され、2つ以上のノード選択時に使えるようになった。skyline packerを独立パッケージに切り出したのは、canvas固有の型に依存しない汎用アルゴリズムとして再利用できるようにするという判断だ。
+
+### js_engine / name update expressionsとresolved reference
+
+bytecode VMの`UpdateName`がadmissionされた（#935）。JavaScriptのupdate expression（`x++`、`++x`など）は1つのbinding Referenceを解決し、読み、必要ならnumeric coercionでsuspendし、同じReference経由で書き込む必要がある。8/18のresolved binding referenceのretain（#934）が、この変数のread-modify-write中にReferenceを保持する基盤を提供しており、2日連続のパズルピースが嵌まった形になる。
+
+主なPR / Issue: canopy [#1286](https://github.com/dowdiness/canopy/pull/1286) / js_engine [#935](https://github.com/dowdiness/js_engine/pull/935)
+
 ## PR索引
 
 日付ごとのPR / Issue一覧。GitHub上の詳細への索引。
@@ -245,5 +405,69 @@ canopy [#1199](https://github.com/dowdiness/canopy/pull/1199), [#1200](https://g
 **Loomark Raw入力仕上げ / js_engine literal-computed suspend**
 
 canopy [#1218](https://github.com/dowdiness/canopy/pull/1218), [#1220](https://github.com/dowdiness/canopy/pull/1220), [#1222](https://github.com/dowdiness/canopy/pull/1222), [#1226](https://github.com/dowdiness/canopy/pull/1226), [#1227](https://github.com/dowdiness/canopy/pull/1227), [#1229](https://github.com/dowdiness/canopy/pull/1229) / js_engine [#862](https://github.com/dowdiness/js_engine/pull/862), [#865](https://github.com/dowdiness/js_engine/pull/865)
+
+</details>
+
+<details>
+<summary>8月第3週（8/11〜8/17）</summary>
+
+### 2026/8/11
+
+**Loomark編集回帰テスト / js_engine bytecode property mutation suspend**
+
+canopy [#1236](https://github.com/dowdiness/canopy/pull/1236), [#1237](https://github.com/dowdiness/canopy/pull/1237) / js_engine [#876](https://github.com/dowdiness/js_engine/pull/876), [#877](https://github.com/dowdiness/js_engine/pull/877), [#878](https://github.com/dowdiness/js_engine/pull/878), [#879](https://github.com/dowdiness/js_engine/pull/879)
+
+### 2026/8/12
+
+**Canvas spatial core抽出 / EGW Gate A計画 / js_engine フレーム検証・Playground / incr K0**
+
+canopy [#1239](https://github.com/dowdiness/canopy/pull/1239), [#1240](https://github.com/dowdiness/canopy/pull/1240), [#1242](https://github.com/dowdiness/canopy/pull/1242), [#1245](https://github.com/dowdiness/canopy/pull/1245), [#1247](https://github.com/dowdiness/canopy/pull/1247) / js_engine [#880](https://github.com/dowdiness/js_engine/pull/880), [#882](https://github.com/dowdiness/js_engine/pull/882), [#894](https://github.com/dowdiness/js_engine/pull/894), [#895](https://github.com/dowdiness/js_engine/pull/895) / incr [#470](https://github.com/dowdiness/incr/pull/470), [#471](https://github.com/dowdiness/incr/pull/471), [#472](https://github.com/dowdiness/incr/pull/472)
+
+### 2026/8/13
+
+**Ideal Incr spatial canvas / js_engine bytecode環境スロット・lexical setup / incr K1.1**
+
+canopy [#1246](https://github.com/dowdiness/canopy/pull/1246), [#1248](https://github.com/dowdiness/canopy/pull/1248), [#1253](https://github.com/dowdiness/canopy/pull/1253) / js_engine [#898](https://github.com/dowdiness/js_engine/pull/898), [#901](https://github.com/dowdiness/js_engine/pull/901), [#902](https://github.com/dowdiness/js_engine/pull/902), [#904](https://github.com/dowdiness/js_engine/pull/904), [#906](https://github.com/dowdiness/js_engine/pull/906) / incr [#473](https://github.com/dowdiness/incr/pull/473)
+
+### 2026/8/14
+
+**Rabbita pointer lifecycle / bytecode AST所有権剥奪・CFG証明 / incr K1.1–K1.2**
+
+canopy [#1251](https://github.com/dowdiness/canopy/pull/1251), [#1252](https://github.com/dowdiness/canopy/pull/1252), [#1254](https://github.com/dowdiness/canopy/pull/1254), [#1255](https://github.com/dowdiness/canopy/pull/1255) / js_engine [#907](https://github.com/dowdiness/js_engine/pull/907), [#908](https://github.com/dowdiness/js_engine/pull/908) / incr [#473](https://github.com/dowdiness/incr/pull/473), [#474](https://github.com/dowdiness/incr/pull/474)
+
+### 2026/8/15
+
+**Canvas pointer MoonBit移管 / projection A-F ownership / js_engine executor candidates / incr K1.2–K1.3**
+
+canopy [#1249](https://github.com/dowdiness/canopy/pull/1249), [#1257](https://github.com/dowdiness/canopy/pull/1257), [#1258](https://github.com/dowdiness/canopy/pull/1258), [#1261](https://github.com/dowdiness/canopy/pull/1261) / js_engine [#912](https://github.com/dowdiness/js_engine/pull/912), [#913](https://github.com/dowdiness/js_engine/pull/913) / incr [#473](https://github.com/dowdiness/incr/pull/473), [#474](https://github.com/dowdiness/incr/pull/474), [#475](https://github.com/dowdiness/incr/pull/475), [#476](https://github.com/dowdiness/incr/pull/476)
+
+### 2026/8/16
+
+**Canvas authority MoonBit集中 / Loomark性能測定 / js_engine runtime resumeラッシュ / EGW P1–P2計画**
+
+canopy [#1260](https://github.com/dowdiness/canopy/pull/1260), [#1262](https://github.com/dowdiness/canopy/pull/1262), [#1263](https://github.com/dowdiness/canopy/pull/1263), [#1264](https://github.com/dowdiness/canopy/pull/1264), [#1266](https://github.com/dowdiness/canopy/pull/1266), [#1267](https://github.com/dowdiness/canopy/pull/1267), [#1268](https://github.com/dowdiness/canopy/pull/1268), [#1269](https://github.com/dowdiness/canopy/pull/1269), [#1270](https://github.com/dowdiness/canopy/pull/1270), [#1271](https://github.com/dowdiness/canopy/pull/1271) / js_engine [#914](https://github.com/dowdiness/js_engine/pull/914), [#915](https://github.com/dowdiness/js_engine/pull/915), [#916](https://github.com/dowdiness/js_engine/pull/916), [#917](https://github.com/dowdiness/js_engine/pull/917)
+
+### 2026/8/17
+
+**Canvas edge描画MoonBit派生 / EGW P3 Text cutover / js_engine with・forEach・Promise・Fibonacci / incr K1.4–K1.6**
+
+canopy [#1272](https://github.com/dowdiness/canopy/pull/1272), [#1273](https://github.com/dowdiness/canopy/pull/1273), [#1274](https://github.com/dowdiness/canopy/pull/1274), [#1275](https://github.com/dowdiness/canopy/pull/1275), [#1276](https://github.com/dowdiness/canopy/pull/1276) / js_engine [#919](https://github.com/dowdiness/js_engine/pull/919), [#920](https://github.com/dowdiness/js_engine/pull/920), [#921](https://github.com/dowdiness/js_engine/pull/921), [#926](https://github.com/dowdiness/js_engine/pull/926), [#927](https://github.com/dowdiness/js_engine/pull/927), [#929](https://github.com/dowdiness/js_engine/pull/929) / incr [#477](https://github.com/dowdiness/incr/pull/477), [#478](https://github.com/dowdiness/incr/pull/478), [#479](https://github.com/dowdiness/incr/pull/479), [#480](https://github.com/dowdiness/incr/pull/480), [#481](https://github.com/dowdiness/incr/pull/481), [#482](https://github.com/dowdiness/incr/pull/482)
+
+</details>
+
+<details>
+<summary>8月第4週（8/18〜8/19）</summary>
+
+### 2026/8/18
+
+**Canvas edge keyboard整合 / EGW性能帰属 / loom source-bound semantic document / js_engine 関係演算子 / incr K1採択**
+
+canopy [#1278](https://github.com/dowdiness/canopy/pull/1278), [#1280](https://github.com/dowdiness/canopy/pull/1280), [#1282](https://github.com/dowdiness/canopy/pull/1282), [#1283](https://github.com/dowdiness/canopy/pull/1283), [#1285](https://github.com/dowdiness/canopy/pull/1285) / js_engine [#932](https://github.com/dowdiness/js_engine/pull/932), [#934](https://github.com/dowdiness/js_engine/pull/934) / loom [#914](https://github.com/dowdiness/loom/pull/914), [#916](https://github.com/dowdiness/loom/pull/916), [#917](https://github.com/dowdiness/loom/pull/917), [#918](https://github.com/dowdiness/loom/pull/918), [#919](https://github.com/dowdiness/loom/pull/919), [#920](https://github.com/dowdiness/loom/pull/920) / incr [#483](https://github.com/dowdiness/incr/pull/483)
+
+### 2026/8/19
+
+**skyline packer / js_engine name update expressions**
+
+canopy [#1286](https://github.com/dowdiness/canopy/pull/1286) / js_engine [#935](https://github.com/dowdiness/js_engine/pull/935)
 
 </details>
