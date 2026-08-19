@@ -3,7 +3,7 @@ title: Canopy開発日誌-8月-まとめ
 publish: true
 tags: [blog, canopy, projectional-editing]
 created: 2026-08-04T23:10:00+09:00
-modified: 2026-08-19T15:30:00+09:00
+modified: 2026-08-19T15:47:35+09:00
 ---
 
 # Canopy開発日誌-8月-まとめ
